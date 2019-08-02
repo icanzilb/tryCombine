@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on try Combine</title>
-    <link>http://trycombine.local:8888/tags/</link>
+    <link>http://trycombine.com/tags/</link>
     <description>Recent content in Tags on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 02 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://trycombine.local:8888/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Combine</title>
-      <link>http://trycombine.local:8888/tags/combine/</link>
+      <link>http://trycombine.com/tags/combine/</link>
       <pubDate>Fri, 02 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.local:8888/tags/combine/</guid>
+      <guid>http://trycombine.com/tags/combine/</guid>
       <description></description>
     </item>
     

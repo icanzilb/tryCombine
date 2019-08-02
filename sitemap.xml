@@ -3,36 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://trycombine.local:8888/tags/combine/</loc>
+    <loc>http://trycombine.com/tags/combine/</loc>
     <lastmod>2019-08-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://trycombine.local:8888/posts/</loc>
+    <loc>http://trycombine.com/posts/</loc>
     <lastmod>2019-08-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://trycombine.local:8888/posts/simple-custom-combine-operators/</loc>
+    <loc>http://trycombine.com/posts/simple-custom-combine-operators/</loc>
     <lastmod>2019-08-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://trycombine.local:8888/tags/</loc>
-    <lastmod>2019-08-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.local:8888/</loc>
+    <loc>http://trycombine.com/tags/</loc>
     <lastmod>2019-08-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://trycombine.local:8888/categories/</loc>
+    <loc>http://trycombine.com/</loc>
+    <lastmod>2019-08-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://trycombine.com/categories/</loc>
     <priority>0</priority>
   </url>
   
