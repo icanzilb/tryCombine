@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Simple custom Combine operators</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.local:8888/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.local:8888/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.local:8888/css/colors-dark.css">
+
+		
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.local:8888/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.local:8888/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+				<div id="promo" style="margin-top:50px;">
+					<div id="combinebook">
+						<a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">
+							<img src="http://trycombine.local:8888/images/combine.png" style="width:150px; box-shadow: 6px 6px #002d8c;">
+						</a>
+						<a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">
+							<small style="color:#cccccc;font-size:12px;line-height:1em;">Book by F. Pillet, S. Gardner, <br/>S. Mishali & M. Todorov</small>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="http://trycombine.local:8888/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> </h1>
+
+		<div class="post-content">
+
+<p>Creating simple custom operators is very straight forward in Combine.</p>
+
+<p>As long as your custom operator can be expressed via existing operators you don&rsquo;t need to create a new publisher type - you can simply extend the <code>Publisher</code> protocol with your own custom operator.</p>
+
+<p>Let&rsquo;s try quickly creating on now.</p>
+
+<h2 id="extending-publisher">Extending <code>Publisher</code></h2>
+
+<p>You can extend <code>Publisher</code> like any other protocol in Swift. For this post I&rsquo;ll create a debugging operator that writes logs to the  system console.</p>
+
+<p>Let&rsquo;s start by adding the operator method:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">os</span>
+
+<span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">os_log</span>(message: <span style="color:#24909d">String</span> = <span style="color:#ed9d13">&#34;&#34;</span>) 
+    -&gt; Publishers.HandleEvents&lt;<span style="color:#6ab825;font-weight:bold">Self</span>&gt; {
+
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>First of all I need to import the <code>os</code> module which, beside other APIs, offers access to the system log.</p>
+
+<p>My new operator is called <code>os_log</code> (just like the system <code>os_log(...)</code> function I&rsquo;m gonnna use). It takes an optional text I&rsquo;ll be prepending to the log message and the trick here is the correct return type. Since the operator is going to use <code>handleEvents(...)</code> to do my bidding it&rsquo;ll return a result of <code>Publishers.HandleEvents(Self)</code>.</p>
+
+<p>If I were to use a <code>map(...)</code> to modify somehow the emitted value the return type of my operator would be <code>Publishers.Map&lt;Self&gt;</code>. And finally in case I had a custom publisher type my operator should return <code>Publishers.MyCustomPublisher&lt;Self&gt;</code>.</p>
+
+<p>For the operator body I&rsquo;ll just use <code>handleEvents(...)</code> and log the upstream values:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">handleEvents(receiveOutput: { value <span style="color:#6ab825;font-weight:bold">in</span>
+  os.os_log(<span style="color:#ed9d13">&#34;[%@] value: %@&#34;</span>, message, 
+    <span style="color:#24909d">String</span>(describing: value))
+})</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>With that my little logging operator is finished and I can give it a try:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Timer.publish(every: <span style="color:#3677a9">1</span>, on: RunLoop.main, 
+  <span style="color:#6ab825;font-weight:bold">in</span>: .common)
+  .autoconnect()
+  .os_log(message: <span style="color:#ed9d13">&#34;timer&#34;</span>)
+  .sink(receiveValue: { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> })</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>I subscribe a timer publisher and use my new <code>os_log</code> operator to log to the system logs.</p>
+
+<p>Now I can fire up macOS&rsquo;s <strong>Console.app</strong> and check for my own logs - neat!</p>
+
+<p><img src="http://trycombine.local:8888/images/simpleop/consoleapp.png" alt="Console.app showing the custom operator log messages" /></p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>To learn more about Combine check out the Combine book!  <a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">02. August 2019</span></p>
+	</article>
+	
+	<div id="toc">
+		<div class="sidebar-posts" style="text-align: left;">
+    Latest posts:
+    
+      <li class="sidebar-post" style="margin-top: 6px;">
+          <a href="http://trycombine.local:8888/posts/simple-custom-combine-operators/">2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; height: 14px;line-height: 14px;}
+	  .sidebar-post a { text-decoration: none; }
+</style>
+
+	</div>
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		
+	</body>
+</html>
