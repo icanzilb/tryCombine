@@ -99,7 +99,9 @@
 
 <p>My new operator is called <code>os_log</code> (just like the system <code>os_log(...)</code> function I&rsquo;m gonnna use). It takes an optional text I&rsquo;ll be prepending to the log message and the trick here is the correct return type. Since the operator is going to use <code>handleEvents(...)</code> to do my bidding it&rsquo;ll return a result of <code>Publishers.HandleEvents(Self)</code>.</p>
 
-<p>If I were to use a <code>map(...)</code> to modify somehow the emitted value the return type of my operator would be <code>Publishers.Map&lt;Self&gt;</code>. And finally in case I had a custom publisher type my operator should return <code>Publishers.MyCustomPublisher&lt;Self&gt;</code>.</p>
+<p>Each operator is implemented in a separate type in the <code>Publishers</code> enumeration. The operator method on <code>Publisher</code>, you use to chain operators, returns an instance of its corresponding publisher type.</p>
+
+<p>For example if I were to use a <code>map(...)</code> to modify somehow the emitted value the return type of my operator would&rsquo;ve been <code>Publishers.Map&lt;Self&gt;</code>. (E.g. a <code>Map</code> instance wrapping the upstream publisher). And finally in case I had a custom publisher type my operator would have returned <code>Publishers.MyCustomPublisher&lt;Self&gt;</code>.</p>
 
 <p>For the operator body I&rsquo;ll just use <code>handleEvents(...)</code> and log the upstream values:</p>
 
@@ -129,7 +131,7 @@
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Timer.publish(every: <span style="color:#3677a9">1</span>, on: RunLoop.main, 
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Timer.publish(every: <span style="color:#3677a9">1</span>, on: .main, 
   <span style="color:#6ab825;font-weight:bold">in</span>: .common)
   .autoconnect()
   .os_log(message: <span style="color:#ed9d13">&#34;timer&#34;</span>)
