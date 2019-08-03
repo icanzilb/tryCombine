@@ -483,6 +483,24 @@ pre[class*='language-'] {
 }
 
 /*** Media Queries ***/
+@media all and (max-width: 480px) {
+	#header {
+		margin-bottom: 20px;
+	}
+	#toc {
+		position: relative!important;
+		left: 0!important;
+		text-align: left!important;
+	}
+	.sidebar-title {
+		border-top: 1px solid silver;
+		padding-top: 30px;
+		font-size: 24px;
+		margin-bottom: 20px;
+	}
+}
+
+
 @media all and (max-width: 870px) {
 	article img {
 		max-width: 100%;
