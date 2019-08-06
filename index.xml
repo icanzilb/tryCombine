@@ -6,10 +6,22 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Building a custom `sample` operator</title>
+      <link>http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</link>
+      <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</guid>
+      <description>In Simple custom Combine operators I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom Publisher type.
+In this post I&amp;rsquo;d like to show how this kind of &amp;ldquo;cheap&amp;rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.
+Let&amp;rsquo;s look at sample(_)&amp;hellip;
+The sample operator rxmarbles.com is a marveleous website where you can find visual and interactive presentations of a multitude of reactive operators (based in their implementation in RxJS).</description>
+    </item>
     
     <item>
       <title>Simple custom Combine operators</title>
