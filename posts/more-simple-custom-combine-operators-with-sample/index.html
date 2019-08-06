@@ -145,10 +145,10 @@ Tweet</a><p>
 
 <p><code>sample</code> will operate on the values of the current publisher. The method takes a single parameter which is the &ldquo;trigger&rdquo; or &ldquo;source&rdquo; publisher.</p>
 
-<p>The source publisher needs to meed a couple of conditions:</p>
+<p>The source publisher needs to meet a couple of conditions:</p>
 
 <ul>
-<li>first, whatever values the <code>source</code> emits (you don&rsquo;t really care about their type) need to be <code>Equatable</code> so we can check for a new value by comparing the current to the last one.</li>
+<li>first, the values emitted by <code>source</code> need to be, regardless of their actual type, <code>Equatable</code> so we can check for a new value by comparing the current one to the last one.</li>
 <li>second, the <code>Failure</code> types of <code>source</code> and <code>self</code> need to match as this is a requirement of <code>combineLatest(_)</code> which we will use in the method body.</li>
 </ul>
 
@@ -240,7 +240,7 @@ Tweet</a><p>
 </div>
 </div>
 
-<p>Now you can use <code>sample</code> in all kinds of cases in your code. Let&rsquo;s try something quick and practical.</p>
+<p>We recreated <code>sample</code> as implemented in Rx by combinin/g <code>combineLatest</code>, <code>removeDuplicates</code>, and a <code>map</code>. Now we could use <code>sample</code> in all kinds of use-cases (though I personally find it most practical when using UI controls for the source). Let&rsquo;s try a quick and practical test.</p>
 
 <h2 id="getting-sample-out-for-a-spin">Getting <code>sample</code> out for a spin</h2>
 
@@ -282,7 +282,7 @@ Tweet</a><p>
 ...
 </code></pre>
 
-<p>Then add a timer firing each 5 seconds to be the &ldquo;source&rdquo;:</p>
+<p>Then add a timer firing each 5 seconds to use as the &ldquo;source&rdquo;:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -297,7 +297,7 @@ Tweet</a><p>
 </div>
 </div>
 
-<p>And finally use <code>scan</code> to use the two publishers together:</p>
+<p>And finally use <code>sample</code> to use the two publishers together:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
