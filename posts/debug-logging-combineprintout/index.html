@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Debug logging with CombinePrintout</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Debug logging with CombinePrintout" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="How to use a micro package called CombinePrintout to log debug information" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="http://trycombine.com/posts/debug-logging-combineprintout/" />
+<meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="How to use a micro package called CombinePrintout to log debug information">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="How to use a micro package called CombinePrintout to log debug information" />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Debug logging with CombinePrintout">
+
+
+<meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+				<div id="promo" style="margin-top:50px;">
+					<div id="combinebook">
+						<a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">
+							<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 6px 6px #002d8c;">
+						</a>
+						<br/>
+						<a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">
+							<small style="color:#cccccc;font-size:12px;line-height:1em;">Book by F. Pillet, S. Gardner, <br/>S. Mishali & M. Todorov</small>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="http://trycombine.com/posts/debug-logging-combineprintout/">Debug logging with CombinePrintout</a> </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Debug%20logging%20with%20CombinePrintout&url=http%3a%2f%2ftrycombine.com%2fposts%2fdebug-logging-combineprintout%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.</p>
+
+<p>In <a href="http://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I wrote about how to create an operator that logs to the system Console app in just few lines.</p>
+
+<p>After playing with Combine some more I went ahead and created a micro framework called &ldquo;CombinePrintout&rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.</p>
+
+<h2 id="combineprintout">CombinePrintout</h2>
+
+<p>To use CombinePrintout in your Xcode project go to &ldquo;File &gt; Swift Packages &gt; Add Package Dependency&hellip;&rdquo; and enter the package URL:</p>
+
+<p><a href="https://github.com/combineopensource/CombinePrintout">https://github.com/combineopensource/CombinePrintout</a></p>
+
+<p>The package allows you to easily print information about your subscriptions and cancellables.</p>
+
+<h2 id="printing-subscription-info">Printing subscription info</h2>
+
+<p>Combine&rsquo;s <code>print()</code> operator is pretty useful but while you&rsquo;re debugging code sometimes you need to subscribe given publisher for the only purpose of printing what&rsquo;s being emitted and when the publisher completes.</p>
+
+<p>CombinePrintout adds a new subscriber called <code>printSink()</code>, which is &hellip; no surprise here &hellip; a sink that only prints all events to the console.</p>
+
+<p>You use it like so:</p>
+
+<pre><code class="language-swift">Just([&quot;One&quot;, &quot;Two&quot;])
+  .printSink()
+</code></pre>
+
+<p><code>printSink()</code> will subscribe the publisher and log all events like so:</p>
+
+<pre><code class="language-none">Sink: output([&quot;One&quot;, &quot;Two&quot;]) 
+Sink: finished
+</code></pre>
+
+<p>If you are logging multiple subscriptions (especially if they run concurrently) you might want to use an identifier for each like so:</p>
+
+<pre><code class="language-swift">Just([&quot;One&quot;, &quot;Two&quot;])
+  .printSink(id: &quot;Search subscription&quot;)
+</code></pre>
+
+<p>This will print the identifier alongside the rest of the output:</p>
+
+<pre><code class="language-swift">Sink: output([&quot;One&quot;, &quot;Two&quot;]) Search subscription
+Sink: finished Search subscription
+</code></pre>
+
+<p>Here&rsquo;s an Xcode tip for when you are heavily logging in your code: Use the Xcode Console filter field to filter your app&rsquo;s log in real time:</p>
+
+<p><img src="http://trycombine.com/images/combineprintout/console-filter.png" alt="" /></p>
+
+<h2 id="printing-cancellable-info">Printing cancellable info</h2>
+
+<p>Another API in CombinePrintout is <code>printCancellable()</code>. This method wraps a <code>Cancellable</code> and prints its life-cycle events.</p>
+
+<p>This could help you figure the precise time when your subscription&rsquo;s cancellable is created, cancelled, and released from memory.</p>
+
+<p>You use it like so:</p>
+
+<pre><code class="language-swift">Just([&quot;One&quot;, &quot;Two&quot;])
+  .assign(to: \.model, on: self)
+  .printCancellable()
+  .store(in: &amp;subscriptions)
+</code></pre>
+
+<p>Note that <code>printCancellable()</code> is <strong>not</strong> an operator that you call on your publisher. It instead is a method on <code>Cancellable</code> you get back from a subscriber like <code>assign(to:on:)</code> in the code above.</p>
+
+<p>The result of <code>printCancellable()</code> is also an <code>AnyCancellable</code> so you can go on and store it in an <code>[AnyCancellable]</code> collection or a property somewhere.</p>
+
+<p>The result in the console looks like this:</p>
+
+<pre><code class="language-none">Cancellable: init 
+... 
+(self.subscriptions is released from memory)
+...
+Cancellable: cancel 
+Cancellable: deinit 
+</code></pre>
+
+<p>Just like with <code>printSink()</code> you can add an <code>id</code> parameter to identify the logs in your Console.</p>
+
+<p>And that&rsquo;s a wrap - these are the two publicly available APIs in CombinePrintout. I hope they will help you along the way!</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>Grab the source or add the package as a dependency from the public repo on GitHub:</p>
+
+<p><a href="https://github.com/combineopensource/CombinePrintout">https://github.com/combineopensource/CombinePrintout</a></p>
+
+<p>To learn more about debugging with Combine check out the debugging chapter in <a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<div id="single-promo" style="border: 1px solid #555;box-shadow: 6px 6px #354465; margin-top: 20px;margin-bottom: 20px;text-align: left; min-height: 160px;padding-top: 20px;">
+			<a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">
+			<img src="http://trycombine.com/images/combine.png" style="width:100px;float:left;margin-right: 20px;margin-left: 10px;">
+			</a>
+			<div style="font-size: 14px;">
+				Are you interested to learn more about Apple's Combine framework? Check out <a href="https://store.raywenderlich.com/products/combine-asynchronous-programming-with-swift?source=underplot" target="_blank" style="text-decoration:none;">"Combine: Asynchronous Programming with Swift"</a>. 
+				The book is designed & written by the authors of the popular <a href="https://store.raywenderlich.com/products/rxswift?source=underplot" target="_blank" style="text-decoration:none;">RxSwift Book</a>.
+			</div>
+		</div>
+
+		<p class="meta">Posted on <span class="postdate">16. August 2019</span></p>
+	</article>
+	
+	<div id="toc">
+		<div class="sidebar-posts" style="text-align: left;">
+    <div class="sidebar-title">Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+	  .sidebar-post a { text-decoration: none; }
+</style>
+
+	</div>
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+	</body>
+</html>

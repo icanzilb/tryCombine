@@ -6,10 +6,21 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 16 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Debug logging with CombinePrintout</title>
+      <link>http://trycombine.com/posts/debug-logging-combineprintout/</link>
+      <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/debug-logging-combineprintout/</guid>
+      <description>Logging is a really powerful way to debug code, especially if it&amp;rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.
+In Simple custom Combine operators I wrote about how to create an operator that logs to the system Console app in just few lines.
+After playing with Combine some more I went ahead and created a micro framework called &amp;ldquo;CombinePrintout&amp;rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.</description>
+    </item>
     
     <item>
       <title>Building a custom `sample` operator</title>
