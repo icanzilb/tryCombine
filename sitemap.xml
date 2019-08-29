@@ -3,32 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://trycombine.com/posts/assert-max-subscriptions/</loc>
+    <lastmod>2019-08-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://trycombine.com/tags/combine/</loc>
-    <lastmod>2019-08-16T00:00:00+00:00</lastmod>
+    <lastmod>2019-08-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://trycombine.com/posts/</loc>
+    <lastmod>2019-08-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://trycombine.com/tags/</loc>
+    <lastmod>2019-08-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://trycombine.com/</loc>
+    <lastmod>2019-08-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://trycombine.com/posts/debug-logging-combineprintout/</loc>
     <lastmod>2019-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/posts/</loc>
-    <lastmod>2019-08-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/tags/</loc>
-    <lastmod>2019-08-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/</loc>
-    <lastmod>2019-08-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

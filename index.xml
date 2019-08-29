@@ -6,10 +6,20 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 16 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>An assert operator: assertMaxSubscriptions()</title>
+      <link>http://trycombine.com/posts/assert-max-subscriptions/</link>
+      <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/assert-max-subscriptions/</guid>
+      <description>While I keep working on CombineDataSources I&amp;rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.
+For example: in RxSwift when dealing with UI I&amp;rsquo;d usually use shareReplayLatestWhileConnected() - this operator shares an observable and emits the latest value to all subscribers downstream. In Combine there is currently a share() operator which does a similar thing but does not &amp;ldquo;replay&amp;rdquo; the latest value.</description>
+    </item>
     
     <item>
       <title>Debug logging with CombinePrintout</title>
