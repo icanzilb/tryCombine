@@ -273,10 +273,34 @@ h3 {
 #header {
 	width: 650px;
 	padding-left: 150px;
-	margin: 40px auto 80px auto;
+	margin: 40px auto 60px auto;
 	background: url(/img/logo.svg) no-repeat center left;
 	background-size: auto 100%;
 }
+
+#header #menu {
+	margin-left: 12px;
+}
+
+#header nav {
+	float: none;
+}
+
+#header nav ul {
+	margin-right: 12px;
+	margin-left: 2px;
+	overflow: hidden;
+	padding: 0!important;
+	float: left;
+}
+
+#header nav ul li {
+	float: left;
+	margin-right: 24px!important;
+	list-style-type: none;
+	font-size: 0.9em;
+}
+
 #header h1 {
 	font-size: 42px;
 	margin-bottom: 4px;
@@ -317,7 +341,7 @@ h3 {
 }
 
 #content {
-	width: 500px;
+	width: 650px;
 	margin: 0 auto;
 }
 
@@ -345,9 +369,9 @@ h3 {
 #sidebar {
 	position: absolute;
 	text-align: right;
-	width: 160px;
+	width: 260px;
 	top: 0;
-	left: -240px;
+	left: -320px;
 }
 
 #sidebar li {
