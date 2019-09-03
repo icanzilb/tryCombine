@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Binding a simple list to a UITableView</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Binding a simple list to a UITableView" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Binding a simple list of items to a UITableView with CombineDataSources" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="http://trycombine.com/posts/combinedatasources-simple-static-list/" />
+<meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Binding a simple list of items to a UITableView with CombineDataSources">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Binding a simple list of items to a UITableView with CombineDataSources" />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Binding a simple list to a UITableView">
+
+
+<meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="https://combineopensource.org"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title">Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 6px 6px #354465;">
+				</a>
+				<br/>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<small style="color:#cccccc;font-size:12px;line-height:1em;">Book by F. Pillet, S. Gardner, <br/>S. Mishali & M. Todorov</small>
+				</a>
+			</div>
+        </div>
+
+			
+		<h1><a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a> </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Binding%20a%20simple%20list%20to%20a%20UITableView&url=http%3a%2f%2ftrycombine.com%2fposts%2fcombinedatasources-simple-static-list%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>While still keep improving the current version of <a href="https://github.com/combineopensource/CombineDataSources">CombineDataSources</a> I tought it&rsquo;d be nice to post few articles on the current API design along with some code samples.</p>
+
+<p>This would be nice in order to get some feedback and to try putting some of the code in context.</p>
+
+<h2 id="combinedatasources-introduction">CombineDataSources Introduction</h2>
+
+<p>RxSwiftCommunity&rsquo;s excellent <a href="https://github.com/RxSwiftCommunity/RxDataSources">RxDataSources</a> allows developers to reactively bind data to table and collection views. It uses a lot of the underlaying structure of RxSwift and it&rsquo;s very powerful.</p>
+
+<p>Since I know how important binding lists to UI controls is, I started creating a similar library for Combine. The two libraries are very different in how they work but I&rsquo;m aiming for similar (if not better) end results 😁</p>
+
+<p>Additionally, in the current API iteration I had to introduce a <code>bind(subscriber:)</code> operator to fascilitate binding UI controls. It could happen that some sort of <code>bind</code> is introduced in later versions of Combine or in a popular in the future Combine 3rd party library but for the moment CombineDataSources has its own very simple operator for binding.</p>
+
+<h2 id="binding-a-static-list-of-elements">Binding a Static List of Elements</h2>
+
+<p>Let&rsquo;s have a look at the simplest code sample:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
+  [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
+]
+<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscriptions</span> = [AnyCancellable]()
+
+...
+
+people.publisher.bind(subscriber: 
+  tableView.rowsSubscriber(cellIdentifier: <span style="color:#ed9d13">&#34;Cell&#34;</span>, 
+    cellType: UITableViewCell.<span style="color:#6ab825;font-weight:bold">self</span>, 
+    cellConfig: { cell, indexPath, person <span style="color:#6ab825;font-weight:bold">in</span>
+      cell.textLabel!.text = person.name
+    }
+  ))
+  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
+
+<p>Okay, that <em>ought</em> to be at least a bit confusing at first sight&hellip; so let&rsquo;s dig in.</p>
+
+<p>This code takes a simple static list of elements and binds it to a table view. Even if that&rsquo;s a relatively simple task you can see the benefit of using a reactive library like Combine (or one of the aleternatives for that matter).</p>
+
+<p>Instead of having to create a datasource object, retain it somewhere (your view controller or elsewhere), and then have series of methods that are called in specific order by UIKIt - you  simply declare the list of elements that you want to display, create a publisher out of it, and bind the elements to a table-specific subscriber.</p>
+
+<p>As you probably already guessed it - the magic happens thanks to the custom table-specific subscriber offered by CombineDataSources.</p>
+
+<p>In the code sample above you bind the list to a subscriber created via calling:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">tableView.rowsSubscriber(cellIdentifier:cellType:cellConfig:)</code></pre></div>
+
+<p>This is one of the convenience methods on <code>UITableView</code> that CombineDataSources adds via an <code>extension</code> 🚀. (The API is modelled after RxDataSources&rsquo;s approach.)</p>
+
+<p>The returned subscriber can handle a flat table view with a single section thus the <code>rowsSubscriber</code> method name - it binds a list of elements to table rows.</p>
+
+<p>The method takes 3 parameters:</p>
+
+<ul>
+<li><code>cellIdentifier</code> is the identifier to use when dequeueing cells to display in the table view.</li>
+<li><code>cellType</code> is the type of the dequeued table cells. In the sample above we&rsquo;re using <code>UITableView.self</code> because we don&rsquo;t need custom cells but when your table contains custom cells do provide the type you need here.</li>
+<li><code>cellConfig</code> is a closure that the subscriber will call to set up each cell before displaying it in the table. The <code>cellConfig</code> closure itself takes 3 parameters which offer you everything you need to initialize the cell UI:
+
+<ul>
+<li>the cell object casted to the cell type you expect.</li>
+<li>the index path of the cell in the table view.</li>
+<li>the data element for the specific row.</li>
+</ul></li>
+</ul>
+
+<p>So for each element the subscriber needs to bind it will in turn do the following:</p>
+
+<ol>
+<li>Dequeue a cell with the given identifier</li>
+<li>Cast the cell to the expected type</li>
+<li>Call your closure with the cell and data element leaving it to you to do any UI setup you need.</li>
+</ol>
+
+<p>The <code>bind(subscriber:)</code> operator returns an <code>AnyCancellable</code> which allows you to memory manage the binding any way you want. The most straight forward way is to have a <code>[AnyCancellable]</code> property in the view controller managing the table view and append the binding cancellable to it. This way when the view controller is dismissed that will also cancel the table view binding.</p>
+
+<p>If we have another look at the same code sample it&rsquo;ll now make much more sense:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
+  [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
+]
+<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscriptions</span> = [AnyCancellable]()
+
+...
+
+people.publisher.bind(subscriber: 
+  tableView.rowsSubscriber(cellIdentifier: <span style="color:#ed9d13">&#34;Cell&#34;</span>, 
+    cellType: UITableViewCell.<span style="color:#6ab825;font-weight:bold">self</span>, 
+    cellConfig: { cell, indexPath, person <span style="color:#6ab825;font-weight:bold">in</span>
+      cell.textLabel!.text = person.name
+    }
+  ))
+  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
+
+<p>And in fact if we run the code we should see a populated table on screen 😍:</p>
+
+<p><img src="http://trycombine.com/images/datasources/static-list1.png" alt="Populated table view" /></p>
+
+<h2 id="binding-a-dynamic-list">Binding a dynamic list</h2>
+
+<p>Admittedly, binding static lists (even tought superior to the traditional UIKit way) isn&rsquo;t all that exciting. But here comes the power of Combine - binding a static list vs a dynamic list is identical since Combine only cares that it receives a publisher and handles any incoming data in exactly the same way.</p>
+
+<p>So how can we turn the simple data list we had before into a dynamic list? Let&rsquo;s use <code>@Published</code> to do that. This time we&rsquo;ll have <code>people</code> as a property on a view controller and it&rsquo;ll use the <code>@Published</code> property wrapper:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">ViewController.swift:
+
+@Published
+<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">people</span> = [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
+
+<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscriptions</span> = [AnyCancellable]()
+
+...
+
+ViewController.viewDidLoad():
+
+<span style="color:#a61717;background-color:#e3d2d2">$</span>people.bind(subscriber: 
+  tableView.rowsSubscriber(cellIdentifier: <span style="color:#ed9d13">&#34;Cell&#34;</span>, 
+    cellType: UITableViewCell.<span style="color:#6ab825;font-weight:bold">self</span>, 
+    cellConfig: { cell, indexPath, person <span style="color:#6ab825;font-weight:bold">in</span>
+      cell.textLabel!.text = person.name
+    }
+  ))
+  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
+
+<p>As said - the binding code is exactly the same! The only difference is that instead of getting a collection publisher you use the <code>$people</code> wrapper.</p>
+
+<p>Now each time you add an element to <code>people</code> the custom table subscriber will receive the new data and update the table:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">people.append(Person(name: <span style="color:#ed9d13">&#34;Pete&#34;</span>))
+
+...
+
+people.append(Person(name: <span style="color:#ed9d13">&#34;Marin&#34;</span>))
+
+...
+
+people.append(Person(name: <span style="color:#ed9d13">&#34;Zoe&#34;</span>))</code></pre></div>
+
+<p><img src="http://trycombine.com/images/datasources/static-list2.gif" alt="" /></p>
+
+<h2 id="collection-view-subscribers">Collection view subscribers</h2>
+
+<p>CombineDataSources adds matching subscribers also to <code>UICollectionView</code> so if you&rsquo;d like to do similar binding like above you&rsquo;d use <code>UICollectionView.itemsSubscriber(...)</code> like so:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#a61717;background-color:#e3d2d2">$</span>people.bind(subscriber:
+  collectionView.itemsSubscriber(cellIdentifier: <span style="color:#ed9d13">&#34;Cell&#34;</span>, 
+    cellType: UICollectionViewCell.<span style="color:#6ab825;font-weight:bold">self</span>,
+    cellConfig: { cell, indexPath, person <span style="color:#6ab825;font-weight:bold">in</span>
+      ...
+  }))
+  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
+
+<p>Of course in the case of collection view cells using the default <code>UICollectionViewCell.self</code> doesn&rsquo;t make much sense since collection views do not offer default cell styles like table views. Just use the type of your own collection view cells.</p>
+
+<p>That&rsquo;s all for today, next I&rsquo;ll look into binding more complex lists and more of the in-the-works CombineDataSources features.</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>To learn more about working with UIKit and Combine check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<div id="single-promo" style="border: 1px solid #555;box-shadow: 6px 6px #354465; margin-top: 20px;margin-bottom: 20px;text-align: left; min-height: 160px;padding-top: 20px;">
+			<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+			<img src="http://trycombine.com/images/combine.png" style="width:100px;float:left;margin-right: 20px;margin-left: 10px;">
+			</a>
+			<div style="font-size: 14px;">
+				Are you interested to learn more about Apple's Combine framework? Check out <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">"Combine: Asynchronous Programming with Swift"</a>. 
+				The book is designed & written by the authors of the popular <a href="http://underplot.com/book.php?rxswift" target="_blank" style="text-decoration:none;">RxSwift Book</a>.
+			</div>
+		</div>
+
+		<p class="meta">Posted on <span class="postdate">03. September 2019</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

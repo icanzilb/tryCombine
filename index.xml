@@ -6,10 +6,21 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Binding a simple list to a UITableView</title>
+      <link>http://trycombine.com/posts/combinedatasources-simple-static-list/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/combinedatasources-simple-static-list/</guid>
+      <description>While still keep improving the current version of CombineDataSources I tought it&amp;rsquo;d be nice to post few articles on the current API design along with some code samples.
+This would be nice in order to get some feedback and to try putting some of the code in context.
+CombineDataSources Introduction RxSwiftCommunity&amp;rsquo;s excellent RxDataSources allows developers to reactively bind data to table and collection views. It uses a lot of the underlaying structure of RxSwift and it&amp;rsquo;s very powerful.</description>
+    </item>
     
     <item>
       <title>An assert operator: assertMaxSubscriptions()</title>

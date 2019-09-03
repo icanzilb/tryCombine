@@ -296,9 +296,13 @@ h3 {
 
 #header nav ul li {
 	float: left;
-	margin-right: 24px!important;
+	margin-right: 24px;
 	list-style-type: none;
 	font-size: 0.9em;
+}
+
+#combineslack li {
+	margin-right: 0px!important;
 }
 
 #header h1 {
@@ -506,6 +510,10 @@ pre[class*='language-'] {
 	float: right;
 }
 
+#promo {
+	width: 160px;text-align: right; float: right; margin-left: 40px; margin-bottom: 20px;
+}
+
 /*** Media Queries ***/
 @media all and (max-width: 480px) {
 	#header {
@@ -517,10 +525,22 @@ pre[class*='language-'] {
 		text-align: left!important;
 	}
 	.sidebar-title {
-		border-top: 1px solid silver;
 		padding-top: 30px;
 		font-size: 24px;
 		margin-bottom: 20px;
+	}
+	.sidebar-posts {
+		text-align: left;
+		margin-right: 20px;
+	}
+	#promo {
+		display: none;
+	}
+	#header nav ul {
+		margin-right: 2px!important;
+	}
+	#header nav ul:nth-of-type(2) {
+		display: none;
 	}
 }
 
@@ -554,6 +574,10 @@ pre[class*='language-'] {
 		width: 100%;
 		left: 0;
 		margin: 10px 10px 20px 10px;
+	}
+
+	.sidebar-posts {
+		margin-right: 20px;
 	}
 
 	#sidebar nav ul {
