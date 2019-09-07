@@ -6,10 +6,21 @@
     <description>Recent content in Combine on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/tags/combine/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Binding a list with multiple sections and different cells</title>
+      <link>http://trycombine.com/posts/combinedatasources-multiple-sections/</link>
+      <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/combinedatasources-multiple-sections/</guid>
+      <description>Today&amp;rsquo;s post showcases another real-life use case of using CombineDataSources, namely binding a list to a table view with multiple sections using different cell types.
+In my last post Binding a simple list to a UITableView we had a look at binding a list of data elements to a table view. It&amp;rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.
+In this post I&amp;rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.</description>
+    </item>
     
     <item>
       <title>Binding a simple list to a UITableView</title>
