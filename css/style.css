@@ -394,6 +394,15 @@ h3 {
 	padding: 2px 4px;
 }
 
+#sidebar a.rss-button {
+  display: inline;
+}
+
+#sidebar a.rss-button img {
+  height: 22px;
+  margin-bottom: -5px;
+}
+
 #sidebar .bio {
 	margin-top: 40px;
 	font-size: 0.8em;
