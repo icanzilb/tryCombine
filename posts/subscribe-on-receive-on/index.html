@@ -196,27 +196,7 @@ Tweet</a><p>
 
 <p>The subscription is created on a newly created global queue and since I don&rsquo;t explicitly switch schedulers anywhere on the chain up to (and including) the sink subscriber - the <code>print()</code> code runs on that same global queue.</p>
 
-<p>So that&rsquo;s mostly what <code>subscribe(on:)</code> does - it lets you set the scheduler your subscription is created on.</p>
-
-<p>One more thing before we move on to <code>receive(on:)</code>. You can add <code>subscribe(on:)</code> multiple times to the same chain - to no effect. As <code>subscribe(on:)</code> acts on the upstream - only the first <code>subscribe(on:)</code> will actually set the subscription scheduler.</p>
-
-<p>Let&rsquo;s try this quickly in code:</p>
-
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
-  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
-    .subscribe(on: DispatchQueue.global())
-    .subscribe(on: DispatchQueue.main)
-    .subscribe(on: DispatchQueue.main)
-    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
-      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
-    }
-}</code></pre></div>
-
-<p>Outputs:</p>
-
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink isMain: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
-
-<p>The first <code>subscribe(on:)</code> switches the execution to a global queue and sub-sequent calls to <code>subscribe(on:)</code> have no effect.</p>
+<p>So that&rsquo;s mostly what <code>subscribe(on:)</code> does - it lets you specify the scheduler your upstream is subscribed on.</p>
 
 <h2 id="receive-on">receive(on:)</h2>
 
