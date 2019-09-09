@@ -146,7 +146,7 @@ Tweet</a><p>
 
 <h2 id="subscribe-on">subscribe(on:)</h2>
 
-<p><code>subscribe(on:)</code> sets the scheduler on which you&rsquo;d like the current subscription be created on.</p>
+<p><code>subscribe(on:)</code> sets the scheduler on which you&rsquo;d like the current subscription be &ldquo;managed&rdquo; on. This operator sets the scheduler to use for creating the subscription, cancelling and requesting. It affects how/where upstream output is delivered.</p>
 
 <p>Let&rsquo;s look at a typical subscription - in this case one that observes a table view&rsquo;s <code>contentOffset</code> maps and filters the output and finally performs some side effects via a sink subscriber:</p>
 
