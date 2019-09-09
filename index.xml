@@ -6,10 +6,22 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>subscribe(on:) vs receive(on:)</title>
+      <link>http://trycombine.com/posts/subscribe-on-receive-on/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/subscribe-on-receive-on/</guid>
+      <description>In this post, instead of looking into the basics of multi-threading with Combine, we are going to have a look at the difference between subscribe(on:) and receive(on:) specifically.
+We&amp;rsquo;re going to look at a typical subscription chain starting with a root publisher, a couple of operators, and a subscriber at the end.
+We&amp;rsquo;ll look into more diagrams and some example code of how subscribe(on:) and receive(on:) affect subscriptions.
+subscribe(on:) subscribe(on:) sets the scheduler on which you&amp;rsquo;d like the current subscription to be &amp;ldquo;managed&amp;rdquo; on.</description>
+    </item>
     
     <item>
       <title>Binding a list with multiple sections and different cells</title>
