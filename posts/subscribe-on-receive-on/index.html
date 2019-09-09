@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>subscribe(on:) vs receive(on:)</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="subscribe(on:) vs receive(on:)" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="The difference between subscribe(on:) and receive(on:) in Combine and when to use which operator" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="http://trycombine.com/posts/subscribe-on-receive-on/" />
+<meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="The difference between subscribe(on:) and receive(on:) in Combine and when to use which operator">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="The difference between subscribe(on:) and receive(on:) in Combine and when to use which operator" />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="subscribe(on:) vs receive(on:)">
+
+
+<meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="https://combineopensource.org"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="http://trycombine.com/index.xml" class="rss-button"><img src="http://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 6px 6px #354465;">
+				</a>
+				<br/>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<small style="color:#cccccc;font-size:12px;line-height:1em;">Book by F. Pillet, S. Gardner, <br/>S. Mishali & M. Todorov</small>
+				</a>
+			</div>
+        </div>
+
+			
+		<h1><a href="http://trycombine.com/posts/subscribe-on-receive-on/">subscribe(on:) vs receive(on:)</a> </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=subscribe%28on%3a%29%20vs%20receive%28on%3a%29&url=http%3a%2f%2ftrycombine.com%2fposts%2fsubscribe-on-receive-on%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>One of the most popular posts on my rx blog is <a href="http://rx-marin.com/post/observeon-vs-subscribeon/">observeOn vs. subscribeOn</a> and this is a topic that is often quite confusing to rx beginners. This makes it a good topic to cover also on this blog for Combine.</p>
+
+<p>So, instead of focusing on multi-threading basics, in this post we&rsquo;re going to look at how <code>subscribe(on:)</code> and <code>receive(on:)</code> work specifically.</p>
+
+<h2 id="subscribe-on">subscribe(on:)</h2>
+
+<p><code>subscribe(on:)</code> sets the scheduler on which you&rsquo;d like the current subscription be created on.</p>
+
+<p>Let&rsquo;s look at a typical subscription - in this case one that observes a table view&rsquo;s <code>contentOffset</code> maps and filters the output and finally performs some side effects via a sink subscriber:</p>
+
+<p><img src="http://trycombine.com/images/subscribe-receive/subscription.png" alt="Typical subscription diagram" /></p>
+
+<p>You always have three &ldquo;parts&rdquo; to the chain:</p>
+
+<ol>
+<li>A publisher which produces output in some way,</li>
+<li>Operators which receive some input from the previous step (<em>upstream</em>) and send their own output to the next step (<em>downstream</em>),</li>
+<li>A subscriber which receives the final output and performs &ldquo;something&rdquo; with it.</li>
+</ol>
+
+<p>The complete chain is in a &ldquo;dormant&rdquo; state before a subscription is created, e.g. a subscriber is added at the end of the chain.</p>
+
+<p>That&rsquo;s how you can easily remember what <code>subscribe(on:)</code> does - it sets on which scheduler you <strong>subscribe on</strong>. When you add a subscriber and you subscribe the initial publisher - this will be done on the current scheduler by default or the one you set via <code>subscribe(on:)</code>:</p>
+
+<p><img src="http://trycombine.com/images/subscribe-receive/subscribe-on.png" alt="Subscribe on operator" /></p>
+
+<p>Let&rsquo;s try this with few quick examples. I&rsquo;m gonna add the following code in one of my app&rsquo;s view controllers to check what thread is my code running on:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
+    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+    }
+}</code></pre></div>
+
+<p>Which outputs:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink isMain: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div>
+
+<p>So without explicitly specifying a subscribe scheduler, the subscription is created on the current thread, which in a <code>viewDidLoad()</code> callback is the main thread.</p>
+
+<p>Let&rsquo;s try creating a subscription on a global dispatch queue:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
+    .subscribe(on: DispatchQueue.global())
+    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+    }</code></pre></div>
+
+<p>This time the code outputs:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink isMain: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
+
+<p>The subscription is created on a newly created global queue and since I don&rsquo;t explicitly switch schedulers anywhere on the chain up to (and including) the sink subscriber - the <code>print()</code> code runs on that same global queue.</p>
+
+<p>So that&rsquo;s mostly what <code>subscribe(on:)</code> does - it lets you set the scheduler your subscription is created on.</p>
+
+<p>One more thing before we move on to <code>receive(on:)</code>. You can add <code>subscribe(on:)</code> multiple times to the same chain - alas to no effect. Only the first <code>subscribe(on:)</code> will set the subscription scheduler. Let&rsquo;s try this quickly in code:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
+    .subscribe(on: DispatchQueue.global())
+    .subscribe(on: DispatchQueue.main)
+    .subscribe(on: DispatchQueue.main)
+    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+    }
+}</code></pre></div>
+
+<p>Outputs:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink isMain: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
+
+<p>The first <code>subscribe(on:)</code> switches the execution to a global queue and sub-sequent calls to <code>subscribe(on:)</code> have no effect.</p>
+
+<h2 id="receive-on">receive(on:)</h2>
+
+<p><code>receive(on:)</code> on the other hand sets the scheduler that downstream output will be <strong>received on</strong>. This means that <code>receive(on:)</code> sets on which scheduler will the subsequent part of the chain be executed.</p>
+
+<p>And I explictly say the operator affects the downstream because you can use <code>receive(on:)</code> multiple times like so:</p>
+
+<p><img src="http://trycombine.com/images/subscribe-receive/receive-on.png" alt="Receive on operator" /></p>
+
+<p>Let&rsquo;s try few examples. First let&rsquo;s revise our first piece of code from above by adding a <code>receive(on:)</code>:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
+    .receive(on: DispatchQueue.global())
+    .map { value -&gt; <span style="color:#24909d">String</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Map isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+      <span style="color:#6ab825;font-weight:bold">return</span> value
+    }
+    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+    }
+}</code></pre></div>
+
+<p>The subscription is created on the main queue but I explicitly switch to a global queue via <code>receive(on:)</code> so the output printed from <code>map(...)</code> and from the sink subscriber is:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Map isMain: <span style="color:#6ab825;font-weight:bold">false</span>
+Sink isMain: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
+
+<p>Now we can insert another <code>receive(on:)</code> in the same chain and observe how the execution context can be switched multiple times:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+  <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
+    .receive(on: DispatchQueue.global())
+    .map { value -&gt; <span style="color:#24909d">String</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Map isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+      <span style="color:#6ab825;font-weight:bold">return</span> value
+    }
+    .receive(on: DispatchQueue.main)
+    .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+      print(<span style="color:#ed9d13">&#34;Sink isMain: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+    }
+}</code></pre></div>
+
+<p>This time around what goes down is:</p>
+
+<ol>
+<li>The subscription is created on the current queue - the main one</li>
+<li>I switch the executuion to a new global queue</li>
+<li><code>map()</code> executes</li>
+<li>I switch to the main queue</li>
+<li><code>sink</code> executes</li>
+</ol>
+
+<p>And the output is:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Map isMain: <span style="color:#6ab825;font-weight:bold">false</span>
+Sink isMain: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div>
+
+<p>This is very helpful when for example you&rsquo;re adding your code in a view controller callback like <code>viewDidLoad()</code> or another code running on the main queue. Your subscription can switch to a global queue in order to fetch data from the network or disk and process it, and finally switch back to the main queue to update your app&rsquo;s UI.</p>
+
+<p>Hopefully that clears any confusion about <code>subscribe(on:)</code> vs <code>receive(on:)</code> and you can start enjoying multi-threading Combine style :)</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>To learn about multi-threading and working with schedulers in depth check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<div id="single-promo" style="border: 1px solid #555;box-shadow: 6px 6px #354465; margin-top: 20px;margin-bottom: 20px;text-align: left; min-height: 160px;padding-top: 20px;">
+			<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+			<img src="http://trycombine.com/images/combine.png" style="width:100px;float:left;margin-right: 20px;margin-left: 10px;">
+			</a>
+			<div style="font-size: 14px;">
+				Are you interested to learn more about Apple's Combine framework? Check out <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">"Combine: Asynchronous Programming with Swift"</a>. 
+				The book is designed & written by the authors of the popular <a href="http://underplot.com/book.php?rxswift" target="_blank" style="text-decoration:none;">RxSwift Book</a>.
+			</div>
+		</div>
+
+		<p class="meta">Posted on <span class="postdate">09. September 2019</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>
