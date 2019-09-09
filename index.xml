@@ -6,21 +6,10 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>subscribe(on:) vs receive(on:)</title>
-      <link>http://trycombine.com/posts/subscribe-on-receive-on/</link>
-      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://trycombine.com/posts/subscribe-on-receive-on/</guid>
-      <description>One of the most popular posts on my rx blog is observeOn vs. subscribeOn and this is a topic that is often quite confusing to rx beginners. This makes it a good topic to cover also on this blog for Combine.
-So, instead of focusing on multi-threading basics, in this post we&amp;rsquo;re going to look at how subscribe(on:) and receive(on:) work specifically.
-subscribe(on:) subscribe(on:) sets the scheduler on which you&amp;rsquo;d like the current subscription be &amp;ldquo;managed&amp;rdquo; on.</description>
-    </item>
     
     <item>
       <title>Binding a list with multiple sections and different cells</title>

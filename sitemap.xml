@@ -3,37 +3,32 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://trycombine.com/posts/combinedatasources-multiple-sections/</loc>
+    <lastmod>2019-09-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://trycombine.com/tags/combine/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://trycombine.com/posts/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://trycombine.com/tags/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/posts/subscribe-on-receive-on/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://trycombine.com/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/posts/combinedatasources-multiple-sections/</loc>
     <lastmod>2019-09-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
