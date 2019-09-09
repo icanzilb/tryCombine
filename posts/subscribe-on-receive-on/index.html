@@ -198,7 +198,9 @@ Tweet</a><p>
 
 <p>So that&rsquo;s mostly what <code>subscribe(on:)</code> does - it lets you set the scheduler your subscription is created on.</p>
 
-<p>One more thing before we move on to <code>receive(on:)</code>. You can add <code>subscribe(on:)</code> multiple times to the same chain - alas to no effect. Only the first <code>subscribe(on:)</code> will set the subscription scheduler. Let&rsquo;s try this quickly in code:</p>
+<p>One more thing before we move on to <code>receive(on:)</code>. You can add <code>subscribe(on:)</code> multiple times to the same chain - to no effect. As <code>subscribe(on:)</code> acts on the upstream - only the first <code>subscribe(on:)</code> will actually set the subscription scheduler.</p>
+
+<p>Let&rsquo;s try this quickly in code:</p>
 
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
   <span style="color:#6ab825;font-weight:bold">_</span> = Just(<span style="color:#ed9d13">&#34;test&#34;</span>)
