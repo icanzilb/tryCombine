@@ -217,7 +217,7 @@ print(model.progress)
 
 <p>Property wrappers let you abstract redundant code and make Swift&rsquo;s syntax more semantic. However, they also somewhat obscure code that is being trigger automatically. So, as with any powerful tool  - moderation is key :)</p>
 
-<p>But let&rsquo;s see how in practice we can laverage the power of property wrappers with some Combine code.</p>
+<p>But let&rsquo;s see how in practice we can leverage the power of property wrappers with some Combine code.</p>
 
 <h2 id="property-wrappers-and-combine">Property Wrappers and Combine</h2>
 
@@ -236,7 +236,7 @@ print(model.progress)
   ...
 }</code></pre></div>
 
-<p>The users of your view model would most likely bind the three published properties to some UI controls - labels or other views. This will force them to write code like to ensure they always update the UI on the main queue 😕:</p>
+<p>The users of your view model would most likely bind the three published properties to some UI controls - labels or other views. This will force them to write code like this to ensure they always update the UI on the main queue 😕:</p>
 
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
   .receive(on: DispatchQueue.main)
