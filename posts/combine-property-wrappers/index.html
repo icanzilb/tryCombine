@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Property Wrappers with Combine</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Property Wrappers with Combine" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="How to laverage the Swift 5.1 property wrappers to make the most of your Combine code" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="http://trycombine.com/posts/combine-property-wrappers/" />
+<meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="How to laverage the Swift 5.1 property wrappers to make the most of your Combine code">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="How to laverage the Swift 5.1 property wrappers to make the most of your Combine code" />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Property Wrappers with Combine">
+
+
+<meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="https://combineopensource.org"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="http://trycombine.com/index.xml" class="rss-button"><img src="http://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 6px 6px #354465;">
+				</a>
+				<br/>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<small style="color:#cccccc;font-size:12px;line-height:1em;">Book by F. Pillet, S. Gardner, <br/>S. Mishali & M. Todorov</small>
+				</a>
+			</div>
+        </div>
+
+			
+		<h1><a href="http://trycombine.com/posts/combine-property-wrappers/">Property Wrappers with Combine</a> </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Property%20Wrappers%20with%20Combine&url=http%3a%2f%2ftrycombine.com%2fposts%2fcombine-property-wrappers%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>In this post I&rsquo;ll look into making more out of Combine code by using the newly introduced in Swift 5.1: <strong>Property Wrappers</strong>.</p>
+
+<p>Let&rsquo;s very quickly go into what property wrappers are in general and then dive into a Combine example.</p>
+
+<h2 id="swift-property-wrappers">Swift Property Wrappers</h2>
+
+<p>Property wrappers are a new feature in Swift 5.1 that allows you to abstract redundant functionality around handling type properties.</p>
+
+<p>Property wrappers are very handy in (my experience so far 🤓 ) two ways:</p>
+
+<ul>
+<li>You can control the value of a property via your potentially complex logic absolutely opaquely to the consumer, and</li>
+<li>You can have a &ldquo;projected value&rdquo; which is an automatically added to your type property, which you can create/update in relation to the original property you &ldquo;wrap&rdquo;.</li>
+</ul>
+
+<p>Let&rsquo;s have a look at the first of these below and in the next section we&rsquo;ll cover number two. 😬</p>
+
+<p>You&rsquo;re building a view model and you&rsquo;d like to have a property called <code>progress</code> like so:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
+}</code></pre></div>
+
+<p>Since the value is a completion precentage no values outside the <code>[0, 100]</code> range would make sense. You can &ldquo;wrap&rdquo; the <code>progress</code> property with a custom wrapper to limit the property&rsquo;s potential values.</p>
+
+<p>Here&rsquo;s how to write that custom wrapper code:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Percentage</span> {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: <span style="color:#24909d">Int</span>
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: <span style="color:#24909d">Int</span> {
+    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+    <span style="color:#6ab825;font-weight:bold">set</span> { value = max(<span style="color:#3677a9">0</span>, min(<span style="color:#3677a9">100</span>, newValue)) }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: <span style="color:#24909d">Int</span>) {
+    value = wrappedValue
+  }
+}</code></pre></div>
+
+<p>I declare a struct called <code>Percentage</code> which features the attribute <code>@propertyWrapper</code> that makes <code>@Percentage</code> part of the Swift syntax (thanks to syntactic sugar). The type&rsquo;s members are as follows:</p>
+
+<ul>
+<li><code>value</code> is the wrapper data storage,</li>
+<li><code>wrappedValue</code> is the proxy to the original property (e.g. this is what you&rsquo;re accessing when you get/set the property being wrapped),</li>
+<li><code>init(wrappedValue:)</code> is the wrapper initializer that takes the initial property value as declared in code.</li>
+</ul>
+
+<p>Now I can prepend <code>@Percentage</code> to any property and make it a perecentage value limited to the range <code>[0, 100]</code>.</p>
+
+<p>Let&rsquo;s see an example that will demonstrate the above. Let&rsquo;s revise the <code>ViewModel</code> type from earlier and wrap its <code>progress</code> property:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
+  @Percentage <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
+}</code></pre></div>
+
+<p>Now a new instance of <code>Percentage</code> will automatically manage the <code>progress</code> property by proxying it through its <code>wrappedValue</code> like so:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">model.progress = <span style="color:#3677a9">34</span>
+print(model.progress)
+<span style="color:#999;font-style:italic">// prints &#34;34&#34;</span>
+
+model.progress = -<span style="color:#3677a9">10</span>
+print(model.progress)
+<span style="color:#999;font-style:italic">// prints &#34;0&#34;</span>
+
+model.progress = <span style="color:#3677a9">100000</span>
+print(model.progress)
+<span style="color:#999;font-style:italic">// prints &#34;100&#34;</span></code></pre></div>
+
+<p>Property wrappers let you abstract redundant code and make Swift&rsquo;s syntax more semantic. However, they also somewhat obscure code that is being trigger automatically. So, as with any powerful tool  - moderation is key :)</p>
+
+<p>But let&rsquo;s see how in practice we can laverage the power of property wrappers with some Combine code.</p>
+
+<h2 id="property-wrappers-and-combine">Property Wrappers and Combine</h2>
+
+<p>In <a href="http://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> and <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">Building a custom <code>sample</code> operator</a> we looked into creating very simple custom operators by abstracting redundant code.</p>
+
+<p>These simple operators allow you to save yourself some typing when you consume some API and need to repeatedly process the stream in the same way. In other words if you always need to map, filter, and then remove duplicates from a stream you are free to group those operators under a &ldquo;new&rdquo; operator whenever that makes sense.</p>
+
+<p>But how about if you are providing the API and your consumers need to always do the same operations on your output stream?</p>
+
+<p>Let&rsquo;s look at our view model but this time Combine-ified:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
+  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
+  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
+  ...
+}</code></pre></div>
+
+<p>The users of your view model would most likely bind the three published properties to some UI controls - labels or other views. This will force them to write code like to ensure they always update the UI on the main queue 😕:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
+  .receive(on: DispatchQueue.main)
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
+
+viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
+  .receive(on: DispatchQueue.main)
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
+
+viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
+  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
+  .receive(on: DispatchQueue.main)
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</code></pre></div>
+
+<p>To avoid this kind of repetition (always having to switch explicitly to the main thread) we can abstract that via a new property wrapper.</p>
+
+<p>So, let&rsquo;s do it! 🚀</p>
+
+<p>First we&rsquo;ll add almost exactly the same code as for the <code>@Percentage</code> wrapper and call the new type <code>PublishedOnMain</code> (as opposite to just <code>@Published</code>):</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+    value = initialValue
+  }
+}</code></pre></div>
+
+<p>As you see this time there is no custom logic of any sort for wrapping the original property. <code>PublishedOnMain</code> is generic over its storage value <code>Value</code> so it&rsquo;s just a property wrapper that can be added to any type of property.</p>
+
+<p>First of all let&rsquo;s add a publisher to the storage property, like so:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value</code></pre></div>
+
+<p>This adds a <code>$value</code> to <code>PublishedOnMain</code> which is a publisher emitting each time <code>value</code> is updated.</p>
+
+<blockquote>
+<p>Note:If you want to learn more about <code>@Published</code> and other ways to create Combine publishers definitely check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a>.</p>
+</blockquote>
+
+<p>In this example we&rsquo;ll use another property a wrapper might include called a <code>projectedValue</code>. Let&rsquo;s have a look - I&rsquo;ll add <code>projectedValue</code> to the wrapper type:</p>
+
+<p>Now I&rsquo;ll add the projected value which will subscribe <code>$value</code> and make sure it receives on the main queue:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+  <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+    .receive(on: DispatchQueue.main)
+    .eraseToAnyPublisher()
+}</code></pre></div>
+
+<p>Just like explained in <a href="http://trycombine.com/posts/subscribe-on-receive-on/">subscribe(on:) vs receive(on:)</a> I&rsquo;m using <code>receive(on:)</code> to switch the downstream scheduler to the main queue.</p>
+
+<p>And that&rsquo;s pretty much it - the completed property wrapper code is:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
+  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+    value = initialValue
+  }
+}</code></pre></div>
+
+<p>Now I can use <code>@PublishedOnMain</code> on any property to add a &ldquo;mirror&rdquo; property which is a publisher on the main queue other types can subscribe. This effectively removes the need for consumers to always ensure receiving on the main queue for each subscription. 🤯</p>
+
+<p>Now I can improve my <code>CourseViewModel</code> from earlier like so:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
+  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
+  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
+}</code></pre></div>
+
+<p>And safely bind the publishers to my UI controls:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
+
+viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
+
+viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
+  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</code></pre></div>
+
+<p>Isn&rsquo;t that just awesome?</p>
+
+<h2 id="further-combine-property-wrappers">Further Combine Property Wrappers</h2>
+
+<p>What else could be a useful abstraction via property wrappers? The sky is the limit as long as the code is clear at the point of usage and the property wrapper names are semantic.</p>
+
+<p>Let&rsquo;s look at one final example - let&rsquo;s make a property wrapper ensuring a property emits a maxium of one value:</p>
+
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Single</span>&lt;Value&gt; {
+  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+      .<span style="color:#6ab825;font-weight:bold">prefix</span>(<span style="color:#3677a9">1</span>)
+      .eraseToAnyPublisher()
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+    value = initialValue
+  }
+}</code></pre></div>
+
+<p>The code is largely the same as before - the only difference being that the <code>propejectedValue</code> publisher will emit either zero or one elements thanks to the <code>prefix(1)</code> operator.</p>
+
+<p>That&rsquo;s all for today - wasn&rsquo;t that fun? 😁</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>To learn about all the Combine operators which you can use to create your own property wrappers have a look at <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<div id="single-promo" style="border: 1px solid #555;box-shadow: 6px 6px #354465; margin-top: 20px;margin-bottom: 20px;text-align: left; min-height: 160px;padding-top: 20px;">
+			<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+			<img src="http://trycombine.com/images/combine.png" style="width:100px;float:left;margin-right: 20px;margin-left: 10px;">
+			</a>
+			<div style="font-size: 14px;">
+				Are you interested to learn more about Apple's Combine framework? Check out <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">"Combine: Asynchronous Programming with Swift"</a>. 
+				The book is designed & written by the authors of the popular <a href="http://underplot.com/book.php?rxswift" target="_blank" style="text-decoration:none;">RxSwift Book</a>.
+			</div>
+		</div>
+
+		<p class="meta">Posted on <span class="postdate">11. September 2019</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

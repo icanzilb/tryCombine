@@ -6,10 +6,22 @@
     <description>Recent content in Posts on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Property Wrappers with Combine</title>
+      <link>http://trycombine.com/posts/combine-property-wrappers/</link>
+      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/combine-property-wrappers/</guid>
+      <description>In this post I&amp;rsquo;ll look into making more out of Combine code by using the newly introduced in Swift 5.1: Property Wrappers.
+Let&amp;rsquo;s very quickly go into what property wrappers are in general and then dive into a Combine example.
+Swift Property Wrappers Property wrappers are a new feature in Swift 5.1 that allows you to abstract redundant functionality around handling type properties.
+Property wrappers are very handy in (my experience so far 🤓 ) two ways:</description>
+    </item>
     
     <item>
       <title>subscribe(on:) vs receive(on:)</title>

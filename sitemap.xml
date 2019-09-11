@@ -4,31 +4,36 @@
   
   <url>
     <loc>http://trycombine.com/tags/combine/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://trycombine.com/posts/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>http://trycombine.com/posts/combine-property-wrappers/</loc>
+    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://trycombine.com/tags/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://trycombine.com/</loc>
+    <lastmod>2019-09-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://trycombine.com/posts/subscribe-on-receive-on/</loc>
     <lastmod>2019-09-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://trycombine.com/</loc>
-    <lastmod>2019-09-09T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
