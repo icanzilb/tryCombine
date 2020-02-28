@@ -4,35 +4,32 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Categories</title>
+		<title>Announcing: Timelane</title>
 		<meta name="viewport" content="width=device-width">
-		
-			<link href="http://trycombine.com/categories/index.xml" rel="alternate" type="application/rss+xml" title="try Combine" />
-			<link href="http://trycombine.com/categories/index.xml" rel="feed" type="application/rss+xml" title="try Combine" />
 		
 		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Categories" />
+		<meta property="og:title" content="Announcing: Timelane" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="Series of Combine framework programming related blog posts." />
+<meta property="og:description" content="How to debug Combine code with the Timelane instrument" />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="http://trycombine.com/categories/" />
+<meta property="og:url" content="http://trycombine.com/posts/announcing-timelane-combine/" />
 <meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
-<meta name="description" content="Series of Combine framework programming related blog posts.">
+<meta name="description" content="How to debug Combine code with the Timelane instrument">
 <meta name="author" content="Marin Todorov">
 
 <link href rel="alternate" type="application/rss+xml" title="try Combine">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
+<meta name="twitter:description" content="How to debug Combine code with the Timelane instrument" />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Categories">
+<meta name="twitter:title" content="Announcing: Timelane">
 
 
 <meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
@@ -128,7 +125,8 @@
 
 			<div id="content">
 				
-			<div id="promo">
+	<article class="post">
+				<div id="promo">
 			<div id="combinebook">
 				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
 					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 6px 6px #354465;">
@@ -140,10 +138,99 @@
 			</div>
         </div>
 
-	
+			
+		<h1><a href="http://trycombine.com/posts/announcing-timelane-combine/">Announcing: Timelane</a> </h1>
 
-	
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Announcing%3a%20Timelane&url=http%3a%2f%2ftrycombine.com%2fposts%2fannouncing-timelane-combine%2f"
+  data-size="medium">
+Tweet</a><p>
 
+		<div class="post-content">
+
+<p>Today I&rsquo;m announcing the public release of <strong>Timelane</strong>.</p>
+
+<p><strong>Timelane</strong> is a free, open source Instrument that helps you profile and debug asynchronous code.</p>
+
+<p>Timelane is available today on: <a href="http://timelane.tools">http://timelane.tools</a>.</p>
+
+<p><img src="http://trycombine.com/images/timelane/poster.png" alt="Timelane Icon" /></p>
+
+<p>The Timelane Instrument laverages <em>signpost logging</em> and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Install the latest build from <a href="http://timelane.tools">http://timelane.tools</a> or fork the repository on GitHub and build the app yourself.</p>
+
+<p>Move the app to your <code>/Applications</code> folder and start it up.</p>
+
+<p>Click on the instrument package to install the Timelane instrument into your Instruments app:</p>
+
+<p><img src="http://trycombine.com/images/timelane/timelane-app-window.png" alt="" /></p>
+
+<p>Once finished, you can profile any of your projects using the Timelane instrument:</p>
+
+<p><img src="http://trycombine.com/images/timelane/timelane-instrument.png" alt="" /></p>
+
+<h2 id="usage">Usage</h2>
+
+<p>This example uses <strong>TimelaneCombine</strong> with Apple&rsquo;s Combine - the steps to use RxTimelane + RxSwift are almost identical.</p>
+
+<p>Add <code>TimelaneCombine</code> to your project via Swift Package Manager or XCode:</p>
+
+<pre><code class="language-swift">.package(url: &quot;https://github.com/icanzilb/TimelaneCombine&quot;, 
+  .from(&quot;1.0.0&quot;))
+</code></pre>
+
+<p>Import TimelaneCombine in a source file:</p>
+
+<pre><code class="language-swift">import TimelaneCombine
+</code></pre>
+
+<p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
+
+<pre><code class="language-swift">downloadImagePublisher(at: url).
+  .lane(&quot;Download: \(url.path)&quot;)
+  .assign(to: \.image, on: myImageView)
+</code></pre>
+
+<p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
+
+<p><img src="http://trycombine.com/images/timelane/timelane-recording.gif" alt="" /></p>
+
+<p>For more details go to <a href="http://timelane.tools">http://timelane.tools</a>.</p>
+
+<h2 id="release-details">Release details</h2>
+
+<p>The initial release of Timelane offers:</p>
+
+<ul>
+<li>The free and open source Timelane app and instrument: <a href="http://timelane.tools">timelane.tools</a></li>
+<li>Combine Timelane package: <a href="https://github.com/icanzilb/TimelaneCombine">TimelaneCombine</a></li>
+<li>RxSwift Timelane package: <a href="https://github.com/icanzilb/RxTimelane">RxTimelane</a></li>
+<li>All purpose generic Timelane package to use with any code: <a href="https://github.com/icanzilb/TimelaneCore">TimelaneCore</a></li>
+</ul>
+
+<p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		<div id="single-promo" style="border: 1px solid #555;box-shadow: 6px 6px #354465; margin-top: 20px;margin-bottom: 20px;text-align: left; min-height: 160px;padding-top: 20px;">
+			<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+			<img src="http://trycombine.com/images/combine.png" style="width:100px;float:left;margin-right: 20px;margin-left: 10px;">
+			</a>
+			<div style="font-size: 14px;">
+				Are you interested to learn more about Apple's Combine framework? Check out <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">"Combine: Asynchronous Programming with Swift"</a>. 
+				The book is designed & written by the authors of the popular <a href="http://underplot.com/book.php?rxswift" target="_blank" style="text-decoration:none;">RxSwift Book</a>.
+			</div>
+		</div>
+
+		<p class="meta">Posted on <span class="postdate">28. January 2020</span></p>
+	</article>
+	
 
 			</div>
 

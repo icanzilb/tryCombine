@@ -6,7 +6,7 @@
     <description>Recent content in Tags on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,27 @@
     <item>
       <title>Combine</title>
       <link>http://trycombine.com/tags/combine/</link>
-      <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>http://trycombine.com/tags/combine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Timelane</title>
+      <link>http://trycombine.com/tags/timelane/</link>
+      <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/tags/timelane/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TimelaneCombine</title>
+      <link>http://trycombine.com/tags/timelanecombine/</link>
+      <pubDate>Tue, 28 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/tags/timelanecombine/</guid>
       <description></description>
     </item>
     
