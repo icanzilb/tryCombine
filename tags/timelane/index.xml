@@ -20,7 +20,7 @@
       <description>Today I&amp;rsquo;m announcing the public release of Timelane.
 Timelane is a free, open source Instrument that helps you profile and debug asynchronous code.
 Timelane is available today on: http://timelane.tools.
-The Timelane Instrument laverages signpost logging and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.
+The Timelane Instrument leverages signpost logging and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.
 Installation Install the latest build from http://timelane.tools or fork the repository on GitHub and build the app yourself.</description>
     </item>
     
