@@ -6,10 +6,22 @@
     <description>Recent content in TimelaneCombine on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 28 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/tags/timelanecombine/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Timelane - the first two weeks!</title>
+      <link>http://trycombine.com/posts/timelane-combine-update/</link>
+      <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/timelane-combine-update/</guid>
+      <description>It&amp;rsquo;s been two weeks since I released Timelane and I&amp;rsquo;m really humbled by the community&amp;rsquo;s super positive response.
+Since much has happened since the launch, I&amp;rsquo;m writing this to give everyone a detailed update.
+The current versions are as follows:
+ TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&amp;rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.</description>
+    </item>
     
     <item>
       <title>Announcing: Timelane</title>
