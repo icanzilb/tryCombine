@@ -1,9 +1,11 @@
 html,
 body {
 	background-color: #002a35;
-	color: #a4babc;
-	font-family: "ARS Maquette", "Helvetica Neue", Arial, sans-serif;
-	font-size: 16px;
+	color: #d7e0e1;
+	font-family: "MiloTE","MiloTESec",Charter,"Bitstream Charter","Iowan Old Style","Calisto MT",serif;
+	/* "San Francisco", "Helvetica Neue", Arial, sans-serif; */
+	font-size: 1.05em;
+	line-height: 1.5em;
 }
 
 ::selection {
@@ -31,17 +33,18 @@ hr {
 h1,
 h2,
 h3 {
-	color: #cb4b16;
+	color: #ec6b17;
+	font-family:  "San Francisco", "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.55em!important;
 }
 
 h1 a,
 h1 a:visited,
 h1 a:active {
-	color: #cb4b16;
+	color: #ec6b17;
 }
 
 h1 a:hover {
-	background-color: #073642;
 	border-color: #073642;
 	color: #cb4b16;
 }
@@ -69,4 +72,31 @@ blockquote {
 
 .hljs {
 	background: none;
+}
+
+.sidebar-post a {
+  font-family:  "San Francisco", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.2em;
+  line-height: 1.25em;
+}
+
+code {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #b0baba;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+code, code span {
+  font-size: 0.9em!important;
+  line-height: 1.28em!important;
+}
+
+blockquote p {
+  font-size: 0.85em!important;
+  line-height: 1.3em;
+}
+
+.nav li, #combineslack li {
+  margin-top: 5px!important;
 }
