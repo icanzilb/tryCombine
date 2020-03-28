@@ -18,17 +18,26 @@ a:active,
 a code {
 	color: #2aa198;
 	border-color: #073642;
+	padding: 3px;
+	border-bottom: 0;
 }
 
 a:hover {
 	background-color: #073642;
 	border-color: #073642;
-	color: #2aa198;
+	color: #98e4df;
 }
 
 .post-content a:hover {
 	border-radius: 6px;
-	padding: 2px;
+}
+
+.sidebar-post a:hover, .nav a:hover, #combineslack a:hover {
+  color: #98e4df;
+  text-decoration: none!important;
+  background-color: #073642!important;
+  border-color: #073642;
+  border-radius: 6px;
 }
 
 hr {
