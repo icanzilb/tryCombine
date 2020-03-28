@@ -26,19 +26,29 @@ a:hover {
 	color: #2aa198;
 }
 
+.post-content a:hover {
+	border-radius: 6px;
+	padding: 2px;
+}
+
 hr {
 	border-color: #073642;
 }
 
 h1,
-h2,
-h3 {
+h2 {
 	color: #ec6b17;
 	font-family:  "San Francisco", "Helvetica Neue", Arial, sans-serif;
 	font-size: 1.55em!important;
 }
-
 h2 { margin-top:50px!important; }
+
+h3 {
+	color: #ec6b17;
+	font-family:  "San Francisco", "Helvetica Neue", Arial, sans-serif;
+	font-size: 1.25em!important;
+}
+h3 { margin-top:30px!important; }
 
 h1 a,
 h1 a:visited,
