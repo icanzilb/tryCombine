@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>How to create a custom instrument on top of Timelane!</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="How to create a custom instrument on top of Timelane!" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Learn how to leverage the Timelane infrastructure to create your own custom instrument." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="http://trycombine.com/posts/how-to-create-custom-instrument/" />
+<meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Learn how to leverage the Timelane infrastructure to create your own custom instrument.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Learn how to leverage the Timelane infrastructure to create your own custom instrument." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="How to create a custom instrument on top of Timelane!">
+
+
+<meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="http://trycombine.com/index.xml" class="rss-button"><img src="http://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="http://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465; border-radius: 10px;">
+				</a>
+			</div>
+        </div>
+
+			
+		<h1>How to create a custom instrument on top of Timelane! </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=How%20to%20create%20a%20custom%20instrument%20on%20top%20of%20Timelane%21&url=http%3a%2f%2ftrycombine.com%2fposts%2fhow-to-create-custom-instrument%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>You can easily log data in Instruments by using the functions in Apple&rsquo;s <code>os</code> framework. All you need is to use
+<a href="https://developer.apple.com/documentation/os/3019240-os_log">os_log(&hellip;)</a> and that will log data in Instruments&rsquo; log and signpost instruments. If you&rsquo;d like to read more check out <a href="https://developer.apple.com/documentation/os/logging/recording_performance_data">Recording Performance Data</a> Apple article.</p>
+
+<p>Creating a real custom instrument, however, is a little more complicated as you can learn in <a href="https://developer.apple.com/videos/play/wwdc2018/410/">Creating Custom Instruments</a> WWDC2018 video and it involves XML, CLIPS, and more complex stuff.</p>
+
+<h2 id="timelane-custom-instrument">Timelane custom instrument</h2>
+
+<p>In this post I&rsquo;ll show you how to get best of both worlds - create your own custom instrument in Swift based on Timelane.</p>
+
+<p>What? &hellip; Yes, you heard right. Let&rsquo;s get started!</p>
+
+<blockquote>
+<p><strong>Note</strong>: If you don&rsquo;t have Timelane installed already, please do that before following the steps below. <a href="http://timelane.tools">http://timelane.tools</a></p>
+</blockquote>
+
+<p>Timelane has a modular structure allowing for different &ldquo;client&rdquo; packages to use the same underlaying structure - this allows the Combine specific Timelane package, the RxSwift Timelane package, the <code>Operation</code> package, and any other potential client libraries to use the same protocol and infrastructure:</p>
+
+<p><img src="http://trycombine.com/images/timelane/timelane-arch.png" style="border-radius:8px;"/></p>
+
+<p>So as long as you use the <code>TimelaneCore</code> APIs you can easily create your own custom instrument that plugs right into the already established infra:</p>
+
+<p><img src="http://trycombine.com/images/timelane/timelane-custom.png" style="border-radius:8px;"/></p>
+
+<p>Let&rsquo;s create a custom instrument that visualizes when a task queue gets too busy. The instrument will log the state of a custom task queue and more specifically will log when there are more active tasks than a given threshold:</p>
+
+<p><img src="http://trycombine.com/images/timelane/busyqueue-graph.png" style="border-radius:8px;" width="80%"/></p>
+
+<p>To simplify using that custom instrument we&rsquo;re gonna create it as an easy-to-use property wrapper, boom!</p>
+
+<h3 id="starter-app">Starter app</h3>
+
+<p>I have an app using a custom task queue; in my case the queue is just an array of type <code>[Task]</code>.</p>
+
+<p>For my app I&rsquo;ve decided that <code>18</code> active tasks are about as much as it&rsquo;s reasonable to run at a time (this is an arbitrary number don&rsquo;t put any meaning into it). To track if my task queue is getting more than <code>18</code> at a time I log the amount on screen to a label that turns red when the queue goes over the threshold:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">taskQueue</span> = [Task]() {
+  <span style="color:#6ab825;font-weight:bold">didSet</span> {
+    <span style="color:#6ab825;font-weight:bold">self</span>.label.text = <span style="color:#ed9d13">&#34;Tasks </span><span style="color:#ed9d13">\(</span><span style="color:#6ab825;font-weight:bold">self</span>.taskQueue.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>
+    <span style="color:#6ab825;font-weight:bold">self</span>.label.textColor = <span style="color:#6ab825;font-weight:bold">self</span>.taskQueue.count &gt;= <span style="color:#3677a9">18</span> ? 
+      .red : .black
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This displays the task count on screen:</p>
+
+<p><img src="http://trycombine.com/images/timelane/tasks-counter.gif" width="302" height="116" style="border-radius:8px;"/></p>
+
+<p>If you watch the video end-to-end you&rsquo;ll see that there are two times when the counter goes over <code>18</code> and turns red.</p>
+
+<p>To get a better and more detailed picture of where are those bottlenecks in the performance of my app I&rsquo;ll create a custom instrument.</p>
+
+<h3 id="getting-started-with-a-property-wrapper">Getting Started with a Property Wrapper</h3>
+
+<p>First of all I&rsquo;ll import <code>TimelaneCore</code> in my Xcode project. You can do that via CocoaPods or Carthage, but I&rsquo;ll just use Xcode. Click on <em>File/Swift Packages/Add Package Dependency&hellip;</em> and add <code>https://github.com/icanzilb/TimelaneCore</code>.</p>
+
+<p>I&rsquo;ll start with a file called <strong>BusyQueue.swift</strong> and a bare bones property wrapper:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Foundation</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCore</span>
+
+@propertyWrapper <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">BusyQueue</span> {
+
+  @Published <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: [Task]
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">threshold</span>: <span style="color:#24909d">Int</span>
+
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: [Task] {
+    <span style="color:#6ab825;font-weight:bold">get</span> { <span style="color:#6ab825;font-weight:bold">self</span>.value }
+    <span style="color:#6ab825;font-weight:bold">set</span> { <span style="color:#6ab825;font-weight:bold">self</span>.value = newValue }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: [Task], threshold: <span style="color:#24909d">Int</span>) {
+    <span style="color:#6ab825;font-weight:bold">self</span>.value = initialValue
+    <span style="color:#6ab825;font-weight:bold">self</span>.threshold = threshold
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This code creates a new property wrapper that can be used on <code>[Task]</code> properties and sets the logging threshold.</p>
+
+<p>Next, let&rsquo;s add one more parameter called <code>name</code> to the wrapper to be able to log queue to Timelane. We&rsquo;ll use the name to create a TimelaneCore subscription in the property wrapper initializer like so:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">subscription</span>: Timelane.Subscription
+
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: [Task], threshold: <span style="color:#24909d">Int</span>, name: <span style="color:#24909d">String</span>) {
+  <span style="color:#6ab825;font-weight:bold">self</span>.value = wrappedValue
+  <span style="color:#6ab825;font-weight:bold">self</span>.threshold = threshold
+  <span style="color:#6ab825;font-weight:bold">self</span>.subscription = Timelane.Subscription(name: name)
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p><code>subscription</code> is an instance of <code>Timelane.Subscription</code> which is a handle you can use again and again to log on to the same lane in Timelane. (E.g. if you&rsquo;ve used TimelaneCombine - this is the unique name for each logged subscription)</p>
+
+<p>I can now use the new property wrapper to wrap my original task queue property like so:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@BusyQueue(threshold: <span style="color:#3677a9">18</span>, name: <span style="color:#ed9d13">&#34;ViewController.taskQueue&#34;</span>)
+<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">taskQueue</span> = [Task]() {
+  <span style="color:#6ab825;font-weight:bold">didSet</span> {
+    <span style="color:#6ab825;font-weight:bold">self</span>.label.text = <span style="color:#ed9d13">&#34;Tasks </span><span style="color:#ed9d13">\(</span><span style="color:#6ab825;font-weight:bold">self</span>.taskQueue.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>
+    <span style="color:#6ab825;font-weight:bold">self</span>.label.textColor = <span style="color:#6ab825;font-weight:bold">self</span>.taskQueue.count &gt;= <span style="color:#3677a9">18</span> ? 
+      .red : .black
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The only remaining step is to use the <code>Timelane.Subscription</code> to log to Timelane.</p>
+
+<h3 id="creating-ranges">Creating Ranges</h3>
+
+<p>Switchinng back to <strong>BusyQueue.swift</strong> I&rsquo;ll add some code to the <code>wrapperValue</code> setter like so:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: [Task] {
+  <span style="color:#6ab825;font-weight:bold">get</span> { <span style="color:#6ab825;font-weight:bold">self</span>.value }
+  <span style="color:#6ab825;font-weight:bold">set</span> {
+    <span style="color:#6ab825;font-weight:bold">if</span> newValue.count &gt;= threshold 
+      &amp;&amp; <span style="color:#6ab825;font-weight:bold">self</span>.value.count &lt; threshold {
+      
+      <span style="color:#999;font-style:italic">// Going over - create a range.</span>
+      subscription.begin()
+      
+    } <span style="color:#6ab825;font-weight:bold">else</span> <span style="color:#6ab825;font-weight:bold">if</span> newValue.count &lt; threshold 
+      &amp;&amp; <span style="color:#6ab825;font-weight:bold">self</span>.value.count &gt;= threshold {
+
+      <span style="color:#999;font-style:italic">// Going under - close the range.</span>
+      subscription.end(state: .completed)
+    }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The added code tracks whether the number of active tasks is going over or under the threshold - when it goes over we call <code>subscription.begin()</code> and that will create a range in the Subscriptions instrument in Timelane. When the number of tasks goes under the threshold we call <code>subscription.end(state:)</code> to close the open range.</p>
+
+<p>With all the moving pieces in place I can profile my app in Timelane (Cmd+I) and see the results:</p>
+
+<p><img src="http://trycombine.com/images/timelane/tasks-regions.png" style="border-radius:8px;"/></p>
+
+<p>The first thing that my new custom instrument is telling me is that there aren&rsquo;t only two intervals as I thought when the task count goes over my threshold. This, in fact, happens multiple times but most times for such a short period of time that I haven&rsquo;t noticed it. Sometimes the number of scheduled tasks goes above <code>18</code> for just <code>250</code>μs - that&rsquo;s much too short for me to notice by looking at the UI.</p>
+
+<blockquote>
+<p><strong>Note</strong>: If you&rsquo;re not familiar with the Timelane UI you can watch through some of the videos available at <a href="http://timelane.tools/#videos">http://timelane.tools/#videos</a>.</p>
+</blockquote>
+
+<p>Now I&rsquo;m kind of curious to also see the actual values - exactly <strong>how much</strong> over 18 we&rsquo;re going while the queue is in a busy state?</p>
+
+<h3 id="logging-values">Logging Values</h3>
+
+<p>To do this we&rsquo;re gonna use the Events over Time instrument in Timelane. Inside the <code>wrappedValue</code> setter I&rsquo;ll add one more condition:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">if</span> newValue.count &gt;= threshold {
+   subscription.event(value: .value(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>newValue.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>))
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This will, for all values over the threshold, log the amount of tasks in the queue in Timelane when a task is added or removed.</p>
+
+<p>When I profile one more time I see the amounts logged as so:</p>
+
+<p><img src="http://trycombine.com/images/timelane/tasks-complete.gif" style="border-radius:8px;" width=650 height=302 /></p>
+
+<p>You can use your custom instrument like any other instrument - you can scrub through the timeline to replay the events back and forth, you can click on the events to jump the right moment on the timeline, you can view all aggregations, filter, select regions to inspect, save recorded sessions, etc. etc.</p>
+
+<p>If you&rsquo;re already getting ideas for implementing your own custom instruments head to the TimelaneCore repo and check out the README: <a href="https://github.com/icanzilb/TimelaneCore">https://github.com/icanzilb/TimelaneCore</a>.</p>
+
+<p>The completed code of <code>BusyQueue</code> is as follows:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">35
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Foundation</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCore</span>
+
+@propertyWrapper <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">BusyQueue</span> {
+  @Published <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: [Task]
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">threshold</span>: <span style="color:#24909d">Int</span>
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">subscription</span>: Timelane.Subscription
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: [Task] {
+    <span style="color:#6ab825;font-weight:bold">get</span> { <span style="color:#6ab825;font-weight:bold">self</span>.value }
+    <span style="color:#6ab825;font-weight:bold">set</span> {
+      <span style="color:#6ab825;font-weight:bold">if</span> newValue.count &gt;= threshold 
+        &amp;&amp; <span style="color:#6ab825;font-weight:bold">self</span>.value.count &lt; threshold {
+
+        subscription.begin()
+      } <span style="color:#6ab825;font-weight:bold">else</span> <span style="color:#6ab825;font-weight:bold">if</span> newValue.count &lt; threshold 
+        &amp;&amp; <span style="color:#6ab825;font-weight:bold">self</span>.value.count &gt;= threshold {
+
+        subscription.end(state: .completed)
+      }
+      <span style="color:#6ab825;font-weight:bold">if</span> newValue.count &gt;= threshold {
+        subscription.event(value: .value(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>newValue.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>))
+      }
+      <span style="color:#6ab825;font-weight:bold">self</span>.value = newValue
+    }
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: [Task], threshold: <span style="color:#24909d">Int</span>, 
+    name: <span style="color:#24909d">String</span>) {
+
+    <span style="color:#6ab825;font-weight:bold">self</span>.value = wrappedValue
+    <span style="color:#6ab825;font-weight:bold">self</span>.threshold = threshold
+    <span style="color:#6ab825;font-weight:bold">self</span>.subscription = Timelane.Subscription(name: name)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The complete Xcode project can be found at:
+<a href="https://github.com/icanzilb/CustomInstrument">https://github.com/icanzilb/CustomInstrument</a></p>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p><img src="http://timelane.tools/assets/images/Icon_256x256@2x.png" width=128 align=left style="padding:25px;" /></p>
+
+<p>If you want to learn more about Timelane, to download it for free, or watch some example videos head to: <a href="http://timelane.tools">http://timelane.tools</a>.</p>
+
+<p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+
+<p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+</div>
+
+		
+
+<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="http://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+				</a>
+				<br/>
+				
+		<p class="meta">Posted on <span class="postdate">19. April 2020</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

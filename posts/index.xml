@@ -6,10 +6,20 @@
     <description>Recent content in Posts on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to create a custom instrument on top of Timelane!</title>
+      <link>http://trycombine.com/posts/how-to-create-custom-instrument/</link>
+      <pubDate>Sun, 19 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/how-to-create-custom-instrument/</guid>
+      <description>You can easily log data in Instruments by using the functions in Apple&amp;rsquo;s os framework. All you need is to use os_log(&amp;hellip;) and that will log data in Instruments&amp;rsquo; log and signpost instruments. If you&amp;rsquo;d like to read more check out Recording Performance Data Apple article.
+Creating a real custom instrument, however, is a little more complicated as you can learn in Creating Custom Instruments WWDC2018 video and it involves XML, CLIPS, and more complex stuff.</description>
+    </item>
     
     <item>
       <title>Timelane - the first two weeks!</title>
