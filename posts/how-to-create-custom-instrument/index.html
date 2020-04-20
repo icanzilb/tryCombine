@@ -156,7 +156,7 @@ Tweet</a><p>
 		<div class="post-content">
 
 <p>You can easily log data in Instruments by using the functions in Apple&rsquo;s <code>os</code> framework. All you need is to use
-<a href="https://developer.apple.com/documentation/os/3019240-os_log">os_log(&hellip;)</a> and that will log data in Instruments&rsquo; log and signpost instruments. If you&rsquo;d like to read more check out <a href="https://developer.apple.com/documentation/os/logging/recording_performance_data">Recording Performance Data</a> Apple article.</p>
+<a href="https://developer.apple.com/documentation/os/3019240-os_log">os_log(&hellip;)</a> and that will log data in Instruments. If you&rsquo;d like to read more about this check out <a href="https://developer.apple.com/documentation/os/logging/recording_performance_data">Recording Performance Data</a> Apple article.</p>
 
 <p>Creating a real custom instrument, however, is a little more complicated as you can learn in <a href="https://developer.apple.com/videos/play/wwdc2018/410/">Creating Custom Instruments</a> WWDC2018 video and it involves XML, CLIPS, and more complex stuff.</p>
 
@@ -167,7 +167,7 @@ Tweet</a><p>
 <p>What? &hellip; Yes, you heard right. Let&rsquo;s get started!</p>
 
 <blockquote>
-<p><strong>Note</strong>: If you don&rsquo;t have Timelane installed already, please do that before following the steps below. <a href="http://timelane.tools">http://timelane.tools</a></p>
+<p><strong>Note</strong>: Before using the approach described below you need to install Timelane first from <a href="http://timelane.tools">http://timelane.tools</a> for free.</p>
 </blockquote>
 
 <p>Timelane has a modular structure allowing for different &ldquo;client&rdquo; packages to use the same underlaying structure - this allows the Combine specific Timelane package, the RxSwift Timelane package, the <code>Operation</code> package, and any other potential client libraries to use the same protocol and infrastructure:</p>
@@ -182,13 +182,13 @@ Tweet</a><p>
 
 <p><img src="http://trycombine.com/images/timelane/busyqueue-graph.png" style="border-radius:8px;" width="80%"/></p>
 
-<p>To simplify using that custom instrument we&rsquo;re gonna create it as an easy-to-use property wrapper, boom!</p>
+<p>To simplify the custom instrument we&rsquo;re gonna create its API as an easy-to-use property wrapper, boom!</p>
 
-<h3 id="starter-app">Starter app</h3>
+<h3 id="starter-app">Starter App</h3>
 
 <p>I have an app using a custom task queue; in my case the queue is just an array of type <code>[Task]</code>.</p>
 
-<p>For my app I&rsquo;ve decided that <code>18</code> active tasks are about as much as it&rsquo;s reasonable to run at a time (this is an arbitrary number don&rsquo;t put any meaning into it). To track if my task queue is getting more than <code>18</code> at a time I log the amount on screen to a label that turns red when the queue goes over the threshold:</p>
+<p>For my app I&rsquo;ve decided that <code>18</code> active tasks are about as much as it&rsquo;s reasonable to run at a time (an arbitrary number based on manual testing). To track if my task queue is getting more than <code>18</code> at a time I display the amount on screen via a label that turns red when the queue goes over the threshold:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -211,13 +211,13 @@ Tweet</a><p>
 </div>
 </div>
 
-<p>This displays the task count on screen:</p>
+<p>This tracks the task count on screen like so:</p>
 
 <p><img src="http://trycombine.com/images/timelane/tasks-counter.gif" width="302" height="116" style="border-radius:8px;"/></p>
 
-<p>If you watch the video end-to-end you&rsquo;ll see that there are two times when the counter goes over <code>18</code> and turns red.</p>
+<p>If you watch the video end-to-end you&rsquo;ll see that there are two time intervals when the counter goes over <code>18</code> for a while and turns red.</p>
 
-<p>To get a better and more detailed picture of where are those bottlenecks in the performance of my app I&rsquo;ll create a custom instrument.</p>
+<p>To get a better and more detailed picture of where those bottlenecks in the performance of my app are I&rsquo;ll create a custom instrument.</p>
 
 <h3 id="getting-started-with-a-property-wrapper">Getting Started with a Property Wrapper</h3>
 
@@ -270,7 +270,7 @@ Tweet</a><p>
 
 <p>This code creates a new property wrapper that can be used on <code>[Task]</code> properties and sets the logging threshold.</p>
 
-<p>Next, let&rsquo;s add one more parameter called <code>name</code> to the wrapper to be able to log queue to Timelane. We&rsquo;ll use the name to create a TimelaneCore subscription in the property wrapper initializer like so:</p>
+<p>Next, let&rsquo;s add one more parameter called <code>name</code> to the wrapper to be able to create a named subscription in TimelaneCore:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -293,9 +293,9 @@ Tweet</a><p>
 </div>
 </div>
 
-<p><code>subscription</code> is an instance of <code>Timelane.Subscription</code> which is a handle you can use again and again to log on to the same lane in Timelane. (E.g. if you&rsquo;ve used TimelaneCombine - this is the unique name for each logged subscription)</p>
+<p><code>subscription</code> is an instance of <code>Timelane.Subscription</code> which is a handle you can use repeatedly to log on to the same lane in Timelane. (E.g. if you&rsquo;ve used TimelaneCombine - this is the unique name for each logged subscription)</p>
 
-<p>I can now use the new property wrapper to wrap my original task queue property like so:</p>
+<p>I can now use the new property wrapper to wrap my original task queue like so:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -369,7 +369,7 @@ Tweet</a><p>
 
 <p>The added code tracks whether the number of active tasks is going over or under the threshold - when it goes over we call <code>subscription.begin()</code> and that will create a range in the Subscriptions instrument in Timelane. When the number of tasks goes under the threshold we call <code>subscription.end(state:)</code> to close the open range.</p>
 
-<p>With all the moving pieces in place I can profile my app in Timelane (Cmd+I) and see the results:</p>
+<p>With all the moving pieces in place I can profile my app in Timelane (Cmd + I) and see the results:</p>
 
 <p><img src="http://trycombine.com/images/timelane/tasks-regions.png" style="border-radius:8px;"/></p>
 
@@ -379,7 +379,9 @@ Tweet</a><p>
 <p><strong>Note</strong>: If you&rsquo;re not familiar with the Timelane UI you can watch through some of the videos available at <a href="http://timelane.tools/#videos">http://timelane.tools/#videos</a>.</p>
 </blockquote>
 
-<p>Now I&rsquo;m kind of curious to also see the actual values - exactly <strong>how much</strong> over 18 we&rsquo;re going while the queue is in a busy state?</p>
+<p>Now you can comfortably see when the queue is in busy state plotted on the timeline.</p>
+
+<p>Now I&rsquo;m also curious to see the actual values - exactly <strong>how much</strong> over <code>18</code> we&rsquo;re going while the queue is in a busy state?</p>
 
 <h3 id="logging-values">Logging Values</h3>
 
@@ -404,9 +406,9 @@ Tweet</a><p>
 
 <p><img src="http://trycombine.com/images/timelane/tasks-complete.gif" style="border-radius:8px;" width=650 height=302 /></p>
 
-<p>You can use your custom instrument like any other instrument - you can scrub through the timeline to replay the events back and forth, you can click on the events to jump the right moment on the timeline, you can view all aggregations, filter, select regions to inspect, save recorded sessions, etc. etc.</p>
+<p>You can use your custom instrument like any other instrument - you can scrub through the timeline to replay the events back and forth, you can click on the events to jump the right moment on the timeline, you can view all aggregations, filter the logged data, select regions to inspect, save recorded sessions, etc. etc.</p>
 
-<p>If you&rsquo;re already getting ideas for implementing your own custom instruments head to the TimelaneCore repo and check out the README: <a href="https://github.com/icanzilb/TimelaneCore">https://github.com/icanzilb/TimelaneCore</a>.</p>
+<p>So if you&rsquo;re already getting ideas for implementing your own custom instruments head to the TimelaneCore repo and check out the README: <a href="https://github.com/icanzilb/TimelaneCore">https://github.com/icanzilb/TimelaneCore</a>.</p>
 
 <p>The completed code of <code>BusyQueue</code> is as follows:</p>
 
@@ -487,7 +489,7 @@ Tweet</a><p>
 </div>
 </div>
 
-<p>The complete Xcode project can be found at:
+<p>You can download the complete Xcode project at:
 <a href="https://github.com/icanzilb/CustomInstrument">https://github.com/icanzilb/CustomInstrument</a></p>
 
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
