@@ -6,10 +6,22 @@
     <description>Recent content in Instruments on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 19 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://trycombine.com/tags/instruments/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>5 Stranger Things you can do with Timelane at NSSpain</title>
+      <link>http://trycombine.com/posts/timelane-nsspain-2020/</link>
+      <pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/timelane-nsspain-2020/</guid>
+      <description>For my talk at NSSpain 2020 I&amp;rsquo;ve prepared a beyond-the-basics Timelane talk.
+I think everyone who&amp;rsquo;s heard about Timelane by now knows what it does for its simplest use case - debugging some Combine based code. However, you can do much, much more with Timelane!
+So for my NSSpain 2020 talk I prepared 5 little examples on how to use Timelane beyond the simplest use case.
+I&amp;rsquo;ve pushed all the demo apps I use in my talk to this repository: https://github.</description>
+    </item>
     
     <item>
       <title>How to create a custom instrument on top of Timelane!</title>
