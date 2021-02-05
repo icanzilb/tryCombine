@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on try Combine</title>
-    <link>http://trycombine.com/posts/</link>
+    <link>https://trycombine.com/posts/</link>
     <description>Recent content in Posts on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Owning AnyCancellable with Cancellor</title>
-      <link>http://trycombine.com/posts/cancellor/</link>
+      <link>https://trycombine.com/posts/cancellor/</link>
       <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/cancellor/</guid>
+      <guid>https://trycombine.com/posts/cancellor/</guid>
       <description>Swift 5.4 officially introduces @resultBuilder, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).
 I wanted to play with it and create something useful for Combine developers so I thought &amp;ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&amp;rdquo;.
 I remembered back in the day I used an extension on NSObject that adds automatically a dispose bag to all objects in case you need one created by Ash Furrow and I thought I&amp;rsquo;d put together something in the same fashion.</description>
@@ -24,10 +24,10 @@ I remembered back in the day I used an extension on NSObject that adds automatic
     
     <item>
       <title>5 Stranger Things you can do with Timelane at NSSpain</title>
-      <link>http://trycombine.com/posts/timelane-nsspain-2020/</link>
+      <link>https://trycombine.com/posts/timelane-nsspain-2020/</link>
       <pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/timelane-nsspain-2020/</guid>
+      <guid>https://trycombine.com/posts/timelane-nsspain-2020/</guid>
       <description>For my talk at NSSpain 2020 I&amp;rsquo;ve prepared a beyond-the-basics Timelane talk.
 I think everyone who&amp;rsquo;s heard about Timelane by now knows what it does for its simplest use case - debugging some Combine based code. However, you can do much, much more with Timelane!
 So for my NSSpain 2020 talk I prepared 5 little examples on how to use Timelane beyond the simplest use case.
@@ -36,20 +36,20 @@ I&amp;rsquo;ve pushed all the demo apps I use in my talk to this repository: htt
     
     <item>
       <title>How to create a custom instrument on top of Timelane!</title>
-      <link>http://trycombine.com/posts/how-to-create-custom-instrument/</link>
+      <link>https://trycombine.com/posts/how-to-create-custom-instrument/</link>
       <pubDate>Sun, 19 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/how-to-create-custom-instrument/</guid>
+      <guid>https://trycombine.com/posts/how-to-create-custom-instrument/</guid>
       <description>You can easily log data in Instruments by using the functions in Apple&amp;rsquo;s os framework. All you need is to use os_log(&amp;hellip;) and that will log data in Instruments. If you&amp;rsquo;d like to read more about this check out Recording Performance Data Apple article.
 Creating a real custom instrument, however, is a little more complicated as you can learn in Creating Custom Instruments WWDC2018 video and it involves XML, CLIPS, and more complex stuff.</description>
     </item>
     
     <item>
       <title>Timelane - the first two weeks!</title>
-      <link>http://trycombine.com/posts/timelane-combine-update/</link>
+      <link>https://trycombine.com/posts/timelane-combine-update/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/timelane-combine-update/</guid>
+      <guid>https://trycombine.com/posts/timelane-combine-update/</guid>
       <description>It&amp;rsquo;s been two weeks since I released Timelane and I&amp;rsquo;m really humbled by the community&amp;rsquo;s super positive response.
 Since much has happened since the launch, I&amp;rsquo;m writing this to give everyone a detailed update.
 The current versions are as follows:
@@ -58,10 +58,10 @@ The current versions are as follows:
     
     <item>
       <title>Announcing: Timelane</title>
-      <link>http://trycombine.com/posts/announcing-timelane-combine/</link>
+      <link>https://trycombine.com/posts/announcing-timelane-combine/</link>
       <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/announcing-timelane-combine/</guid>
+      <guid>https://trycombine.com/posts/announcing-timelane-combine/</guid>
       <description>Today I&amp;rsquo;m announcing the public release of Timelane.
 Timelane is a free, open source Instrument that helps you profile and debug asynchronous code.
 Timelane is available today on: http://timelane.tools.
@@ -71,10 +71,10 @@ Installation Install the latest build from http://timelane.tools or fork the rep
     
     <item>
       <title>Property Wrappers with Combine</title>
-      <link>http://trycombine.com/posts/combine-property-wrappers/</link>
+      <link>https://trycombine.com/posts/combine-property-wrappers/</link>
       <pubDate>Wed, 11 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/combine-property-wrappers/</guid>
+      <guid>https://trycombine.com/posts/combine-property-wrappers/</guid>
       <description>In this post I&amp;rsquo;ll look into making more out of Combine code by using the newly introduced in Swift 5.1: Property Wrappers.
 Let&amp;rsquo;s very quickly go into what property wrappers are in general and then dive into a Combine example.
 Swift Property Wrappers Property wrappers are a new feature in Swift 5.1 that allows you to abstract redundant functionality around handling type properties.
@@ -83,10 +83,10 @@ Property wrappers are very handy in (my experience so far 🤓 ) two ways:</desc
     
     <item>
       <title>subscribe(on:) vs receive(on:)</title>
-      <link>http://trycombine.com/posts/subscribe-on-receive-on/</link>
+      <link>https://trycombine.com/posts/subscribe-on-receive-on/</link>
       <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/subscribe-on-receive-on/</guid>
+      <guid>https://trycombine.com/posts/subscribe-on-receive-on/</guid>
       <description>In this post, instead of looking into the basics of multi-threading with Combine, we are going to have a look at the difference between subscribe(on:) and receive(on:) specifically.
 We&amp;rsquo;re going to look at a typical subscription chain starting with a root publisher, a couple of operators, and a subscriber at the end.
 We&amp;rsquo;ll look into more diagrams and some example code of how subscribe(on:) and receive(on:) affect subscriptions.
@@ -95,10 +95,10 @@ subscribe(on:) subscribe(on:) sets the scheduler on which you&amp;rsquo;d like t
     
     <item>
       <title>Binding a list with multiple sections and different cells</title>
-      <link>http://trycombine.com/posts/combinedatasources-multiple-sections/</link>
+      <link>https://trycombine.com/posts/combinedatasources-multiple-sections/</link>
       <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/combinedatasources-multiple-sections/</guid>
+      <guid>https://trycombine.com/posts/combinedatasources-multiple-sections/</guid>
       <description>Today&amp;rsquo;s post showcases another real-life use case of using CombineDataSources, namely binding a list to a table view with multiple sections using different cell types.
 In my last post Binding a simple list to a UITableView we had a look at binding a list of data elements to a table view. It&amp;rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.
 In this post I&amp;rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.</description>
@@ -106,10 +106,10 @@ In this post I&amp;rsquo;m gonna show some code on how to bind a list to a table
     
     <item>
       <title>Binding a simple list to a UITableView</title>
-      <link>http://trycombine.com/posts/combinedatasources-simple-static-list/</link>
+      <link>https://trycombine.com/posts/combinedatasources-simple-static-list/</link>
       <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/combinedatasources-simple-static-list/</guid>
+      <guid>https://trycombine.com/posts/combinedatasources-simple-static-list/</guid>
       <description>While still keep improving the current version of CombineDataSources I tought it&amp;rsquo;d be nice to post few articles on the current API design along with some code samples.
 This would be nice in order to get some feedback and to try putting some of the code in context.
 CombineDataSources Introduction RxSwiftCommunity&amp;rsquo;s excellent RxDataSources allows developers to reactively bind data to table and collection views. It uses a lot of the underlaying structure of RxSwift and it&amp;rsquo;s very powerful.</description>
@@ -117,20 +117,20 @@ CombineDataSources Introduction RxSwiftCommunity&amp;rsquo;s excellent RxDataSou
     
     <item>
       <title>An assert operator: assertMaxSubscriptions()</title>
-      <link>http://trycombine.com/posts/assert-max-subscriptions/</link>
+      <link>https://trycombine.com/posts/assert-max-subscriptions/</link>
       <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/assert-max-subscriptions/</guid>
+      <guid>https://trycombine.com/posts/assert-max-subscriptions/</guid>
       <description>While I keep working on CombineDataSources I&amp;rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.
 For example: in RxSwift when dealing with UI I&amp;rsquo;d usually use shareReplayLatestWhileConnected() - this operator shares an observable and emits the latest value to all subscribers downstream. In Combine there is currently a share() operator which does a similar thing but does not &amp;ldquo;replay&amp;rdquo; the latest value.</description>
     </item>
     
     <item>
       <title>Debug logging with CombinePrintout</title>
-      <link>http://trycombine.com/posts/debug-logging-combineprintout/</link>
+      <link>https://trycombine.com/posts/debug-logging-combineprintout/</link>
       <pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/debug-logging-combineprintout/</guid>
+      <guid>https://trycombine.com/posts/debug-logging-combineprintout/</guid>
       <description>Logging is a really powerful way to debug code, especially if it&amp;rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.
 In Simple custom Combine operators I wrote about how to create an operator that logs to the system Console app in just few lines.
 After playing with Combine some more I went ahead and created a micro framework called &amp;ldquo;CombinePrintout&amp;rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.</description>
@@ -138,10 +138,10 @@ After playing with Combine some more I went ahead and created a micro framework 
     
     <item>
       <title>Building a custom `sample` operator</title>
-      <link>http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</link>
+      <link>https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</link>
       <pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</guid>
+      <guid>https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</guid>
       <description>In Simple custom Combine operators I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom Publisher type.
 In this post I&amp;rsquo;d like to show how this kind of &amp;ldquo;cheap&amp;rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.
 Let&amp;rsquo;s look at sample(_)&amp;hellip;
@@ -150,10 +150,10 @@ The sample operator rxmarbles.com is a marveleous website where you can find vis
     
     <item>
       <title>Simple custom Combine operators</title>
-      <link>http://trycombine.com/posts/simple-custom-combine-operators/</link>
+      <link>https://trycombine.com/posts/simple-custom-combine-operators/</link>
       <pubDate>Fri, 02 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/simple-custom-combine-operators/</guid>
+      <guid>https://trycombine.com/posts/simple-custom-combine-operators/</guid>
       <description>Creating simple custom operators is very straightforward in Combine.
 As long as your custom operator can be expressed via combining existing operators you don&amp;rsquo;t need to create a new publisher type - you can simply extend the Publisher protocol with your own custom operator.
 Let&amp;rsquo;s try quickly creating one now.

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>TimelaneCombine on try Combine</title>
-    <link>http://trycombine.com/tags/timelanecombine/</link>
+    <link>https://trycombine.com/tags/timelanecombine/</link>
     <description>Recent content in TimelaneCombine on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://trycombine.com/tags/timelanecombine/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://trycombine.com/tags/timelanecombine/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Timelane - the first two weeks!</title>
-      <link>http://trycombine.com/posts/timelane-combine-update/</link>
+      <link>https://trycombine.com/posts/timelane-combine-update/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/timelane-combine-update/</guid>
+      <guid>https://trycombine.com/posts/timelane-combine-update/</guid>
       <description>It&amp;rsquo;s been two weeks since I released Timelane and I&amp;rsquo;m really humbled by the community&amp;rsquo;s super positive response.
 Since much has happened since the launch, I&amp;rsquo;m writing this to give everyone a detailed update.
 The current versions are as follows:
@@ -25,10 +25,10 @@ The current versions are as follows:
     
     <item>
       <title>Announcing: Timelane</title>
-      <link>http://trycombine.com/posts/announcing-timelane-combine/</link>
+      <link>https://trycombine.com/posts/announcing-timelane-combine/</link>
       <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://trycombine.com/posts/announcing-timelane-combine/</guid>
+      <guid>https://trycombine.com/posts/announcing-timelane-combine/</guid>
       <description>Today I&amp;rsquo;m announcing the public release of Timelane.
 Timelane is a free, open source Instrument that helps you profile and debug asynchronous code.
 Timelane is available today on: http://timelane.tools.
