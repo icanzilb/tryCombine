@@ -4,32 +4,32 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Building a custom `sample` operator</title>
+		<title>Owning AnyCancellable with Cancellor</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="http://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="http://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="http://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Building a custom `sample` operator" />
+		<meta property="og:title" content="Owning AnyCancellable with Cancellor" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="How to create a more complex custom operator" />
+<meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="http://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/" />
+<meta property="og:url" content="http://trycombine.com/posts/cancellor/" />
 <meta property="og:image" content="http://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
-<meta name="description" content="How to create a more complex custom operator">
+<meta name="description" content="Series of Combine framework programming related blog posts.">
 <meta name="author" content="Marin Todorov">
 
 <link href rel="alternate" type="application/rss+xml" title="try Combine">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:description" content="How to create a more complex custom operator" />
+<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Building a custom `sample` operator">
+<meta name="twitter:title" content="Owning AnyCancellable with Cancellor">
 
 
 <meta name="twitter:image:src" content="http://trycombine.com/images/trycombine.png">
@@ -154,40 +154,26 @@
         </div>
 
 			
-		<h1>Building a custom `sample` operator </h1>
+		<h1>Owning AnyCancellable with Cancellor </h1>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Building%20a%20custom%20%60sample%60%20operator&url=http%3a%2f%2ftrycombine.com%2fposts%2fmore-simple-custom-combine-operators-with-sample%2f"
+  href="https://twitter.com/intent/tweet?text=Owning%20AnyCancellable%20with%20Cancellor&url=http%3a%2f%2ftrycombine.com%2fposts%2fcancellor%2f"
   data-size="medium">
 Tweet</a><p>
 
 		<div class="post-content">
 
-<p>In <a href="http://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom <code>Publisher</code> type.</p>
+<p>Swift 5.4 officially introduces <code>@resultBuilder</code>, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).</p>
 
-<p>In this post I&rsquo;d like to show how this kind of &ldquo;cheap&rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.</p>
+<p>I wanted to play with it and create something useful for Combine developers so I thought &ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&rdquo;.</p>
 
-<p>Let&rsquo;s look at <code>sample(_)</code>&hellip;</p>
+<p>I remembered back in the day I used an extension on <code>NSObject</code> that adds automatically a dispose bag to all objects in case you need one created by <a href="https://twitter.com/ashfurrow">Ash Furrow</a> and I thought I&rsquo;d put together something in the same fashion.</p>
 
-<h2 id="the-sample-operator">The <code>sample</code> operator</h2>
+<p>Here&rsquo;s the completed code source, in case you&rsquo;d like to skip the implementation details below: <a href="https://github.com/icanzilb/Cancellor">https://github.com/icanzilb/Cancellor</a>.</p>
 
-<p><a href="https://rxmarbles.com">rxmarbles.com</a> is a marveleous website where you can find visual and interactive presentations of a multitude of reactive operators (based in their implementation in RxJS).</p>
+<h2 id="an-owned-list-of-subscriptions">An owned list of subscriptions</h2>
 
-<p>One operator from Rx that I really like but I still don&rsquo;t see implemented in Combine is <code>sample</code>.</p>
-
-<p><code>sample</code> is very handy and you can see it in action here: (<a href="https://rxmarbles.com/#sample">https://rxmarbles.com/#sample</a>). It allows you to take the values of a publisher only at given times when a second publisher (a source or a trigger) emits.</p>
-
-<p>The second publisher&rsquo;s values are ignored - it only serves as a &ldquo;trigger&rdquo; as to when should the latest value of the first publisher be emitted.</p>
-
-<p>A practical application of <code>sample</code> is having a timer but you only take the current value when a button is pressed like so:</p>
-
-<p><img src="http://trycombine.com/images/sample/sample-dia.png" alt="" /></p>
-
-<p>Now let&rsquo;s look at how to quickly re-implement <code>sample</code> by combining built-in Combine operators.</p>
-
-<h2 id="re-implementing-sample-in-combine">Re-implementing <code>sample</code> in Combine</h2>
-
-<p>First we will start with defining an extension on <code>Publisher</code> - again we will not create a new <code>Publisher</code> implementation but rather extend the protocol with a &ldquo;cheap&rdquo; operator.</p>
+<p>First I added a lock and a raw key value to <code>NSObject</code> - you need the latter to &ldquo;assign&rdquo; a dynamic property to an Objective-C object, and the former to avoid data races:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -198,79 +184,23 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
-    -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
-    <span style="color:#6ab825;font-weight:bold">where</span> P: Publisher, P.Output: <span style="color:#24909d">Equatable</span>, 
-    P.Failure == <span style="color:#6ab825;font-weight:bold">Self</span>.Failure {
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">NSObject</span> {
 
-  }
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellablesLock</span>: os_unfair_lock_s = 
+    { os_unfair_lock_s() }()
+
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellablesKeyRawValue</span>: <span style="color:#24909d">UInt8</span> = <span style="color:#3677a9">0</span>
 }</code></pre></td></tr></table>
 </div>
 </div>
 
-<p><code>sample</code> will operate on the values of the current publisher. The method takes a single parameter which is the &ldquo;trigger&rdquo; or &ldquo;source&rdquo; publisher.</p>
+<blockquote>
+<p>Note: Arguably, using a single lock is not very efficient if you create large amounts of subscriptions all the time. But it should suffice for most cases.</p>
+</blockquote>
 
-<p>The source publisher needs to meet a couple of conditions:</p>
-
-<ul>
-<li>first, the values emitted by <code>source</code> need to be, regardless of their actual type, <code>Equatable</code> so we can check for a new value by comparing the current one to the last one.</li>
-<li>second, the <code>Failure</code> types of <code>source</code> and <code>self</code> need to match as this is a requirement of <code>combineLatest(_)</code> which we will use in the method body.</li>
-</ul>
-
-<p>Now let&rsquo;s see about the imlementation. First we will start by combinging the two publishers together via <code>combineLatest</code>:</p>
-
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">combineLatest(source)</code></pre></td></tr></table>
-</div>
-</div>
-
-<p>That will combine the values of <code>self</code> and <code>source</code> into a single stream of tuples, each containing the latest values of both publishers.</p>
-
-<p>Next we will filter any repeating values of the <code>source</code> publisher by removing duplicates via a custom closure:</p>
-
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.removeDuplicates(by: { 
-  (tuple1, tuple2) -&gt; <span style="color:#24909d">Bool</span> <span style="color:#6ab825;font-weight:bold">in</span>
-  tuple1.<span style="color:#3677a9">1</span> == tuple2.<span style="color:#3677a9">1</span>
-})</code></pre></td></tr></table>
-</div>
-</div>
-
-<p>This will remove any values where the source publisher hasn&rsquo;t emitted a new value.</p>
-
-<p>Finally we need to get rid of the extra value in the tuple: the <code>source</code> element which is of no interest for this operator. And also erase the operator type to remove some of the complexity of the return type:</p>
-
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.map { tuple <span style="color:#6ab825;font-weight:bold">in</span>
-  tuple.<span style="color:#3677a9">0</span>
-}
-.eraseToAnyPublisher()</code></pre></td></tr></table>
-</div>
-</div>
-
-<p>And the final implementation is:</p>
+<p>Then I added a method that takes a list of <code>AnyCancellable</code> and adds it to a list of cancellables assigned to the current object. (And create an empty list if there is none found assigned already.)</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -288,39 +218,26 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
-  -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
-  <span style="color:#6ab825;font-weight:bold">where</span> P: Publisher, P.Output: <span style="color:#24909d">Equatable</span>, 
-  P.Failure == <span style="color:#6ab825;font-weight:bold">Self</span>.Failure {
-
-  combineLatest(source)
-    .removeDuplicates(by: { 
-      (tuple1, tuple2) -&gt; <span style="color:#24909d">Bool</span> <span style="color:#6ab825;font-weight:bold">in</span>
-      tuple1.<span style="color:#3677a9">1</span> == tuple2.<span style="color:#3677a9">1</span>
-    })
-    .map { tuple <span style="color:#6ab825;font-weight:bold">in</span>
-      tuple.<span style="color:#3677a9">0</span>
-    }
-    .eraseToAnyPublisher()
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addCancellables</span>(<span style="color:#6ab825;font-weight:bold">_</span> cancellables: [AnyCancellable]) {
+  os_unfair_lock_lock(&amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesLock)
+        
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">storage</span> = objc_getAssociatedObject(<span style="color:#6ab825;font-weight:bold">self</span>,
+    &amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesKeyRawValue) <span style="color:#6ab825;font-weight:bold">as</span>? [AnyCancellable] ?? []
+  
+  storage.append(contentsOf: cancellables)
+  
+  objc_setAssociatedObject(<span style="color:#6ab825;font-weight:bold">self</span>, 
+    &amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesKeyRawValue, storage,
+    .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+  os_unfair_lock_unlock(&amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesLock)
 }</code></pre></td></tr></table>
 </div>
 </div>
 
-<p>We recreated <code>sample</code> as implemented in Rx by combinin/g <code>combineLatest</code>, <code>removeDuplicates</code>, and a <code>map</code>. Now we could use <code>sample</code> in all kinds of use-cases (though I personally find it most practical when using UI controls for the source). Let&rsquo;s try a quick and practical test.</p>
-
-<h2 id="getting-sample-out-for-a-spin">Getting <code>sample</code> out for a spin</h2>
-
-<p>A really simple test scenario could be:</p>
-
-<ul>
-<li>first publisher is a counter that emits consequtive integer values,</li>
-<li>second publisher (source, which could be a UI button or a timer) emits periodically to output the current counter value.</li>
-</ul>
-
-<p>Let&rsquo;s first get the counter going:</p>
+<p>Now for the fun part - adding the <code>@resultBuilder</code>. I played with few scenarios but in the end it turned I only ever needed the <code>@resultBuilder</code> to collect the cancellables and pipe them through to <code>addCancellables()</code> which is already fleshed out.</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -330,43 +247,26 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">counter</span> = Timer
-  .publish(every: <span style="color:#3677a9">0.17</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
-  .autoconnect()
-  .scan(<span style="color:#3677a9">0</span>) { result, <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
-    <span style="color:#6ab825;font-weight:bold">return</span> result + <span style="color:#3677a9">1</span>
-  }</code></pre></td></tr></table>
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@resultBuilder
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CancellablesBuilder</span> {
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">buildBlock</span>(<span style="color:#6ab825;font-weight:bold">_</span> parts: AnyCancellable...) 
+    -&gt; [AnyCancellable] {
+
+    <span style="color:#6ab825;font-weight:bold">return</span> parts
+  }
+}</code></pre></td></tr></table>
 </div>
 </div>
 
-<p>The counter (when subscribed) will continuously count like so:</p>
+<p>As evident by <code>buildBlock</code>s signature, the builder gets a list of <code>AnyCancellable</code> values and just returns them.</p>
 
-<pre><code>1
-2
-3
-4
-5
-...
-</code></pre>
+<h2 id="ownedcancellables">ownedCancellables</h2>
 
-<p>Then add a timer firing each 5 seconds to use as the &ldquo;source&rdquo;:</p>
-
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">trigger</span> = Timer
-  .publish(every: <span style="color:#3677a9">5</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
-  .autoconnect()</code></pre></td></tr></table>
-</div>
-</div>
-
-<p>And finally use <code>sample</code> to use the two publishers together:</p>
+<p>Next, <code>CancellablesBuilder</code> can be used back in <code>NSObject</code> to provide a DSL-like API for managing subscriptions:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -377,33 +277,127 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">sub</span> = counter
-  .sample(source: trigger)
-  .sink { value <span style="color:#6ab825;font-weight:bold">in</span>
-    print(value)
-  }</code></pre></td></tr></table>
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">ownedCancellables</span>(
+  @CancellablesBuilder content: () -&gt; [AnyCancellable]) {
+
+  addCancellables(content())
+}</code></pre></td></tr></table>
 </div>
 </div>
 
-<p>That will print the current value of <code>counter</code> each time <code>trigger</code>  fires:</p>
+<p>Sweet! With <code>ownedCancellables</code> in place you can easily batch-create all your Combine subscriptions, let&rsquo;s say in one of your view controllers, like so:</p>
 
-<pre><code>29
-58
-88
-117
-147
-176
-205
-...
-</code></pre>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyController</span>: UIViewController {
+  <span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+    ownedCancellables {
+      myPublisher1.filter(...).map(...).sink(...)
+      myPublisher2.filter(...).map(...).assign(to:on:)
+      myPublisher3.filter(...).map(...).sink(...)
+      etc. etc.
+    }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
 
-<p>All works as expected so that&rsquo;s a wrap for today!</p>
+<p>This code will collect all the cancellables for your subscriptions and store them in a dynamically created cancellables list assigned to your view controller.</p>
+
+<p>If you don&rsquo;t cancel your subscriptions manually, at the time the view controller is popped out or otherwise dismissed your subscriptions will all be cancelled and released as well.</p>
+
+<h2 id="owned-by">owned(by:)</h2>
+
+<p>For kicks we can also add an extension on <code>AnyCancellable</code> to provide more-reactive &trade; way to manage a subscription. In effect we&rsquo;d like to &ldquo;tie&rdquo; the lifetime of the subscription to the lifetime of a random object.</p>
+
+<p>With minimal effort the <code>AnyCancellable</code> extension looks like this:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AnyCancellable</span> {
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">owned</span>(by owner: NSObject) {
+    owner.addCancellables([<span style="color:#6ab825;font-weight:bold">self</span>])
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now, if you have a view model like so:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span>: NSObject {
+  ... some properties ...
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>And you need for a given subscription to last as long as the view model is around you can do this:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">vm</span> = ViewModel(...)
+
+myPublisher
+  .filter(...)
+  .map(...)
+  .assign(to:on:)
+  .owned(by: vm)</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>When <code>vm</code>&rsquo;s value is released from memory via setting it to <code>nil</code> or is otherwise released from memory, your subscription will automatically be cancelled as well.</p>
 
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 
-<p>You saw how to create more useful and reusable but &ldquo;cheap&rdquo; to make Combine operators. Next you&rsquo;d probably want to look into creating custom operators via implementing new <code>Publisher</code> types!</p>
+<p>I&rsquo;ve published the code under <a href="https://github.com/icanzilb/Cancellor">https://github.com/icanzilb/Cancellor</a>.</p>
 
-<p>To learn more about implementing custom operators and publishers check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+<p>I think with some more effort this could become a handy tool. Some questions I&rsquo;ve been considering are:</p>
+
+<ul>
+<li>how to manage the list so that cancelled subscriptions are removed? E.g. if you have a very long-lived view controller that always creates new subscriptions how to manage the size of the list?</li>
+<li>what more could a tool that manages subscriptions do?</li>
+<li>what if there is an <code>ownedCancellables</code> parameter that automatically logs the subscriptions in Timelane?</li>
+</ul>
+
+<p>Hit me up with your ideas on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+
+<hr />
+
+<p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
 </div>
 
 		
@@ -414,7 +408,7 @@ Tweet</a><p>
 				</a>
 				<br/>
 				
-		<p class="meta">Posted on <span class="postdate">06. August 2019</span></p>
+		<p class="meta">Posted on <span class="postdate">05. February 2021</span></p>
 	</article>
 	
 

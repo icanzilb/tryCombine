@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Publisher on try Combine</title>
+    <link>http://trycombine.com/tags/publisher/</link>
+    <description>Recent content in Publisher on try Combine</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://trycombine.com/tags/publisher/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Owning AnyCancellable with Cancellor</title>
+      <link>http://trycombine.com/posts/cancellor/</link>
+      <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://trycombine.com/posts/cancellor/</guid>
+      <description>Swift 5.4 officially introduces @resultBuilder, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).
+I wanted to play with it and create something useful for Combine developers so I thought &amp;ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&amp;rdquo;.
+I remembered back in the day I used an extension on NSObject that adds automatically a dispose bag to all objects in case you need one created by Ash Furrow and I thought I&amp;rsquo;d put together something in the same fashion.</description>
+    </item>
+    
+  </channel>
+</rss>
