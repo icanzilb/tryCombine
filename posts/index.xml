@@ -6,10 +6,22 @@
     <description>Recent content in Posts on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using self, weak, and unowned in Combine</title>
+      <link>https://trycombine.com/posts/self-weak-unowned/</link>
+      <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/self-weak-unowned/</guid>
+      <description>One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:
+Should I use self, weak, or unowned with my reactive code?
+Given that most operators take closures, it&amp;rsquo;s a fair question. In this post I&amp;rsquo;ll go over common scenarios for using weak, unowned or simply self and include links with more information at the bottom.
+ Important: Combine code is still plain Swift - memory management works exactly as in any other of your Swift apps.</description>
+    </item>
     
     <item>
       <title>Owning AnyCancellable with Cancellor</title>

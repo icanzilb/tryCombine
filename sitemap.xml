@@ -3,6 +3,53 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://trycombine.com/tags/combine/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/posts/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/posts/self-weak-unowned/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/tags/memory-management/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/tags/unowned/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://trycombine.com/tags/weak/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://trycombine.com/tags/anycancellable/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -15,36 +62,12 @@
   </url>
   
   <url>
-    <loc>https://trycombine.com/tags/combine/</loc>
-    <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://trycombine.com/posts/cancellor/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://trycombine.com/tags/publisher/</loc>
-    <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://trycombine.com/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

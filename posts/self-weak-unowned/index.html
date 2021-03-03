@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Using self, weak, and unowned in Combine</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Using self, weak, and unowned in Combine" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Series of Combine framework programming related blog posts." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/self-weak-unowned/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Series of Combine framework programming related blog posts.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Using self, weak, and unowned in Combine">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465; border-radius: 10px;">
+				</a>
+			</div>
+        </div>
+
+			
+		<h1>Using self, weak, and unowned in Combine </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Using%20self%2c%20weak%2c%20and%20unowned%20in%20Combine&url=https%3a%2f%2ftrycombine.com%2fposts%2fself-weak-unowned%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content">
+
+<p>One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:</p>
+
+<p><strong>Should I use self, weak, or unowned with my reactive code?</strong></p>
+
+<p>Given that most operators take closures, it&rsquo;s a fair question. In this post I&rsquo;ll go over common scenarios for using <code>weak</code>, <code>unowned</code> or simply <code>self</code> and include links with more information at the bottom.</p>
+
+<blockquote>
+<p><strong>Important</strong>: Combine code is still plain Swift - memory management works exactly as in any other of your Swift apps. This brief post only aims to give you few examples to refer to if you are unsure of the details.</p>
+</blockquote>
+
+<h2 id="use-weak-when-an-object-might-get-released">Use [weak] when an object might get released</h2>
+
+<blockquote>
+<p><strong>Tip</strong>: Use <code>weak</code> only if you&rsquo;re capturinig a class instance.</p>
+</blockquote>
+
+<p>Use <code>weak</code> when you use a class instance in an escaping closure in one of your operators. When you call a method on your view controller, change a property on a view, or access another class instance, you likely need to capturely it <em>weakly</em>.</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyViewController</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>(<span style="color:#6ab825;font-weight:bold">_</span> publisher: AnyPublisher&lt;<span style="color:#24909d">Int</span>, Never&gt;)
+    -&gt; AnyCancellable? {
+    
+    <span style="color:#6ab825;font-weight:bold">return</span> publisher
+      .sink(receiveValue: { [<span style="color:#6ab825;font-weight:bold">weak</span> <span style="color:#6ab825;font-weight:bold">self</span>] <span style="color:#6ab825;font-weight:bold">in</span>
+        <span style="color:#6ab825;font-weight:bold">self</span>?.displayValue(<span style="color:#40ffff">$0</span>)
+      })
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The <code>sink</code> closure above is called asynchronously. It might happen that when the closure is (finally) executed <code>MyViewController</code> is already dimissed by the user, and released from memory.</p>
+
+<p>In such case <code>self</code> is <code>nil</code> - you need to safely access it as <code>self?</code> or alternatively unwrap it with a <code>guard</code>:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.sink(receiveValue: { [<span style="color:#6ab825;font-weight:bold">weak</span> <span style="color:#6ab825;font-weight:bold">self</span>] <span style="color:#6ab825;font-weight:bold">in</span>
+  <span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">self</span> = <span style="color:#6ab825;font-weight:bold">self</span> <span style="color:#6ab825;font-weight:bold">else</span> { <span style="color:#6ab825;font-weight:bold">return</span> }
+  <span style="color:#6ab825;font-weight:bold">self</span>.displayValue(<span style="color:#40ffff">$0</span>)
+})</code></pre></td></tr></table>
+</div>
+</div>
+
+<blockquote>
+<p><strong>Tip</strong>: Capturing objects weakly prevents memory retain cycles.</p>
+</blockquote>
+
+<h2 id="use-unowned-for-objects-guaranteed-to-exist">Use [unowned] for objects guaranteed to exist</h2>
+
+<blockquote>
+<p><strong>Tip</strong>: Use <code>unowned</code> only if you&rsquo;re capturinig a class instance.</p>
+</blockquote>
+
+<p>Use <code>unowned</code> in an escaping closure to access an object that is guaranteed to exist and avoid memory retain cycles by not retaining that object from the closure.</p>
+
+<p>Such objects are your app delegate (which usually lives as long as your app is running), the app&rsquo;s root view controller, a shared cache object, or any other object you know for certain will be present in memory for as long as your closure might get called.</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">AppController</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">events</span>() -&gt; AnyCancellable {
+
+    <span style="color:#6ab825;font-weight:bold">return</span> eventPublisher
+      .sink(receiveValue: { [<span style="color:#6ab825;font-weight:bold">unowned</span> <span style="color:#6ab825;font-weight:bold">self</span>] e <span style="color:#6ab825;font-weight:bold">in</span>
+        print(<span style="color:#ed9d13">&#34;Event </span><span style="color:#ed9d13">\(</span>e<span style="color:#ed9d13">)</span><span style="color:#ed9d13"> from </span><span style="color:#ed9d13">\(</span><span style="color:#6ab825;font-weight:bold">self</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+      })
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<blockquote>
+<p><strong>Warning</strong>: If <code>self</code> is released from memory and your subscription is invoked - accessing <code>self</code> will crash your app.</p>
+</blockquote>
+
+<h2 id="use-self-to-explictly-capture-an-object-or-a-value">Use self to explictly capture an object or a value</h2>
+
+<p>If you&rsquo;re capturing a struct or another value type like an <code>Int</code> or a <code>String</code> you don&rsquo;t need to be concerned about memory management. Reference <code>self</code> or another value and Swift will figure the memory management automatically:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">stuct ViewModel {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>() -&gt; AnyPublisher&lt;<span style="color:#24909d">Int</span>, Never&gt; {
+    <span style="color:#6ab825;font-weight:bold">return</span> myPublisher
+      .map {
+        <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">self</span>.convertValue(<span style="color:#40ffff">$0</span>)
+      }
+      .eraseToAnyPublisher()
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Implicitly capture strongly an object by not specifying <code>weak</code> or <code>unowned</code>. This will ensure the object is retained in memory for as long as your closure might get called.</p>
+
+<p>Here&rsquo;s an example how to weakly capture <code>self</code> but also strongly another object which you need and noone else might be retaining:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">ViewController</span> {
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscription</span>: AnyCancellable?
+    
+    <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>(viewModel: MyViewModel) {
+        subscription = [<span style="color:#3677a9">1</span>].publisher
+            .map { [viewModel] <span style="color:#6ab825;font-weight:bold">in</span>
+                <span style="color:#6ab825;font-weight:bold">return</span> viewModel.convert(<span style="color:#40ffff">$0</span>)
+            }
+            .sink { [<span style="color:#6ab825;font-weight:bold">weak</span> <span style="color:#6ab825;font-weight:bold">self</span>] value <span style="color:#6ab825;font-weight:bold">in</span>
+                <span style="color:#6ab825;font-weight:bold">self</span>?.displayValue(value)
+            }
+    }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+
+<p>If you haven&rsquo;t read it, the Swift book&rsquo;s &ldquo;<a href="https://docs.swift.org/swift-book/LanguageGuide/AutomaticReferenceCounting.html">Automatic Reference Counting</a>&rdquo; chapter is a great read and covers in detail the concepts we touched upon in here and more.</p>
+
+<p>Hit me up with your ideas on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+
+<hr />
+
+<p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
+</div>
+
+		
+
+<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+				</a>
+				<br/>
+				
+		<p class="meta">Posted on <span class="postdate">03. March 2021</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

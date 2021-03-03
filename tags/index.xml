@@ -6,10 +6,46 @@
     <description>Recent content in Tags on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Combine</title>
+      <link>https://trycombine.com/tags/combine/</link>
+      <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/combine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memory management</title>
+      <link>https://trycombine.com/tags/memory-management/</link>
+      <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/memory-management/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>unowned</title>
+      <link>https://trycombine.com/tags/unowned/</link>
+      <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/unowned/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>weak</title>
+      <link>https://trycombine.com/tags/weak/</link>
+      <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/weak/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AnyCancellable</title>
@@ -26,15 +62,6 @@
       <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/cancellor/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Combine</title>
-      <link>https://trycombine.com/tags/combine/</link>
-      <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/combine/</guid>
       <description></description>
     </item>
     

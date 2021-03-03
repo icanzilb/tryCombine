@@ -82,6 +82,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
       </li>
     
@@ -156,6 +160,17 @@
 			</div>
         </div>
 
+	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/assert-max-subscriptions/">An assert operator: assertMaxSubscriptions()</a> </h1>
+
+			<div class="post-content">
+				<p>While I keep working on CombineDataSources I&rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.
+For example: in RxSwift when dealing with UI I&rsquo;d usually use shareReplayLatestWhileConnected() - this operator shares an observable and emits the latest value to all subscribers downstream. In Combine there is currently a share() operator which does a similar thing but does not &ldquo;replay&rdquo; the latest value.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
+		</article>
 	
 		<article class="post">
 			<h1><a href="https://trycombine.com/posts/debug-logging-combineprintout/">Debug logging with CombinePrintout</a> </h1>
