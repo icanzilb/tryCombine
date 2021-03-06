@@ -17,10 +17,10 @@
       <pubDate>Wed, 03 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/self-weak-unowned/</guid>
-      <description>One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:
+      <description>Updated with more examples on Mar 6th, 2021.
+One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:
 Should I use self, weak, or unowned with my reactive code?
-Given that most operators take closures, it&amp;rsquo;s a fair question. In this post I&amp;rsquo;ll go over common scenarios for using weak, unowned or simply self and include links with more information at the bottom.
- Important: Combine code is still plain Swift - memory management works exactly as in any other of your Swift apps.</description>
+Given that most operators take closures, it&amp;rsquo;s a fair question. In this post I&amp;rsquo;ll go over common scenarios for using weak, unowned or simply self and include links with more information at the bottom.</description>
     </item>
     
     <item>

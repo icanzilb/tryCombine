@@ -167,6 +167,8 @@ Tweet</a><p>
 
 		<div class="post-content">
 
+<p><em>Updated with more examples on Mar 6th, 2021.</em></p>
+
 <p>One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:</p>
 
 <p><strong>Should I use self, weak, or unowned with my reactive code?</strong></p>
@@ -180,10 +182,10 @@ Tweet</a><p>
 <h2 id="use-weak-when-an-object-might-get-released">Use [weak] when an object might get released</h2>
 
 <blockquote>
-<p><strong>Tip</strong>: Use <code>weak</code> only if you&rsquo;re capturinig a class instance.</p>
+<p><strong>Tip</strong>: Use <code>weak</code> only if you&rsquo;re capturing a class instance.</p>
 </blockquote>
 
-<p>Use <code>weak</code> when you use a class instance in an escaping closure in one of your operators. When you call a method on your view controller, change a property on a view, or access another class instance, you likely need to capturely it <em>weakly</em>.</p>
+<p>Use <code>weak</code> when you use a class instance in an escaping closure in one of your operators. When you call a method on your view controller, change a property on a view, or access another class instance, you likely need to capture it <em>weakly</em>.</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -212,7 +214,7 @@ Tweet</a><p>
 </div>
 </div>
 
-<p>The <code>sink</code> closure above is called asynchronously. It might happen that when the closure is (finally) executed <code>MyViewController</code> is already dimissed by the user, and released from memory.</p>
+<p>The <code>sink</code> closure above is called asynchronously. It might happen that when the closure is (finally) executed <code>MyViewController</code> is already dismissed by the user, and released from memory.</p>
 
 <p>In such case <code>self</code> is <code>nil</code> - you need to safely access it as <code>self?</code> or alternatively unwrap it with a <code>guard</code>:</p>
 
@@ -238,7 +240,7 @@ Tweet</a><p>
 <h2 id="use-unowned-for-objects-guaranteed-to-exist">Use [unowned] for objects guaranteed to exist</h2>
 
 <blockquote>
-<p><strong>Tip</strong>: Use <code>unowned</code> only if you&rsquo;re capturinig a class instance.</p>
+<p><strong>Tip</strong>: Use <code>unowned</code> only if you&rsquo;re capturing a class instance.</p>
 </blockquote>
 
 <p>Use <code>unowned</code> in an escaping closure to access an object that is guaranteed to exist and avoid memory retain cycles by not retaining that object from the closure.</p>
@@ -274,7 +276,7 @@ Tweet</a><p>
 <p><strong>Warning</strong>: If <code>self</code> is released from memory and your subscription is invoked - accessing <code>self</code> will crash your app.</p>
 </blockquote>
 
-<h2 id="use-self-to-explictly-capture-an-object-or-a-value">Use self to explictly capture an object or a value</h2>
+<h2 id="use-self-to-explicitly-capture-an-object-or-a-value">Use self to explicitly capture an object or a value</h2>
 
 <p>If you&rsquo;re capturing a struct or another value type like an <code>Int</code> or a <code>String</code> you don&rsquo;t need to be concerned about memory management. Reference <code>self</code> or another value and Swift will figure the memory management automatically:</p>
 
@@ -291,7 +293,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">stuct ViewModel {
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
   <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>() -&gt; AnyPublisher&lt;<span style="color:#24909d">Int</span>, Never&gt; {
     <span style="color:#6ab825;font-weight:bold">return</span> myPublisher
       .map {
@@ -305,7 +307,7 @@ Tweet</a><p>
 
 <p>Implicitly capture strongly an object by not specifying <code>weak</code> or <code>unowned</code>. This will ensure the object is retained in memory for as long as your closure might get called.</p>
 
-<p>Here&rsquo;s an example how to weakly capture <code>self</code> but also strongly another object which you need and noone else might be retaining:</p>
+<p>Here&rsquo;s an example how to weakly capture <code>self</code> but also strongly another object which you need and no-one else might be retaining:</p>
 
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -339,6 +341,158 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
+
+<h2 id="assign-to-on-captures-strongly">assign(to:on:) captures strongly</h2>
+
+<p>Use <code>assign(to:on:)</code> to capture the subscriber of a subcription, as long as you&rsquo;re not creating a cyclic reference.</p>
+
+<p>The subscription below captures <code>self</code> because you use it with <code>assign(to:on:)</code> and <code>MyViewController</code> leaks (aka is never released from memory).</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyViewController</span>: ViewController {
+    
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>(viewModel: MyViewModel) {
+    viewModel.eventPublisher
+      .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.currentEvent, on: <span style="color:#6ab825;font-weight:bold">self</span>)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Instead, use <code>assign(to:on:)</code> safely when you don&rsquo;t capture <code>self</code>; for example to bind updates from the network to a data model:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">APIController</span> {
+    
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">bind</span>(viewModel: MyViewModel) {
+    myAPIEndpoint.updatesPublisher
+      .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.latestUpdates, on: viewModel)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<h2 id="what-happens-if-i-capture-self-strongly">What happens if I capture self strongly?</h2>
+
+<p>Try using <code>self</code> directly like so inside a <code>sink(...)</code>:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Model</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">printDate</span>(<span style="color:#6ab825;font-weight:bold">_</span> date: Date) {
+    print(date)
+  }
+    
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">sub</span>: AnyCancellable?
+    
+  <span style="color:#6ab825;font-weight:bold">init</span>() {
+    sub = Timer
+      .publish(every: <span style="color:#3677a9">1</span>, on: RunLoop.main, <span style="color:#6ab825;font-weight:bold">in</span>: .<span style="color:#6ab825;font-weight:bold">default</span>)
+      .autoconnect()
+      .sink {
+        <span style="color:#6ab825;font-weight:bold">self</span>.printDate(<span style="color:#40ffff">$0</span>)
+      }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>You retain the escaping closure used in <code>sink</code> via retaining the subscription in the class&rsquo; <code>sub</code> property. At the same time you retain <code>self</code> back from within the same escaping closure. Each of the two retains the other one in a cyclic reference.</p>
+
+<p>See the effect of this cyclic retain by running this code:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">model</span>: Model? = Model()
+model = <span style="color:#6ab825;font-weight:bold">nil</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Creating a new <code>Model</code> initializes the timer subscription and the app starts printing dates every second. Unfortunately setting <code>model</code> to <code>nil</code> doesn&rsquo;t release it from memory as the closure used in <code>sink</code> keeps it alive.</p>
+
+<blockquote>
+<p><strong>Note</strong>: After you do <code>model = nil</code> there is no way to access the model that is just hanging around in memory anymore. That&rsquo;s why we call this a &ldquo;memory leak&rdquo;.</p>
+</blockquote>
+
+<p>Now let&rsquo;s try <strong>not capturing</strong> <code>self</code> by using <code>[weak]</code>- all of the code stays the same except the code inside <code>sink</code>:</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Model</span> {
+  ...
+      .sink { [<span style="color:#6ab825;font-weight:bold">weak</span> <span style="color:#6ab825;font-weight:bold">self</span>] <span style="color:#6ab825;font-weight:bold">in</span>
+        <span style="color:#6ab825;font-weight:bold">self</span>?.printDate(<span style="color:#40ffff">$0</span>)
+      }
+  ...
+}</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now you retain the escaping closure via retaining the subscription  from <code>Model</code>, but you don&rsquo;t retain the model back from the closure. As soon as you set the local variable <code>model</code> to <code>nil</code> that releases the subscription and the closure too.</p>
+
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">model</span>: Model? = Model()
+model = <span style="color:#6ab825;font-weight:bold">nil</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This time around the code doesn&rsquo;t print anything anymore as the model and the timer subscription are released immediately after they are created.</p>
 
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 
