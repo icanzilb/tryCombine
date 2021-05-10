@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Swift Actors: A practical example, part 1</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Swift Actors: A practical example, part 1" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Series of Combine framework programming related blog posts." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-actors/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Series of Combine framework programming related blog posts.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Swift Actors: A practical example, part 1">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+			<div id="combinebook">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465; border-radius: 10px;">
+				</a>
+			</div>
+        </div>
+
+			
+		<h1>Swift Actors: A practical example, part 1 </h1>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Swift%20Actors%3a%20A%20practical%20example%2c%20part%201&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-actors%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>I&rsquo;ve been re-reading the Swift <a href="https://forums.swift.org/t/swift-concurrency-roadmap/41611">structured concurrency</a> roadmap and the Swift <a href="https://github.com/DougGregor/swift-evolution/blob/actors/proposals/nnnn-actors.md">actors proposal</a> and noticed a note on the latter saying:</p>
+<blockquote>
+<p>&ldquo;<em>Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency</em>&rdquo;</p>
+</blockquote>
+<p>So, naturally 🤓, I downloaded the <a href="https://swift.org/download/#snapshots">latest snapshot</a> from Swift.org and took it for a spin to try out some actor code!</p>
+<h2 id="installing-swift-toolchain-with-actors-support">Installing Swift toolchain with actors support</h2>
+<blockquote>
+<p><strong>Huge disclaimer</strong>: this is all experimental experience using a trunk code not cut into a release.</p>
+</blockquote>
+<p>I grabbed a May 4th <a href="https://swift.org/download/#snapshots">trunk snapshot</a> of the swift toolchain, installed it on my machine, and activated it in my Xcode 12.5 beta via the Xcode/Toolchains&hellip; menu. Now I have Xcode running with Swift 5.5 💪🏼:</p>
+<p><img src="https://trycombine.com/images/actors/xcode-about.png" alt="Xcode 12.5 with swift 5.5 toolchain."></p>
+<p>Next, I needed a project with enabled experimental concurrency support so I created an app from the command line:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">swift package <span style="color:#6ab825;font-weight:bold">init</span> --type=executable</code></pre></td></tr></table>
+</div>
+</div>
+<p>Then I cleaned up the <strong>Package.swift</strong> file and added the swift compiler flag that was mentioned in the actors proposal:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// swift-tools-version:5.4</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">PackageDescription</span>
+
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">package</span> = Package(
+    name: <span style="color:#ed9d13">&#34;ActorTest&#34;</span>,
+    platforms: [.macOS(.v11)],
+    targets: [
+      .executableTarget(
+        name: <span style="color:#ed9d13">&#34;ActorTest&#34;</span>,
+        swiftSettings: [
+          .unsafeFlags([
+            <span style="color:#ed9d13">&#34;-Xfrontend&#34;</span>, 
+            <span style="color:#ed9d13">&#34;-enable-experimental-concurrency&#34;</span>
+          ])
+        ]
+      )
+    ]
+)</code></pre></td></tr></table>
+</div>
+</div>
+<p>⌘+B to check if the projects builds fine and that&rsquo;s all - <code>ActorsTest</code> is now an app sporting experimental Swift concurrency with actors!</p>
+<h2 id="quick-detour-what-problem-are-actors-solving">Quick detour: What problem are actors solving?</h2>
+<p>I&rsquo;ve read few times the various Swift concurrency effort proposals and I&rsquo;ll try to summarize my understanding of what actors solve (so far).</p>
+<blockquote>
+<p>Note: I might be wrong about some points or things might change considerably later on.</p>
+</blockquote>
+<p>Let&rsquo;s take this Swift code:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Person</span> {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Is <code>Person</code> thread-safe 🤔? In other words, will your app &ndash;&gt;<strong>ever</strong>&lt;&ndash; crash inside <code>Person</code>?</p>
+<p>The answer is: &ldquo;it depends&rdquo;. It depends how your or others' code uses <code>Person</code>. If two pieces of code, running concurrently, update <code>Person.name</code> at the same time - your app will crash. 🌋</p>
+<p><strong>Even</strong> if you make <code>Person.name</code> private, in order to protect it from concurrent reads/writes from outside the class, you can still concurrently read/write from <strong>within</strong> the class which is also going to crash your app.</p>
+<p>At present, if you are writing concurrent code, you are probably using Swift&rsquo;s thread sanitizer to detect data races like the one I&rsquo;m talking about above.</p>
+<p><img src="https://trycombine.com/images/actors/tsan.png" alt="Thread sanitizer options in Xcode"></p>
+<p>This is extremely useful but the problem is that this way you <strong>still can</strong> write unsafe code. Crashes might still happen at runtime. You just hope you&rsquo;ll discover and fix all the issues by using the Thread sanitizer. (And won&rsquo;t introduce new issues later on.)</p>
+<h3 id="actors">Actors</h3>
+<p>Actors offer data isolation within a type in such way that the code you write cannot create data races. In other words, thread-safety is built into the type system. Similarly to how mutability is - you simply cannot compile code that mutates immutable data.</p>
+<p>Let&rsquo;s compare a struct versus an actor. The <code>struct</code> below <em>is not</em> thread safe and whether is crashes or not depends on the way other code uses it:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Person</span> {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>In contrast, the following <code>actor</code> type <em>is</em> safe to use concurrently. Thanks to the work-in-progress actors feature your code accesses the <code>name</code>-property memory in a safe way. It&rsquo;s guaranteed by the actor type:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">actor Person {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I haven&rsquo;t delved into the implementation details but from what I&rsquo;ve read so far in the proposal - actors transparently implement the following compile-time rules:</p>
+<ol>
+<li>Allow synchronous access to actor&rsquo;s members from within itself,</li>
+<li>Allow only asynchronous access to the actor&rsquo;s members from any asynchronous context, and</li>
+<li>Allow only asynchronous access to the actor&rsquo;s members from outside the actor.</li>
+</ol>
+<p>This way the actor itself accesses its data synchronously, but any other code from outside is required asynchronous access (with implicit synchronization) to prevent data races.</p>
+<p>This is really clever and it leverages all the tech already existing in Swift!</p>
+<p><strong>Now let&rsquo;s give all that a try!</strong></p>
+<h2 id="building-a-crash-prone-app">Building a crash-prone app</h2>
+<p>Going back to my <code>ActorTest</code> app, I&rsquo;ll first try some concurrent code that crashes before I add in an actor to solve the crash.</p>
+<p>I&rsquo;ll start with a cache type that computes SHA512 hashes of numbers (a silly example that requires just few lines of Swift to demonstrate the idea):</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">CryptoKit</span>
+
+<span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">HashCache</span> {
+  <span style="color:#6ab825;font-weight:bold">private</span>(<span style="color:#6ab825;font-weight:bold">set</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">hashes</span> = [<span style="color:#24909d">Int</span>: <span style="color:#24909d">String</span>]()
+    
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addHash</span>(<span style="color:#6ab825;font-weight:bold">for</span> number: <span style="color:#24909d">Int</span>) {
+    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">string</span> = SHA512.hash(data: 
+      Data(<span style="color:#24909d">String</span>(number).utf8)
+    ).description
+        
+    hashes[number] = string
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() {
+    DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">15000</span>, 
+      execute: addHash(<span style="color:#6ab825;font-weight:bold">for</span>:))  
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>hashes</code> is a dictionary where computed hashes are stored,</li>
+<li><code>addHash(for:)</code> takes a number and adds its text representation&rsquo;s hash to <code>hashes</code>, and</li>
+<li><code>compute()</code> pre-computes some 15000 hashes concurrently.</li>
+</ul>
+<p>If you&rsquo;ve done something along these lines before, you instantly see the issue in this code. When you call <code>HashCache.compute()</code> you&rsquo;ll have a crash because multiple threads are calling <code>addHash(for:)</code> and trying to mutate <code>hashes</code> at the same time. 💥</p>
+<p><img src="https://trycombine.com/images/actors/crash.png" alt="Data race crash in Xode"></p>
+<p>So again, <code>hashes</code> and <code>addHash(for:)</code> aren&rsquo;t unsafe per sè - especially if your app is generally running on the main thread. But as soon as some code calls <code>addHash(for:)</code> from a non-main thread the app becomes prone to data-race crashes.</p>
+<p>At present, to solve this issue, you would add locking around your mutable state or use a serial queue to synchronize data-access but that often requires a lot of boilerplate code. 🙃</p>
+<p>Let&rsquo;s rewrite <code>HashCache</code> as an <code>actor</code> and get rid of that crash for good.</p>
+<h2 id="converting-to-actor-code">Converting to actor code</h2>
+<p>So I&rsquo;m just going to replace the keyword <code>class</code> with an <code>actor</code> and &hellip;</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">CryptoKit</span>
+
+actor HashCache {
+  <span style="color:#6ab825;font-weight:bold">private</span>(<span style="color:#6ab825;font-weight:bold">set</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">hashes</span> = [<span style="color:#24909d">Int</span>: <span style="color:#24909d">String</span>]()
+    
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addHash</span>(<span style="color:#6ab825;font-weight:bold">for</span> number: <span style="color:#24909d">Int</span>) {
+    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">string</span> = SHA512.hash(data: 
+      Data(<span style="color:#24909d">String</span>(number).utf8)
+    ).description
+        
+    hashes[number] = string
+  }
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() {
+    DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">15000</span>, 
+      execute: addHash(<span style="color:#6ab825;font-weight:bold">for</span>:))
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>It works - the project compiles fine. Running the app though hits the same crash. Don&rsquo;t forget this feature is work-in-progress. 🤷🏽‍♂️</p>
+<p>It looks at the moment the compiler doesn&rsquo;t quite catch that the <code>execute</code> parameter of <code>DispatchQueue.concurrentPerform(...)</code> needs to be synchronized.</p>
+<p>But the compiler catches data-race code if you provide a closure instead! Changing <code>compute()</code> to:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() {
+  DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">15000</span>) { number <span style="color:#6ab825;font-weight:bold">in</span>
+    <span style="color:#6ab825;font-weight:bold">self</span>.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: number)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Spawns a neat error message like so:</p>
+<p><img src="https://trycombine.com/images/actors/error1.png" alt="Data race compile error message in Xcode"></p>
+<p>The closure in <code>concurrentPerform(...)</code> is called asynchronously so you are not allowed to synchronously access an actor member because it needs to be synchronized to prevent data races. Awesome!</p>
+<p>I won&rsquo;t try making the code work with <code>DispatchQueue</code> because at this point it&rsquo;d be much more fun to try the new <code>Task</code>-based (and also work-in-progress) concurrency. Let&rsquo;s replace the <code>DispatchQueue</code> code with a task group:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() {
+  withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+    
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>This is more sample code from the actor proposal that I mentioned above but on the surface it looks like it just creates a concurrent group that you can add tasks to. A neat detail is that <code>withTaskGroup(...)</code> waits until all tasks in the group complete.</p>
+<p>I checked for a way to create tasks that don&rsquo;t return anything but couldn&rsquo;t find one, so my tasks in this group will return a <code>Bool</code> which I&rsquo;m gonna discard.</p>
+<p>So far so good! I even get this neat error:</p>
+<p><img src="https://trycombine.com/images/actors/error2.png" alt="Not async context compile error message in Xode"></p>
+<p>Since <code>withTaskGroup(...)</code> needs to wait for all tasks to complete it is, of course, asynchronous. Swift complains that the context in which I call <code>withTaskGroup(...)</code> is not asynchronous so let&rsquo;s fix that:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
+  await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+    
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I made <code>compute()</code> async and also used <code>await</code> when calling <code>withTaskGroup(...)</code>. That clears up the previous error message but I get a new one:</p>
+<p><img src="https://trycombine.com/images/actors/error3.png" alt="Incompatible macOS version error message in Xcode"></p>
+<p>If you ⌘+Click on <code>withTaskGroup(...)</code> you&rsquo;ll find that the experimental features have a distant future availability:</p>
+<p><img src="https://trycombine.com/images/actors/availability.png" alt="Future availability of experimental features"></p>
+<p>In any case clicking the third suggested solution makes <code>HashCache</code> available on macOS 9999 or newer and everything compiles OK.</p>
+<p>Next, I want to create a task for each hash I&rsquo;m about to compute. I found this to work and it looks pretty simple (again, I don&rsquo;t really use the returned boolean).</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
+  await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+    <span style="color:#6ab825;font-weight:bold">for</span> number <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">15_000</span> {
+      group.spawn {
+        await <span style="color:#6ab825;font-weight:bold">self</span>.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: number)
+        <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">true</span>
+      }
+    }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Reading up the group API it sounds really great - you can treat it as a lazy sequence and control the tasks execution to batch tasks, cancel one or more tasks, emit progress as tasks complete, and more.</p>
+<p>But I won&rsquo;t go into all that right now as all I want now is to concurrently compute the hashes and be done.</p>
+<p>Did you notice that I had to call <code>addHash(for:)</code> by using <code>await</code>. What gives???</p>
+<p>If you scroll waaay up you&rsquo;ll notice that <code>addHash(for:)</code> isn&rsquo;t an <code>async</code> function at all. But calling <code>addHash(for:)</code> synchronously from an asynchronous task might cause a data-race and a crash. That&rsquo;s why the compiler requires you to use <code>await</code> so that it can synchronize your access to the actor&rsquo;s internals:</p>
+<p><img src="https://trycombine.com/images/actors/error4.png" alt="Synchronous access error message in Xcode"></p>
+<p>THIS is what I&rsquo;m talking about. The 3 simple rules we spelled out in the beginning are so clever that simply prevent you from writing bad code.</p>
+<p>So you <strong>have to</strong> to use <code>await</code> when calling <code>addHash(for:)</code> from asynchronous context.</p>
+<p>There is, however, no need to convert <code>addHash(for:)</code> to an <code>async</code> function altogether. You still might want to call it synchronously when the context permits it.</p>
+<p>Now I&rsquo;m super curious to try how that works. Let&rsquo;s add one more hash to the lot that <code>compute()</code> caches:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
+  addHash(<span style="color:#6ab825;font-weight:bold">for</span>: <span style="color:#3677a9">42</span>)
+
+  await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+    <span style="color:#6ab825;font-weight:bold">for</span> number <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">15_000</span> {
+      group.spawn {
+        await <span style="color:#6ab825;font-weight:bold">self</span>.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: number)
+        <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">true</span>
+      }
+    }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>It works! Calling <code>addHash(for:)</code> from within an actor method can be done synchronously.</p>
+<blockquote>
+<p>I didn&rsquo;t read in detail what&rsquo;s the annotation that makes the task closure give that actor isolation error but it&rsquo;s on my todo.</p>
+</blockquote>
+<h2 id="access-outside-the-actor">Access outside the actor</h2>
+<p>The last few use-cases to verify have to do with accessing actor members from outside of the actor, regardless whether from an asynchronous context or not.</p>
+<p>I tried this code from another type:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">cache.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: <span style="color:#3677a9">7778</span>)
+cache.compute()
+print(cache.hashes[<span style="color:#3677a9">34</span>]!)</code></pre></td></tr></table>
+</div>
+</div>
+<p>And got:</p>
+<p><img src="https://trycombine.com/images/actors/error5.png" alt="Not Asynchronous access error message in Xcode"></p>
+<ul>
+<li><code>compute()</code> is an <code>async</code> function so it needs an <code>await</code> when you call it,</li>
+<li><code>addHash()</code> is a &ldquo;vanilla&rdquo; function but for all purposes it&rsquo;s treated like an <code>async</code> when called from outside the actor, and finally</li>
+<li><code>hashes</code> also needs to be synchronized when accessed outside the actor so you also need to use <code>await</code> here.</li>
+</ul>
+<p>The actors implementation design and the experience when writing this code makes me very happy. Having thread-safety checked at compiled time will make Swift apps generally safer, less crash-prone, and hopefully more people will be embracing concurrent programming.</p>
+<h2 id="the-complete-actortest-app">The complete ActorTest app</h2>
+<p>Here&rsquo;s how the complete <strong>App.swift</strong> developed in this post look like:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">41
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Foundation</span>
+<span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">CryptoKit</span>
+
+@available(macOS <span style="color:#3677a9">9999</span>, *)
+@main
+<span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">App</span> {
+  <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cache</span> = HashCache()
+  
+  <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">main</span>() async {
+    await cache.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: <span style="color:#3677a9">7778</span>)
+    await cache.compute()
+    await print(cache.hashes[<span style="color:#3677a9">34</span>]!)
+  }
+}
+
+@available(macOS <span style="color:#3677a9">9999</span>, *)
+actor HashCache {
+  <span style="color:#6ab825;font-weight:bold">private</span>(<span style="color:#6ab825;font-weight:bold">set</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">hashes</span> = [<span style="color:#24909d">Int</span>: <span style="color:#24909d">String</span>]()
+  
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addHash</span>(<span style="color:#6ab825;font-weight:bold">for</span> number: <span style="color:#24909d">Int</span>) {
+    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">string</span> = SHA512.hash(data: 
+      Data(<span style="color:#24909d">String</span>(number).utf8)
+    ).description
+        
+    hashes[number] = string
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
+    addHash(<span style="color:#6ab825;font-weight:bold">for</span>: <span style="color:#3677a9">42</span>)
+    
+    await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+      <span style="color:#6ab825;font-weight:bold">for</span> number <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">15_000</span> {
+        group.spawn {
+          await <span style="color:#6ab825;font-weight:bold">self</span>.addHash(<span style="color:#6ab825;font-weight:bold">for</span>: number)
+          <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">true</span>
+        }
+      }
+    }
+  }
+  
+}</code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p>Final disclaimer: Developed using a Swift toolchain from the Swift.org trunk branch. The concurrency feature is a work-in-progress. This code might not work at a later moment.</p>
+</blockquote>
+<hr>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<blockquote>
+<p><strong>Update</strong>: After wrapping up this post I started thinking about mixing up Swift actors and Combine. Expect a follow-up post coming out in couple of days.</p>
+</blockquote>
+<p>All of the concurrency features in Swift are still work in progress. You don&rsquo;t need to be learning them as of right now as syntax or behavior might change, so I hope this post <em>does not</em> put any unnecessary pressure on you.</p>
+<p>That&rsquo;s also the reason why I&rsquo;ve also put so many disclaimers in the post - this write-up is purely exploratory.</p>
+<p>But the next time anyone tells you that concurrent code is bad because it crashes with strange errors and the best way is to only use the main thread, you&rsquo;ll know that&rsquo;s not true if you use the new structured concurrency in Swift :)</p>
+<p>Hit me up with your ideas, replies, and feedback on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+<hr>
+<p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
+</div>
+
+		
+
+<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+				</a>
+				<br/>
+				
+		<p class="meta">Posted on <span class="postdate">10. May 2021</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

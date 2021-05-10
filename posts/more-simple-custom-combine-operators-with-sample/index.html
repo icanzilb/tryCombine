@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,37 +173,22 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>In <a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom <code>Publisher</code> type.</p>
-
+		<div class="post-content"><p>In <a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom <code>Publisher</code> type.</p>
 <p>In this post I&rsquo;d like to show how this kind of &ldquo;cheap&rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.</p>
-
 <p>Let&rsquo;s look at <code>sample(_)</code>&hellip;</p>
-
 <h2 id="the-sample-operator">The <code>sample</code> operator</h2>
-
 <p><a href="https://rxmarbles.com">rxmarbles.com</a> is a marveleous website where you can find visual and interactive presentations of a multitude of reactive operators (based in their implementation in RxJS).</p>
-
 <p>One operator from Rx that I really like but I still don&rsquo;t see implemented in Combine is <code>sample</code>.</p>
-
 <p><code>sample</code> is very handy and you can see it in action here: (<a href="https://rxmarbles.com/#sample">https://rxmarbles.com/#sample</a>). It allows you to take the values of a publisher only at given times when a second publisher (a source or a trigger) emits.</p>
-
 <p>The second publisher&rsquo;s values are ignored - it only serves as a &ldquo;trigger&rdquo; as to when should the latest value of the first publisher be emitted.</p>
-
 <p>A practical application of <code>sample</code> is having a timer but you only take the current value when a button is pressed like so:</p>
-
-<p><img src="https://trycombine.com/images/sample/sample-dia.png" alt="" /></p>
-
+<p><img src="https://trycombine.com/images/sample/sample-dia.png" alt=""></p>
 <p>Now let&rsquo;s look at how to quickly re-implement <code>sample</code> by combining built-in Combine operators.</p>
-
 <h2 id="re-implementing-sample-in-combine">Re-implementing <code>sample</code> in Combine</h2>
-
 <p>First we will start with defining an extension on <code>Publisher</code> - again we will not create a new <code>Publisher</code> implementation but rather extend the protocol with a &ldquo;cheap&rdquo; operator.</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -204,7 +197,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
   <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
     -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
@@ -215,70 +208,57 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p><code>sample</code> will operate on the values of the current publisher. The method takes a single parameter which is the &ldquo;trigger&rdquo; or &ldquo;source&rdquo; publisher.</p>
-
 <p>The source publisher needs to meet a couple of conditions:</p>
-
 <ul>
 <li>first, the values emitted by <code>source</code> need to be, regardless of their actual type, <code>Equatable</code> so we can check for a new value by comparing the current one to the last one.</li>
 <li>second, the <code>Failure</code> types of <code>source</code> and <code>self</code> need to match as this is a requirement of <code>combineLatest(_)</code> which we will use in the method body.</li>
 </ul>
-
 <p>Now let&rsquo;s see about the imlementation. First we will start by combinging the two publishers together via <code>combineLatest</code>:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">combineLatest(source)</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>That will combine the values of <code>self</code> and <code>source</code> into a single stream of tuples, each containing the latest values of both publishers.</p>
-
 <p>Next we will filter any repeating values of the <code>source</code> publisher by removing duplicates via a custom closure:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.removeDuplicates(by: { 
   (tuple1, tuple2) -&gt; <span style="color:#24909d">Bool</span> <span style="color:#6ab825;font-weight:bold">in</span>
   tuple1.<span style="color:#3677a9">1</span> == tuple2.<span style="color:#3677a9">1</span>
 })</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>This will remove any values where the source publisher hasn&rsquo;t emitted a new value.</p>
-
 <p>Finally we need to get rid of the extra value in the tuple: the <code>source</code> element which is of no interest for this operator. And also erase the operator type to remove some of the complexity of the return type:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.map { tuple <span style="color:#6ab825;font-weight:bold">in</span>
   tuple.<span style="color:#3677a9">0</span>
 }
 .eraseToAnyPublisher()</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>And the final implementation is:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -294,7 +274,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
   -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
   <span style="color:#6ab825;font-weight:bold">where</span> P: Publisher, P.Output: <span style="color:#24909d">Equatable</span>, 
@@ -312,30 +292,24 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>We recreated <code>sample</code> as implemented in Rx by combinin/g <code>combineLatest</code>, <code>removeDuplicates</code>, and a <code>map</code>. Now we could use <code>sample</code> in all kinds of use-cases (though I personally find it most practical when using UI controls for the source). Let&rsquo;s try a quick and practical test.</p>
-
 <h2 id="getting-sample-out-for-a-spin">Getting <code>sample</code> out for a spin</h2>
-
 <p>A really simple test scenario could be:</p>
-
 <ul>
 <li>first publisher is a counter that emits consequtive integer values,</li>
 <li>second publisher (source, which could be a UI button or a timer) emits periodically to output the current counter value.</li>
 </ul>
-
 <p>Let&rsquo;s first get the counter going:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">counter</span> = Timer
   .publish(every: <span style="color:#3677a9">0.17</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
   .autoconnect()
@@ -344,43 +318,36 @@ Tweet</a><p>
   }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>The counter (when subscribed) will continuously count like so:</p>
-
 <pre><code>1
 2
 3
 4
 5
 ...
-</code></pre>
-
-<p>Then add a timer firing each 5 seconds to use as the &ldquo;source&rdquo;:</p>
-
+</code></pre><p>Then add a timer firing each 5 seconds to use as the &ldquo;source&rdquo;:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">trigger</span> = Timer
   .publish(every: <span style="color:#3677a9">5</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
   .autoconnect()</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>And finally use <code>sample</code> to use the two publishers together:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">sub</span> = counter
   .sample(source: trigger)
   .sink { value <span style="color:#6ab825;font-weight:bold">in</span>
@@ -388,9 +355,7 @@ Tweet</a><p>
   }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>That will print the current value of <code>counter</code> each time <code>trigger</code>  fires:</p>
-
 <pre><code>29
 58
 88
@@ -399,14 +364,9 @@ Tweet</a><p>
 176
 205
 ...
-</code></pre>
-
-<p>All works as expected so that&rsquo;s a wrap for today!</p>
-
+</code></pre><p>All works as expected so that&rsquo;s a wrap for today!</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>You saw how to create more useful and reusable but &ldquo;cheap&rdquo; to make Combine operators. Next you&rsquo;d probably want to look into creating custom operators via implementing new <code>Publisher</code> types!</p>
-
 <p>To learn more about implementing custom operators and publishers check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 

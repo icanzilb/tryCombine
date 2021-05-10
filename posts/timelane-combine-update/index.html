@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,121 +173,74 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>It&rsquo;s been two weeks since I released <strong>Timelane</strong> and I&rsquo;m really humbled by the community&rsquo;s super positive response.</p>
-
+		<div class="post-content"><p>It&rsquo;s been two weeks since I released <strong>Timelane</strong> and I&rsquo;m really humbled by the community&rsquo;s super positive response.</p>
 <p>Since much has happened since the launch, I&rsquo;m writing this to give everyone a detailed update.</p>
-
 <p>The current versions are as follows:</p>
-
 <ul>
 <li>TimelaneCombine 1.0.4</li>
 <li>RxTimelane 1.0.3</li>
 <li>TimelaneCore 1.0.3</li>
 </ul>
-
 <p>I&rsquo;ve merged <strong>18 PRs</strong> (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.</p>
-
 <p>Here&rsquo;s a summary of what&rsquo;s new.</p>
-
 <h2 id="more-platforms-tvos-watchos">More platforms: tvOS, watchOS</h2>
-
 <p>You can now use Timelane to profile tvOS and watchOS projects:</p>
-
 <ul>
 <li><a href="https://github.com/icanzilb/TimelaneCore/pull/4">#4 Adding watchOS and tvOS Versions to match feature set</a></li>
 <li><a href="https://github.com/icanzilb/TimelaneCore/pull/9">#9 Carthage: Add macOS, tvOS and watchOS to shared Frameworks</a></li>
 </ul>
-
 <h2 id="use-timelane-in-projects-that-support-older-platforms">Use Timelane in projects that support older platforms</h2>
-
 <p>This was an important point brought by the community and I wasn&rsquo;t initially aware of it. (<a href="https://github.com/icanzilb/TimelaneCore/pull/3">Full discussion</a>)</p>
-
 <p>You can now import Timelane in projects that support older platforms and cannot use signpost data to talk to instruments - the <code>Timelane</code> class will be unavailable.</p>
-
 <p>Of course you can still profile your project on a newer platform by either 1) upping your deployment target, or 2) using the <code>lane()</code> operator inside an <code>if #available(...)</code>.</p>
-
 <ul>
 <li><a href="https://github.com/icanzilb/TimelaneCore/pull/3">#3 Support for older system versions</a></li>
 </ul>
-
 <p>In case your project already supports the minimum platform targets that provide signposting, there is no change for you.</p>
-
 <h2 id="cocoapods-and-carthage-support-alongside-spm">CocoaPods and Carthage support alongside SPM</h2>
-
 <p><strong>Yes!</strong></p>
-
 <h3 id="cocoapods">CocoaPods</h3>
-
-<pre><code class="language-ruby">pod 'TimelaneCombine', '~&gt; 1.0.4'
-pod 'RxTimelane', '~&gt; 1.0.3'
-pod 'TimelaneCore', '~&gt; 1.0.3'
-</code></pre>
-
-<h3 id="carthage">Carthage</h3>
-
-<pre><code class="language-none">github &quot;icanzilb/TimelaneCombine&quot; &quot;1.0.4&quot;
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">pod <span style="color:#ed9d13">&#39;TimelaneCombine&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.4&#39;</span>
+pod <span style="color:#ed9d13">&#39;RxTimelane&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.3&#39;</span>
+pod <span style="color:#ed9d13">&#39;TimelaneCore&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.3&#39;</span>
+</code></pre></div><h3 id="carthage">Carthage</h3>
+<pre><code class="language-none" data-lang="none">github &quot;icanzilb/TimelaneCombine&quot; &quot;1.0.4&quot;
 github &quot;icanzilb/RxTimelane&quot; &quot;1.0.3&quot;
 github &quot;icanzilb/TimelaneCore&quot; &quot;1.0.3&quot;
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li><a href="https://github.com/icanzilb/TimelaneCombine/pull/6">#6 Add Carthage support</a></li>
 <li><a href="https://github.com/icanzilb/TimelaneCombine/pull/3">#3 Add PodSpec file to enable Cocoapods Support</a></li>
 <li><a href="https://github.com/icanzilb/RxTimelane/pull/1">#1 Add Carthage support for RxTimelane</a></li>
 <li><a href="https://github.com/icanzilb/RxTimelane/pull/2">#2 adds cocoapods spec</a></li>
 <li>and more</li>
 </ul>
-
 <h2 id="new-features">New features!</h2>
-
 <h3 id="format-the-reported-values">Format the reported values</h3>
-
 <p>Available in TimelaneCombine and RxTimelane - the <code>lane()</code> operator now accepts a closure to format the reported values.</p>
-
 <p>You can, for example, format numbers:</p>
-
-<pre><code class="language-swift">myNumberPublisher
-  .lane(&quot;Numbers&quot;) { number in
-    return String(format: &quot;%.2f&quot;, number)
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myNumberPublisher
+  .lane(<span style="color:#ed9d13">&#34;Numbers&#34;</span>) { number <span style="color:#6ab825;font-weight:bold">in</span>
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;%.2f&#34;</span>, number)
   }
-</code></pre>
-
-<p>Or for emitted arrays, log the count on the lane in Instruments:</p>
-
-<pre><code class="language-swift">myPhotosPublisher
-  .lane(&quot;Photos&quot;) { photos in
-    return &quot;\(photos.count) photos&quot;
+</code></pre></div><p>Or for emitted arrays, log the count on the lane in Instruments:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myPhotosPublisher
+  .lane(<span style="color:#ed9d13">&#34;Photos&#34;</span>) { photos <span style="color:#6ab825;font-weight:bold">in</span>
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>photos.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13"> photos&#34;</span>
   }
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li><a href="https://github.com/icanzilb/TimelaneCombine/pull/1">#1 Allow transforming sign-posted value</a></li>
 </ul>
-
 <h3 id="use-a-propertywrapper-to-log-in-timelane">Use a @PropertyWrapper to log in Timelane</h3>
-
 <p>Meet the easiest way to use TimelaneCombine. If you have a published property on your type like so:</p>
-
-<pre><code class="language-swift">@Published var timestamp: TimeInterval
-</code></pre>
-
-<p>Replace it with <code>@PublishedOnLane()</code> to log its values in Timelane:</p>
-
-<pre><code class="language-swift">@PublishedOnLane(&quot;Timer&quot;) var timestamp: TimeInterval
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
+</code></pre></div><p>Replace it with <code>@PublishedOnLane()</code> to log its values in Timelane:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@PublishedOnLane(<span style="color:#ed9d13">&#34;Timer&#34;</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
+</code></pre></div><ul>
 <li><a href="https://github.com/icanzilb/TimelaneCombine/pull/2">#2 Add PublishedOnLane</a></li>
 </ul>
-
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>Big thank you to everyone involved in these early developments! As always for more details go to <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-
 <p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-
 <p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 

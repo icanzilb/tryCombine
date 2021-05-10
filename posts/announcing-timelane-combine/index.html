@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,75 +173,42 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>Today I&rsquo;m announcing the public release of <strong>Timelane</strong>.</p>
-
+		<div class="post-content"><p>Today I&rsquo;m announcing the public release of <strong>Timelane</strong>.</p>
 <p><strong>Timelane</strong> is a free, open source Instrument that helps you profile and debug asynchronous code.</p>
-
 <p>Timelane is available today on: <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-
-<p><img src="https://trycombine.com/images/timelane/poster.png" alt="Timelane Icon" /></p>
-
+<p><img src="https://trycombine.com/images/timelane/poster.png" alt="Timelane Icon"></p>
 <p>The Timelane Instrument leverages <em>signpost logging</em> and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.</p>
-
 <h2 id="installation">Installation</h2>
-
 <p>Install the latest build from <a href="http://timelane.tools">http://timelane.tools</a> or fork the repository on GitHub and build the app yourself.</p>
-
 <p>Move the app to your <code>/Applications</code> folder and start it up.</p>
-
 <p>Click on the instrument package to install the Timelane instrument into your Instruments app:</p>
-
-<p><img src="https://trycombine.com/images/timelane/timelane-app-window.png" alt="" /></p>
-
+<p><img src="https://trycombine.com/images/timelane/timelane-app-window.png" alt=""></p>
 <p>Once finished, you can profile any of your projects using the Timelane instrument:</p>
-
-<p><img src="https://trycombine.com/images/timelane/timelane-instrument.png" alt="" /></p>
-
+<p><img src="https://trycombine.com/images/timelane/timelane-instrument.png" alt=""></p>
 <h2 id="usage">Usage</h2>
-
 <p>This example uses <strong>TimelaneCombine</strong> with Apple&rsquo;s Combine - the steps to use RxTimelane + RxSwift are almost identical.</p>
-
 <p>Add <code>TimelaneCombine</code> to your project via Swift Package Manager or Xcode:</p>
-
-<pre><code class="language-swift">.package(url: &quot;https://github.com/icanzilb/TimelaneCombine&quot;, 
-  .from(&quot;1.0.0&quot;))
-</code></pre>
-
-<p>Import TimelaneCombine in a source file:</p>
-
-<pre><code class="language-swift">import TimelaneCombine
-</code></pre>
-
-<p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
-
-<pre><code class="language-swift">downloadImagePublisher(at: url).
-  .lane(&quot;Download: \(url.path)&quot;)
-  .assign(to: \.image, on: myImageView)
-</code></pre>
-
-<p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
-
-<p><img src="https://trycombine.com/images/timelane/timelane-recording.gif" alt="" /></p>
-
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.package(url: <span style="color:#ed9d13">&#34;https://github.com/icanzilb/TimelaneCombine&#34;</span>, 
+  .from(<span style="color:#ed9d13">&#34;1.0.0&#34;</span>))
+</code></pre></div><p>Import TimelaneCombine in a source file:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCombine</span>
+</code></pre></div><p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">downloadImagePublisher(at: url).
+  .lane(<span style="color:#ed9d13">&#34;Download: </span><span style="color:#ed9d13">\(</span>url.path<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.image, on: myImageView)
+</code></pre></div><p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
+<p><img src="https://trycombine.com/images/timelane/timelane-recording.gif" alt=""></p>
 <p>For more details go to <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-
 <h2 id="release-details">Release details</h2>
-
 <p>The initial release of Timelane offers:</p>
-
 <ul>
 <li>The free and open source Timelane app and instrument: <a href="http://timelane.tools">timelane.tools</a></li>
 <li>Combine Timelane package: <a href="https://github.com/icanzilb/TimelaneCombine">TimelaneCombine</a></li>
 <li>RxSwift Timelane package: <a href="https://github.com/icanzilb/RxTimelane">RxTimelane</a></li>
 <li>All purpose generic Timelane package to use with any code: <a href="https://github.com/icanzilb/TimelaneCore">TimelaneCore</a></li>
 </ul>
-
 <p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 

@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,123 +173,93 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.</p>
-
+		<div class="post-content"><p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.</p>
 <p>In <a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I wrote about how to create an operator that logs to the system Console app in just few lines.</p>
-
 <p>After playing with Combine some more I went ahead and created a micro framework called &ldquo;CombinePrintout&rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.</p>
-
 <h2 id="combineprintout">CombinePrintout</h2>
-
 <p>To use CombinePrintout in your Xcode project go to &ldquo;File &gt; Swift Packages &gt; Add Package Dependency&hellip;&rdquo; and enter the package URL:</p>
-
 <p><a href="https://github.com/combineopensource/CombinePrintout">https://github.com/combineopensource/CombinePrintout</a></p>
-
 <p>The package allows you to easily print information about your subscriptions and cancellables.</p>
-
 <h2 id="printing-subscription-info">Printing subscription info</h2>
-
 <p>Combine&rsquo;s <code>print()</code> operator is pretty useful but while you&rsquo;re debugging code sometimes you need to subscribe given publisher for the only purpose of printing what&rsquo;s being emitted and when the publisher completes.</p>
-
 <p>CombinePrintout adds a new subscriber called <code>printSink()</code>, which is &hellip; no surprise here &hellip; a sink that only prints all events to the console.</p>
-
 <p>You use it like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just([<span style="color:#ed9d13">&#34;One&#34;</span>, <span style="color:#ed9d13">&#34;Two&#34;</span>])
   .printSink()</code></pre></td></tr></table>
 </div>
 </div>
-
 <p><code>printSink()</code> will subscribe the publisher and log all events like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink: output([<span style="color:#ed9d13">&#34;One&#34;</span>, <span style="color:#ed9d13">&#34;Two&#34;</span>]) 
 Sink: finished</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>If you are logging multiple subscriptions (especially if they run concurrently) you might want to use an identifier for each like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just([<span style="color:#ed9d13">&#34;One&#34;</span>, <span style="color:#ed9d13">&#34;Two&#34;</span>])
   .printSink(id: <span style="color:#ed9d13">&#34;Search subscription&#34;</span>)</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>This will print the identifier alongside the rest of the output:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Sink: output([<span style="color:#ed9d13">&#34;One&#34;</span>, <span style="color:#ed9d13">&#34;Two&#34;</span>]) Search subscription
 Sink: finished Search subscription</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Here&rsquo;s an Xcode tip for when you are heavily logging in your code: Use the Xcode Console filter field to filter your app&rsquo;s log in real time:</p>
-
-<p><img src="https://trycombine.com/images/combineprintout/console-filter.png" alt="" /></p>
-
+<p><img src="https://trycombine.com/images/combineprintout/console-filter.png" alt=""></p>
 <h2 id="printing-cancellable-info">Printing cancellable info</h2>
-
 <p>Another API in CombinePrintout is <code>printCancellable()</code>. This method wraps a <code>Cancellable</code> and prints its life-cycle events.</p>
-
 <p>This could help you figure the precise time when your subscription&rsquo;s cancellable is created, cancelled, and released from memory.</p>
-
 <p>You use it like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just([<span style="color:#ed9d13">&#34;One&#34;</span>, <span style="color:#ed9d13">&#34;Two&#34;</span>])
   .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.model, on: <span style="color:#6ab825;font-weight:bold">self</span>)
   .printCancellable()
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Note that <code>printCancellable()</code> is <strong>not</strong> an operator that you call on your publisher. It instead is a method on <code>Cancellable</code> you get back from a subscriber like <code>assign(to:on:)</code> in the code above.</p>
-
 <p>The result of <code>printCancellable()</code> is also an <code>AnyCancellable</code> so you can go on and store it in an <code>[AnyCancellable]</code> collection or a property somewhere.</p>
-
 <p>The result in the console looks like this:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Cancellable: <span style="color:#6ab825;font-weight:bold">init</span> 
 ... 
 (<span style="color:#6ab825;font-weight:bold">self</span>.subscriptions <span style="color:#6ab825;font-weight:bold">is</span> released from memory)
@@ -290,17 +268,11 @@ Cancellable: cancel
 Cancellable: <span style="color:#6ab825;font-weight:bold">deinit</span> </code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Just like with <code>printSink()</code> you can add an <code>id</code> parameter to identify the logs in your Console.</p>
-
 <p>And that&rsquo;s a wrap - these are the two publicly available APIs in CombinePrintout. I hope they will help you along the way!</p>
-
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>Grab the source or add the package as a dependency from the public repo on GitHub:</p>
-
 <p><a href="https://github.com/combineopensource/CombinePrintout">https://github.com/combineopensource/CombinePrintout</a></p>
-
 <p>To learn more about debugging with Combine check out the debugging chapter in <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 

@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,16 +173,10 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>Today&rsquo;s post showcases another real-life use case of using <a href="https://github.com/combineopensource/CombineDataSources">CombineDataSources</a>, namely binding a list to a table view with multiple sections using different cell types.</p>
-
+		<div class="post-content"><p>Today&rsquo;s post showcases another real-life use case of using <a href="https://github.com/combineopensource/CombineDataSources">CombineDataSources</a>, namely binding a list to a table view with multiple sections using different cell types.</p>
 <p>In my last post <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a> we had a look at binding a list of data elements to a table view. It&rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.</p>
-
 <p>In this post I&rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.</p>
-
 <p>In the previous post I used the <code>rowsSubscriber(...)</code> extension on <code>UITableView</code> like so:</p>
-
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">bind(subscriber:
   tableView.rowsSubscriber(
     cellIdentifier:
@@ -182,25 +184,15 @@ Tweet</a><p>
     cellConfig:
   )
 )</code></pre></div>
-
 <p><code>tableView.rowsSubscriber(...)</code> returns a table specific subscriber which manages the cells in the table view. The subscriber does that by instantiating a <code>TableViewItemsController</code> configured with the given cell type &amp; identifier.</p>
-
 <p>Given you set a single cell identifier, this approach obviously suits only plain lists with a single type of table rows.</p>
-
 <p>In this post we are going to go a level deeper into the API and create manually a <code>TableViewItemsController</code> which will allow us to create different types of cells and feed them to the table view.</p>
-
 <h2 id="setting-up-a-sectioned-table-project">Setting up a sectioned table project</h2>
-
 <p>To get the CombineDataSources binding goign first of all I need a simple project with a sectioned table view to play with.</p>
-
 <p>For this post I created a simple Mail app featuring a table view list with two cells - one for inbox messages and one for outbox messages:</p>
-
-<p><img src="https://trycombine.com/images/datasources/mail-storyboard.png" alt="Mail app storyboard" /></p>
-
+<p><img src="https://trycombine.com/images/datasources/mail-storyboard.png" alt="Mail app storyboard"></p>
 <p>Each cell is a different type (<code>InboxCell</code> and <code>OutboxCell</code>) and features its own custom UI in the Storyboard.</p>
-
 <p>I also need a data model for the inbox and outbox messages:</p>
-
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Message</span>: <span style="color:#24909d">Hashable</span> {
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">title</span>: <span style="color:#24909d">String</span>
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">text</span>: <span style="color:#24909d">String</span>
@@ -216,44 +208,30 @@ Tweet</a><p>
     Message(title: <span style="color:#ed9d13">&#34;See you at: Swift Peer Lab&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>)
   ]
 ]</code></pre></div>
-
 <p><code>Message</code> is a simple struct that includes a title and the message text. <code>messages</code> is a <code>Message</code> collection that I&rsquo;ll bind to my table view: the first array in <code>messages</code> is my outbox message list, the second contains the messages in the inbox.</p>
-
 <h2 id="binding-multiple-cell-types">Binding multiple cell types</h2>
-
 <p>I&rsquo;d like to bind my <code>messages</code> list to the two sections of my table - outbox and inbox.</p>
-
 <p>I&rsquo;m not going to use the same API like in my previous post mentioned above but create a <code>TableViewItemsController</code> manually instead.</p>
-
 <p><code>TableViewItemsController</code> has two initializers (modelled after the RxDataSources API):</p>
-
 <ul>
 <li><code>init(cellIdentifier:cellType:cellConfig:)</code> - this is the initializer that <code>UITableView.rowsSubscriber(...)</code> uses.</li>
 <li><code>init(cellFactory:)</code> - this is the initializer that we&rsquo;re going to use below.</li>
 </ul>
-
 <p>The <code>cellFactory</code> closure is given the table view, the controller, and the data and is expected to dequeue a cell and return it ready for displaying.</p>
-
 <p>I&rsquo;m gonna do that my view controller&rsquo;s <code>viewDidLoad()</code> method:</p>
-
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">listController</span> = TableViewItemsController&lt;[[Message]]&gt;
   { (controller, table, indexPath, message) -&gt; UITableViewCell <span style="color:#6ab825;font-weight:bold">in</span>
 
   }</code></pre></div>
-
 <p><code>TableViewItemsController</code> is generic over the list type it binds, which in my case is <code>[[Message]]</code> - one <code>[Message]</code> list for each of the table&rsquo;s sections.</p>
-
 <p>The closure parameter receives four parameters as follows:</p>
-
 <ul>
 <li>the controller instance itself</li>
 <li>the table view</li>
 <li>the index path of the current row</li>
 <li>the data element to bind for this row</li>
 </ul>
-
 <p>Since I have a different cell type per section I will switch over the current row&rsquo;s index path and decide what cell to return. The closure body becomes:</p>
-
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">switch</span> indexPath.section {
 <span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">0</span>:  <span style="color:#999;font-style:italic">// Outbox section</span>
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
@@ -269,29 +247,18 @@ Tweet</a><p>
 
 <span style="color:#6ab825;font-weight:bold">default</span>: fatalError()
 }</code></pre></div>
-
 <p>In each of my cases I&rsquo;m free to configure the cells as I please - above I just set the row&rsquo;s title.</p>
-
 <p>With an initialized controller in hand, I simply need to bind the message list to a table subscriber. Right after the code from above, I&rsquo;ll add:</p>
-
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just(messages)
   .bind(subscriber: tableView.sectionsSubscriber(listController))
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
-
 <p><code>tableView.sectionsSubscriber(listController)</code> creates a sections subscriber by using the given <code>listController</code> controller.</p>
-
 <p>I bind my message list to that subscriber and that&rsquo;s all I need to wrap up this example. (Storing the subscription in a <code>[AnyCancellable]</code> as well.)</p>
-
 <p>Running the project I get a populated table with the expected rows types in the two sections:</p>
-
-<p><img src="https://trycombine.com/images/datasources/mail-app.png" alt="Mail app running" /></p>
-
+<p><img src="https://trycombine.com/images/datasources/mail-app.png" alt="Mail app running"></p>
 <p>That&rsquo;s all for today, I hope that was useful and I&rsquo;ll see you next time!</p>
-
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>In case you missed the previous post on CombineDataSources you can find it here: <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a>.</p>
-
 <p>To learn more about working with UIKit and Combine check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 

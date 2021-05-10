@@ -78,6 +78,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -165,23 +173,15 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content">
-
-<p>Swift 5.4 officially introduces <code>@resultBuilder</code>, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).</p>
-
+		<div class="post-content"><p>Swift 5.4 officially introduces <code>@resultBuilder</code>, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).</p>
 <p>I wanted to play with it and create something useful for Combine developers so I thought &ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&rdquo;.</p>
-
 <p>I remembered back in the day I used an extension on <code>NSObject</code> that adds automatically a dispose bag to all objects in case you need one created by <a href="https://twitter.com/ashfurrow">Ash Furrow</a> and I thought I&rsquo;d put together something in the same fashion.</p>
-
 <p>Here&rsquo;s the completed code source, in case you&rsquo;d like to skip the implementation details below: <a href="https://github.com/icanzilb/Cancellor">https://github.com/icanzilb/Cancellor</a>.</p>
-
 <h2 id="an-owned-list-of-subscriptions">An owned list of subscriptions</h2>
-
 <p>First I added a lock and a raw key value to <code>NSObject</code> - you need the latter to &ldquo;assign&rdquo; a dynamic property to an Objective-C object, and the former to avoid data races:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -189,7 +189,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">NSObject</span> {
 
   <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellablesLock</span>: os_unfair_lock_s = 
@@ -199,16 +199,13 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <blockquote>
 <p>Note: Arguably, using a single lock is not very efficient if you create large amounts of subscriptions all the time. But it should suffice for most cases.</p>
 </blockquote>
-
 <p>Then I added a method that takes a list of <code>AnyCancellable</code> and adds it to a list of cancellables assigned to the current object. (And create an empty list if there is none found assigned already.)</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -223,7 +220,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addCancellables</span>(<span style="color:#6ab825;font-weight:bold">_</span> cancellables: [AnyCancellable]) {
   os_unfair_lock_lock(&amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesLock)
         
@@ -240,12 +237,10 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Now for the fun part - adding the <code>@resultBuilder</code>. I played with few scenarios but in the end it turned I only ever needed the <code>@resultBuilder</code> to collect the cancellables and pipe them through to <code>addCancellables()</code> which is already fleshed out.</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -254,7 +249,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@resultBuilder
 <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CancellablesBuilder</span> {
   <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">buildBlock</span>(<span style="color:#6ab825;font-weight:bold">_</span> parts: AnyCancellable...) 
@@ -265,22 +260,18 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>As evident by <code>buildBlock</code>s signature, the builder gets a list of <code>AnyCancellable</code> values and just returns them.</p>
-
 <h2 id="ownedcancellables">ownedCancellables</h2>
-
 <p>Next, <code>CancellablesBuilder</code> can be used back in <code>NSObject</code> to provide a DSL-like API for managing subscriptions:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">ownedCancellables</span>(
   @CancellablesBuilder content: () -&gt; [AnyCancellable]) {
 
@@ -288,12 +279,10 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Sweet! With <code>ownedCancellables</code> in place you can easily batch-create all your Combine subscriptions, let&rsquo;s say in one of your view controllers, like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -304,7 +293,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyController</span>: UIViewController {
   <span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
     ownedCancellables {
@@ -317,26 +306,20 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>This code will collect all the cancellables for your subscriptions and store them in a dynamically created cancellables list assigned to your view controller.</p>
-
 <p>If you don&rsquo;t cancel your subscriptions manually, at the time the view controller is popped out or otherwise dismissed your subscriptions will all be cancelled and released as well.</p>
-
-<h2 id="owned-by">owned(by:)</h2>
-
-<p>For kicks we can also add an extension on <code>AnyCancellable</code> to provide more-reactive &trade; way to manage a subscription. In effect we&rsquo;d like to &ldquo;tie&rdquo; the lifetime of the subscription to the lifetime of a random object.</p>
-
+<h2 id="ownedby">owned(by:)</h2>
+<p>For kicks we can also add an extension on <code>AnyCancellable</code> to provide more-reactive (tm) way to manage a subscription. In effect we&rsquo;d like to &ldquo;tie&rdquo; the lifetime of the subscription to the lifetime of a random object.</p>
 <p>With minimal effort the <code>AnyCancellable</code> extension looks like this:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AnyCancellable</span> {
   <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">owned</span>(by owner: NSObject) {
     owner.addCancellables([<span style="color:#6ab825;font-weight:bold">self</span>])
@@ -344,27 +327,23 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>Now, if you have a view model like so:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span>: NSObject {
   ... some properties ...
 }</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>And you need for a given subscription to last as long as the view model is around you can do this:</p>
-
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -372,7 +351,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">vm</span> = ViewModel(...)
 
 myPublisher
@@ -382,25 +361,17 @@ myPublisher
   .owned(by: vm)</code></pre></td></tr></table>
 </div>
 </div>
-
 <p>When <code>vm</code>&rsquo;s value is released from memory via setting it to <code>nil</code> or is otherwise released from memory, your subscription will automatically be cancelled as well.</p>
-
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-
 <p>I&rsquo;ve published the code under <a href="https://github.com/icanzilb/Cancellor">https://github.com/icanzilb/Cancellor</a>.</p>
-
 <p>I think with some more effort this could become a handy tool. Some questions I&rsquo;ve been considering are:</p>
-
 <ul>
 <li>how to manage the list so that cancelled subscriptions are removed? E.g. if you have a very long-lived view controller that always creates new subscriptions how to manage the size of the list?</li>
 <li>what more could a tool that manages subscriptions do?</li>
 <li>what if there is an <code>ownedCancellables</code> parameter that automatically logs the subscriptions in Timelane?</li>
 </ul>
-
 <p>Hit me up with your ideas on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-
-<hr />
-
+<hr>
 <p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
 </div>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>try Combine</title>
@@ -6,10 +6,29 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 10 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Swift Actors: A practical example, part 1</title>
+      <link>https://trycombine.com/posts/swift-actors/</link>
+      <pubDate>Mon, 10 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-actors/</guid>
+      <description>I&amp;rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
+ &amp;ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&amp;rdquo;
+ So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
+Installing Swift toolchain with actors support  Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.</description>
+    </item>
     
-	<atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>Swift Actors: A practical example, part 2</title>
+      <link>https://trycombine.com/posts/swift-actors-combine/</link>
+      <pubDate>Thu, 06 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-actors-combine/</guid>
+      <description>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
+If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
+When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &amp;ldquo;What about Combine?</description>
+    </item>
     
     <item>
       <title>Using self, weak, and unowned in Combine</title>
@@ -65,7 +84,8 @@ Creating a real custom instrument, however, is a little more complicated as you 
       <description>It&amp;rsquo;s been two weeks since I released Timelane and I&amp;rsquo;m really humbled by the community&amp;rsquo;s super positive response.
 Since much has happened since the launch, I&amp;rsquo;m writing this to give everyone a detailed update.
 The current versions are as follows:
- TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&amp;rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.</description>
+ TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&amp;rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.
+Here&amp;rsquo;s a summary of what&amp;rsquo;s new.</description>
     </item>
     
     <item>

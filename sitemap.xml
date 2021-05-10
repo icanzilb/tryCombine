@@ -1,158 +1,103 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>https://trycombine.com/tags/combine/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+    <loc>https://trycombine.com/tags/actors/</loc>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/concurrency/</loc>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/swift/</loc>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/swift-actors/</loc>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://trycombine.com/posts/self-weak-unowned/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/combine/</loc>
+    <lastmod>2021-05-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/swift-actors-combine/</loc>
+    <lastmod>2021-05-06T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/memory-management/</loc>
     <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://trycombine.com/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/unowned/</loc>
     <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>https://trycombine.com/posts/self-weak-unowned/</loc>
+    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/weak/</loc>
     <lastmod>2021-03-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/anycancellable/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/cancellor/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/cancellor/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/publisher/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/timelane-nsspain-2020/</loc>
     <lastmod>2020-11-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/instruments/</loc>
     <lastmod>2020-11-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/timelane/</loc>
     <lastmod>2020-11-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/how-to-create-custom-instrument/</loc>
     <lastmod>2020-04-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/timelane-combine-update/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/tags/timelanecombine/</loc>
     <lastmod>2020-03-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/announcing-timelane-combine/</loc>
     <lastmod>2020-02-28T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/combine-property-wrappers/</loc>
     <lastmod>2019-09-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/subscribe-on-receive-on/</loc>
     <lastmod>2019-09-09T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/combinedatasources-multiple-sections/</loc>
     <lastmod>2019-09-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/combinedatasources-simple-static-list/</loc>
     <lastmod>2019-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/assert-max-subscriptions/</loc>
     <lastmod>2019-08-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/debug-logging-combineprintout/</loc>
     <lastmod>2019-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/</loc>
     <lastmod>2019-08-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/posts/simple-custom-combine-operators/</loc>
     <lastmod>2019-08-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://trycombine.com/categories/</loc>
-    <priority>0</priority>
   </url>
-  
 </urlset>

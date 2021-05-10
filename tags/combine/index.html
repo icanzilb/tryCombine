@@ -81,6 +81,14 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
       </li>
     
@@ -161,6 +169,18 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-actors-combine/">Swift Actors: A practical example, part 2</a> </h1>
+
+			<div class="post-content">
+				<p>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
+If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
+When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &ldquo;What about Combine?  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">06. May 2021</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/self-weak-unowned/">Using self, weak, and unowned in Combine</a> </h1>
 
 			<div class="post-content">
@@ -192,7 +212,8 @@ I remembered back in the day I used an extension on NSObject that adds automatic
 				<p>It&rsquo;s been two weeks since I released Timelane and I&rsquo;m really humbled by the community&rsquo;s super positive response.
 Since much has happened since the launch, I&rsquo;m writing this to give everyone a detailed update.
 The current versions are as follows:
- TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.  … </p>
+ TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.
+Here&rsquo;s a summary of what&rsquo;s new.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">13. March 2020</span></p>
@@ -271,18 +292,6 @@ For example: in RxSwift when dealing with UI I&rsquo;d usually use shareReplayLa
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/debug-logging-combineprintout/">Debug logging with CombinePrintout</a> </h1>
-
-			<div class="post-content">
-				<p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.
-In Simple custom Combine operators I wrote about how to create an operator that logs to the system Console app in just few lines.
-After playing with Combine some more I went ahead and created a micro framework called &ldquo;CombinePrintout&rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">16. August 2019</span></p>
 		</article>
 	
 
