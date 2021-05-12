@@ -6,7 +6,18 @@
     <description>Recent content on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Swift Actors: A practical example, part 2</title>
+      <link>https://trycombine.com/posts/swift-actors-combine/</link>
+      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-actors-combine/</guid>
+      <description>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
+If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
+When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &amp;ldquo;What about Combine?</description>
+    </item>
+    
     <item>
       <title>Swift Actors: A practical example, part 1</title>
       <link>https://trycombine.com/posts/swift-actors/</link>

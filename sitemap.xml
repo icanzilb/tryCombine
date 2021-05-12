@@ -3,28 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://trycombine.com/tags/actors/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/combine/</loc>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/concurrency/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/swift/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/swift-actors-combine/</loc>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2021-05-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/swift-actors/</loc>
     <lastmod>2021-05-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/</loc>
-    <lastmod>2021-05-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/combine/</loc>
-    <lastmod>2021-03-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/memory-management/</loc>
     <lastmod>2021-03-03T00:00:00+00:00</lastmod>

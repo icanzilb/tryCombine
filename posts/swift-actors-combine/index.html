@@ -78,11 +78,11 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 6/May &middot; Swift Actors: A practical example, part 2</a>
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -173,8 +173,8 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>In my previous post <a href="#">Swift Actors: A practical example, part 1</a> I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.</p>
-<p>If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. <a href="#">»</a></p>
+		<div class="post-content"><p>In my previous post <a href="https://trycombine.com/posts/swift-actors/">Swift Actors: A practical example, part 1</a> I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.</p>
+<p>If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. <a href="https://trycombine.com/posts/swift-actors/">»</a></p>
 <p>When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &ldquo;<em>What about Combine?</em>&rdquo;.</p>
 <h2 id="what-about-swift-actors-and-combine">What about Swift actors and Combine?</h2>
 <p>With all the concurrency advancements like <code>async/await</code>, the <code>Task</code> APIs, and actors - is Combine going to be still needed?</p>
@@ -183,7 +183,7 @@ Tweet</a><p>
 <li>I believe I won&rsquo;t use <code>Future</code> much more since an <code>async</code> function is much simpler to write.</li>
 <li>Reimplementing publishers that only emit series of values and then complete as an <code>AsyncSequence</code> will be easier and more importantly much simpler at the point-of-use.</li>
 </ol>
-<p>In any case I think the Combine APIs offering complex processing of values over time is unique and really powerful so I don&rsquo;t think it&rsquo;s gonna go anywhere.</p>
+<p>In any case I think the Combine APIs to manage multiple streams of events over time offer a unique angle to asycnhronous value processing. In fact, I think it&rsquo;s great we&rsquo;re getting a simpler way of async/concurrent for simple tasks and still have the option to solve more complex problems with Combine.</p>
 <p><strong>So let&rsquo;s add some Combine</strong> to the <code>ActorTest</code> app from part 1!</p>
 <h2 id="converting-an-async-function-to-synchronous">Converting an async function to synchronous</h2>
 <blockquote>
@@ -296,10 +296,10 @@ Tweet</a><p>
   }
   
   <span style="color:#999;font-style:italic">// Consume the tasks as they complete.</span>
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#3677a9">0.0</span>
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#3677a9">0</span>
   <span style="color:#6ab825;font-weight:bold">while</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">_</span> = await group.next() {
     counter += <span style="color:#3677a9">1</span>
-    progress.send(<span style="color:#24909d">Int</span>(counter / <span style="color:#3677a9">15_000.0</span> * <span style="color:#3677a9">100</span>))
+    progress.send(<span style="color:#24909d">Int</span>(<span style="color:#24909d">Double</span>(counter) / <span style="color:#3677a9">15_000.0</span> * <span style="color:#3677a9">100</span>))
   }
 }</code></pre></td></tr></table>
 </div>
@@ -313,7 +313,7 @@ Tweet</a><p>
 <p>The code, emitting the progress, counts the completed tasks and calls into <code>progress.send(...)</code> to emit the current progress value.</p>
 <h2 id="subscribing-the-progress-publisher">Subscribing the progress publisher</h2>
 <p>The rewrite with Combine is essentially completed. I still need to subscribe <code>compute()</code> and print the progress to the console.</p>
-<p>That was the easiest task so far:</p>
+<p>That&rsquo;s the easiest task so far:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -493,7 +493,7 @@ actor HashCache {
 				</a>
 				<br/>
 				
-		<p class="meta">Posted on <span class="postdate">06. May 2021</span></p>
+		<p class="meta">Posted on <span class="postdate">12. May 2021</span></p>
 	</article>
 	
 
