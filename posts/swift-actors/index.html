@@ -263,7 +263,7 @@ Tweet</a><p>
 <p>This is extremely useful but the problem is that this way you <strong>still can</strong> write unsafe code. Crashes might still happen at runtime. You just hope you&rsquo;ll discover and fix all the issues by using the Thread sanitizer. (And won&rsquo;t introduce new issues later on.)</p>
 <h3 id="actors">Actors</h3>
 <p>Actors offer data isolation within a type in such way that the code you write cannot create data races. In other words, thread-safety is built into the type system. Similarly to how mutability is - you simply cannot compile code that mutates immutable data.</p>
-<p>Let&rsquo;s compare a class versus an actor. The <code>class</code> below <em>is not</em> thread safe and whether is crashes or not depends on the way other code uses it:</p>
+<p>Let&rsquo;s compare a class versus an actor. The <code>class</code> below <em>is not</em> thread safe and whether it crashes or not depends on the way other code uses it:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
