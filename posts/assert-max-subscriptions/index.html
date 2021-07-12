@@ -173,12 +173,41 @@
 			
 		<h1>An assert operator: assertMaxSubscriptions() </h1>
 
-<p>
-<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="An assert operator: assertMaxSubscriptions()" data-url="https://trycombine.com/posts/assert-max-subscriptions/" data-via="icanzilb" data-dnt="true" data-show-count="false">Tweet post</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
 
-<a href="https://twitter.com/icanzilb?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @icanzilb</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
 
-</p>
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=An%20assert%20operator%3a%20assertMaxSubscriptions%28%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fassert-max-subscriptions%2f"
+  data-size="medium">
+Tweet</a><p>
 
 		<div class="post-content"><p>While I keep working on <a href="https://github.com/combineopensource/CombineDataSources">CombineDataSources</a> I&rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.</p>
 <p>For example: in RxSwift when dealing with UI I&rsquo;d usually use <code>shareReplayLatestWhileConnected()</code> - this operator shares an observable <strong>and</strong> emits the latest value to all subscribers downstream. In Combine there is currently a <code>share()</code> operator which does a similar thing but does not &ldquo;replay&rdquo; the latest value.</p>
@@ -336,11 +365,11 @@ publisher
 <p>To learn more about debugging with Combine check out the debugging chapter in <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
 </div>
 
-		<div id="combinebook">
-		<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
-			<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
-		</a>
-		<br/>
+<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+				</a>
+				<br/>
 				
 		<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
 	</article>
