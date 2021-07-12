@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>async on try Combine</title>
+    <link>https://trycombine.com/tags/async/</link>
+    <description>Recent content in async on try Combine</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 12 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/async/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Proxy from Combine to AsyncSequence (p. 1)</title>
+      <link>https://trycombine.com/posts/combine-async-sequence-1/</link>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/combine-async-sequence-1/</guid>
+      <description>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&amp;rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
+ Note: The current version of Xcode 13 is beta 2 and I&amp;rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -4,32 +4,35 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Announcing: Timelane</title>
+		<title>asyncstream</title>
 		<meta name="viewport" content="width=device-width">
+		
+			<link href="https://trycombine.com/tags/asyncstream/index.xml" rel="alternate" type="application/rss+xml" title="try Combine" />
+			<link href="https://trycombine.com/tags/asyncstream/index.xml" rel="feed" type="application/rss+xml" title="try Combine" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Announcing: Timelane" />
+		<meta property="og:title" content="asyncstream" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="How to debug Combine code with the Timelane instrument" />
+<meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/announcing-timelane-combine/" />
+<meta property="og:url" content="https://trycombine.com/tags/asyncstream/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
-<meta name="description" content="How to debug Combine code with the Timelane instrument">
+<meta name="description" content="Series of Combine framework programming related blog posts.">
 <meta name="author" content="Marin Todorov">
 
 <link href rel="alternate" type="application/rss+xml" title="try Combine">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:description" content="How to debug Combine code with the Timelane instrument" />
+<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Announcing: Timelane">
+<meta name="twitter:title" content="asyncstream">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -157,8 +160,7 @@
 
 			<div id="content">
 				
-	<article class="post">
-				<div id="promo">
+			<div id="promo">
 			<div id="combinebook">
 				<style>
 					#combinebook a:hover { background: transparent!important; }
@@ -169,64 +171,21 @@
 			</div>
         </div>
 
-			
-		<h1>Announcing: Timelane </h1>
-
-<p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Announcing%3a%20Timelane&url=https%3a%2f%2ftrycombine.com%2fposts%2fannouncing-timelane-combine%2f"
-  data-size="medium">
-Tweet</a><p>
-
-		<div class="post-content"><p>Today I&rsquo;m announcing the public release of <strong>Timelane</strong>.</p>
-<p><strong>Timelane</strong> is a free, open source Instrument that helps you profile and debug asynchronous code.</p>
-<p>Timelane is available today on: <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-<p><img src="https://trycombine.com/images/timelane/poster.png" alt="Timelane Icon"></p>
-<p>The Timelane Instrument leverages <em>signpost logging</em> and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.</p>
-<h2 id="installation">Installation</h2>
-<p>Install the latest build from <a href="http://timelane.tools">http://timelane.tools</a> or fork the repository on GitHub and build the app yourself.</p>
-<p>Move the app to your <code>/Applications</code> folder and start it up.</p>
-<p>Click on the instrument package to install the Timelane instrument into your Instruments app:</p>
-<p><img src="https://trycombine.com/images/timelane/timelane-app-window.png" alt=""></p>
-<p>Once finished, you can profile any of your projects using the Timelane instrument:</p>
-<p><img src="https://trycombine.com/images/timelane/timelane-instrument.png" alt=""></p>
-<h2 id="usage">Usage</h2>
-<p>This example uses <strong>TimelaneCombine</strong> with Apple&rsquo;s Combine - the steps to use RxTimelane + RxSwift are almost identical.</p>
-<p>Add <code>TimelaneCombine</code> to your project via Swift Package Manager or Xcode:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.package(url: <span style="color:#ed9d13">&#34;https://github.com/icanzilb/TimelaneCombine&#34;</span>, 
-  .from(<span style="color:#ed9d13">&#34;1.0.0&#34;</span>))
-</code></pre></div><p>Import TimelaneCombine in a source file:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCombine</span>
-</code></pre></div><p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">downloadImagePublisher(at: url).
-  .lane(<span style="color:#ed9d13">&#34;Download: </span><span style="color:#ed9d13">\(</span>url.path<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.image, on: myImageView)
-</code></pre></div><p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
-<p><img src="https://trycombine.com/images/timelane/timelane-recording.gif" alt=""></p>
-<p>For more details go to <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-<h2 id="release-details">Release details</h2>
-<p>The initial release of Timelane offers:</p>
-<ul>
-<li>The free and open source Timelane app and instrument: <a href="http://timelane.tools">timelane.tools</a></li>
-<li>Combine Timelane package: <a href="https://github.com/icanzilb/TimelaneCombine">TimelaneCombine</a></li>
-<li>RxSwift Timelane package: <a href="https://github.com/icanzilb/RxTimelane">RxTimelane</a></li>
-<li>All purpose generic Timelane package to use with any code: <a href="https://github.com/icanzilb/TimelaneCore">TimelaneCore</a></li>
-</ul>
-<p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-<h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
-</div>
-
-		
-
-<div id="combinebook">
-				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
-					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
-				</a>
-				<br/>
-				
-		<p class="meta">Posted on <span class="postdate">28. February 2020</span></p>
-	</article>
 	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/combine-async-sequence-1/">Proxy from Combine to AsyncSequence (p. 1)</a> </h1>
+
+			<div class="post-content">
+				<p>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
+ Note: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">12. July 2021</span></p>
+		</article>
+	
+
+	
+
 
 			</div>
 

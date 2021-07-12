@@ -6,20 +6,38 @@
     <description>Recent content in Tags on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 12 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 12 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>actors</title>
-      <link>https://trycombine.com/tags/actors/</link>
-      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      <title>async</title>
+      <link>https://trycombine.com/tags/async/</link>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://trycombine.com/tags/actors/</guid>
+      <guid>https://trycombine.com/tags/async/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asyncsequence</title>
+      <link>https://trycombine.com/tags/asyncsequence/</link>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/asyncsequence/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asyncstream</title>
+      <link>https://trycombine.com/tags/asyncstream/</link>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/asyncstream/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Combine</title>
       <link>https://trycombine.com/tags/combine/</link>
-      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/combine/</guid>
       <description></description>
@@ -28,7 +46,7 @@
     <item>
       <title>concurrency</title>
       <link>https://trycombine.com/tags/concurrency/</link>
-      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/concurrency/</guid>
       <description></description>
@@ -37,9 +55,18 @@
     <item>
       <title>swift</title>
       <link>https://trycombine.com/tags/swift/</link>
-      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/swift/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>actors</title>
+      <link>https://trycombine.com/tags/actors/</link>
+      <pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/actors/</guid>
       <description></description>
     </item>
     
