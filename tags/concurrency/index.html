@@ -81,7 +81,11 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Proxy operator from Combine to AsyncSequence (p. 1)</a>
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -174,7 +178,19 @@
 
 	
 		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-1/">Proxy operator from Combine to AsyncSequence (p. 1)</a> </h1>
+			<h1><a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (p. 2)</a> </h1>
+
+			<div class="post-content">
+				<p>Yesterday I wrote about AsyncSequence, AsyncStream and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - Bridge from Combine to AsyncSequence - the plan (part 1).
+Today let&rsquo;s put together the code as planned and see if that&rsquo;s going to work out so we can easily use publishers as async sequences.
+CombineAsyncStream setup I&rsquo;ll create a new type called CombineAsyncStream and make it conform to AsyncSequence.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">13. July 2021</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/combine-async-sequence-1/">Bridge from Combine to AsyncSequence - the plan (p. 1)</a> </h1>
 
 			<div class="post-content">
 				<p>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.

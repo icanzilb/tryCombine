@@ -4,14 +4,14 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Proxy operator from Combine to AsyncSequence (p. 1)</title>
+		<title>Bridge from Combine to AsyncSequence - the plan (p. 1)</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Proxy operator from Combine to AsyncSequence (p. 1)" />
+		<meta property="og:title" content="Bridge from Combine to AsyncSequence - the plan (p. 1)" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Proxy operator from Combine to AsyncSequence (p. 1)">
+<meta name="twitter:title" content="Bridge from Combine to AsyncSequence - the plan (p. 1)">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -78,7 +78,11 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Proxy operator from Combine to AsyncSequence (p. 1)</a>
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -171,7 +175,7 @@
         </div>
 
 			
-		<h1>Proxy operator from Combine to AsyncSequence (p. 1) </h1>
+		<h1>Bridge from Combine to AsyncSequence - the plan (p. 1) </h1>
 
 <style>
   .twitter-share-button {
@@ -205,7 +209,7 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Proxy%20operator%20from%20Combine%20to%20AsyncSequence%20%28p.%201%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fcombine-async-sequence-1%2f"
+  href="https://twitter.com/intent/tweet?text=Bridge%20from%20Combine%20to%20AsyncSequence%20-%20the%20plan%20%28p.%201%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fcombine-async-sequence-1%2f"
   data-size="medium">
 Tweet</a><p>
 
@@ -276,7 +280,7 @@ Tweet</a><p>
 <p>Generally when you&rsquo;re iterating over a sequence in a <code>for</code> loop there is no easy way to cancel the iterator. Your sequence might have a built-in mechanism to complete or error but not necessarily for being cancelled. But it <strong>might</strong> have a cancel mechanism since it&rsquo;s a good idea for async code in general to have a way for being cancelled.</p>
 <p>So for the purpose of building a proxy from Combine to async sequence (this blog series' ultimate goal) I think the async sequence should complete successfully if the publisher is cancelled. Erroring out seems inappropriate, and doing nothing will leave a <code>for</code> loop hanging forever.</p>
 <p>It looks like, then, we can easily map all events of a Combine publisher to calling the respective methods on an async stream&rsquo;s continuation!</p>
-<p>We&rsquo;ll do that in the next post.</p>
+<p>We&rsquo;ll do that in the next post: <a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (part 2)</a></p>
 <hr>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>All of the concurrency features in Swift are still work in progress. I&rsquo;m using an Xcode beta version plus a swift.org toolchain right now to get all of the above working but it&rsquo;s still interesting to play with all those new APIs and get a feeling of the future of Swift code.</p>

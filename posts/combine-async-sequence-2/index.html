@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Bridge from Combine to AsyncSequence - the code (p. 2)</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Bridge from Combine to AsyncSequence - the code (p. 2)" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Series of Combine framework programming related blog posts." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/combine-async-sequence-2/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Series of Combine framework programming related blog posts.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Bridge from Combine to AsyncSequence - the code (p. 2)">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Combine</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://trycombine.com/index.html"><span>Home</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+				
+			<div id="combinebook">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465; border-radius: 10px;">
+				</a>
+			</div>
+        </div>
+
+			
+		<h1>Bridge from Combine to AsyncSequence - the code (p. 2) </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Bridge%20from%20Combine%20to%20AsyncSequence%20-%20the%20code%20%28p.%202%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fcombine-async-sequence-2%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>Yesterday I wrote about <code>AsyncSequence</code>, <code>AsyncStream</code> and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - <a href="https://trycombine.com/posts/combine-async-sequence-1/">Bridge from Combine to AsyncSequence - the plan (part 1)</a>.</p>
+<p>Today let&rsquo;s put together the code as planned and see if that&rsquo;s going to work out so we can easily use publishers as async sequences.</p>
+<h2 id="combineasyncstream-setup">CombineAsyncStream setup</h2>
+<p>I&rsquo;ll create a new type called <code>CombineAsyncStream</code> and make it conform to <code>AsyncSequence</code>. As soon as I typed this, I got some errors as <code>AsyncSequence</code> requires me to defne its output type and its iterator type first:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
+  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = Upstream.Output
+  <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = CombineAsyncStream&lt;Upstream&gt;
+  
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Since I&rsquo;d like to use this sequence type to proxy any kind of publisher I&rsquo;m making it generic over its input publisher.</p>
+<p>I&rsquo;m required to define the iterator type (<code>AsyncIterator</code>) for the sequence but I don&rsquo;t need a separate type for this so my sequence is going to be my iterator as well.</p>
+<p>To satisfy <code>AsyncSequence</code>&rsquo;s only requirement I need to add a method to get the sequence iterator, which in my case is just <code>self</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; <span style="color:#6ab825;font-weight:bold">Self</span> {
+  <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">self</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Next, the compiler complains that my type isn&rsquo;t in fact an async iterator. Let&rsquo;s see how to fix this the easiest way possible.</p>
+<blockquote>
+<p><strong>Note</strong>: That&rsquo;s not what exactly the error is Xcode says but trust me the issue is the <code>AsyncIterator</code> conformance.</p>
+</blockquote>
+<p>Since I don&rsquo;t want to overcomplicate my code, I will not write my own custom async iterator. I&rsquo;ll use the provided <code>AsyncStream</code> to yield values asynchronously and just wrap it in my own <code>CombineAsyncStream</code>!</p>
+<p>To do this I&rsquo;ll need to add two things to <code>CombineAsyncStream</code> - a stream instance and its iterator:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span>: AsyncThrowingStream&lt;Upstream.Output, Error&gt;
+<span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">lazy</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">iterator</span> = stream.makeAsyncIterator()</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;ll let <code>AsyncStream</code> create the iterator and I will just proxy to it from my own type. I&rsquo;ll add an extension so I can conform <code>CombineAsyncStream</code> to <code>AsyncIteratorProtocol</code> and have it be my iterator too:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>: AsyncIteratorProtocol {
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; Upstream.Output? {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">try</span> await iterator.next()
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>OK, that was a lot of scaffolding but now I&rsquo;m finally ready to add the &ldquo;meat&rdquo; to <code>CombineAsyncStream</code> - subscribing the upstream publisher and proxying its elements as an async sequence.</p>
+<h2 id="subscribing-the-upstream">Subscribing the upstream</h2>
+<p>I&rsquo;ll add an initializer that takes a publisher and wires up my underlaying async stream. I&rsquo;ve broken down this into steps - first, let&rsquo;s add the basics:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellable</span>: AnyCancellable?
+
+<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(<span style="color:#6ab825;font-weight:bold">_</span> upstream: Upstream) {
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscription</span>: AnyCancellable? = <span style="color:#6ab825;font-weight:bold">nil</span>
+  
+  stream = AsyncThrowingStream&lt;Upstream.Output, Error&gt;
+    (Upstream.Output.<span style="color:#6ab825;font-weight:bold">self</span>) { continuation <span style="color:#6ab825;font-weight:bold">in</span>
+
+  }
+  
+  cancellable = subscription
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>The sequence subscribes the publisher and keeps the subscription alive via storing the token in <code>cancellable</code>. In <code>init(_:)</code> I create an <code>AsyncThrowingStream</code> and, for the moment, leave its closure empty but this is where I&rsquo;ll subscribe the publisher and emit values.</p>
+<p>Note how <code>AsyncThrowingStream</code> is generic over <code>Upstream.Output</code> to set what types of values it&rsquo;ll emit. Currently you cannot specify the error type of <code>AsyncThrowingStream</code> (maybe something that&rsquo;ll change later?) so you always need to set <code>Error</code> as the generic error type.</p>
+<p>Let&rsquo;s add some code in the closure:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">subscription = upstream
+.handleEvents(
+  receiveCancel: {
+    continuation.finish(throwing: <span style="color:#6ab825;font-weight:bold">nil</span>)
+  }
+)
+.sink(receiveCompletion: { completion <span style="color:#6ab825;font-weight:bold">in</span>
+  <span style="color:#6ab825;font-weight:bold">switch</span> completion {
+    <span style="color:#6ab825;font-weight:bold">case</span> .failure(<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">error</span>): 
+      continuation.finish(throwing: error)
+    <span style="color:#6ab825;font-weight:bold">case</span> .finished: continuation.finish(throwing: <span style="color:#6ab825;font-weight:bold">nil</span>)
+  }
+}, receiveValue: { value <span style="color:#6ab825;font-weight:bold">in</span>
+  continuation.yield(value)
+})</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m subscribing the upstream publisher and proxy all events by using the async stream&rsquo;s continuation:</p>
+<ul>
+<li>a publisher cancellation maps to iterator completion.</li>
+<li>a publisher error maps to the iterator throwing.</li>
+<li>a publisher completion maps to iterator completion.</li>
+<li>a publisher emitting maps to the iterator yielding a value.</li>
+</ul>
+<p>At this point I don&rsquo;t have any errors in Xcode so my async sequence is ready to use!</p>
+<h2 id="the-asyncstream-operator">The <code>asyncStream()</code> operator</h2>
+<p>To give <code>CombineAsyncStream</code> a try I&rsquo;ll create a simple operator that&rsquo;ll help me easily proxy publishers to streams:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">asyncStream</span>() -&gt; CombineAsyncStream&lt;<span style="color:#6ab825;font-weight:bold">Self</span>&gt; {
+    <span style="color:#6ab825;font-weight:bold">return</span> CombineAsyncStream(<span style="color:#6ab825;font-weight:bold">self</span>)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Alright! Let&rsquo;s do it!</p>
+<p>I&rsquo;m going to try some of the code in a simple iOS project. For fun let&rsquo;s first run this:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await tick <span style="color:#6ab825;font-weight:bold">in</span> Timer
+      .publish(every: <span style="color:#3677a9">1.0</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
+      .autoconnect()
+      .asyncStream() {
+  print(tick)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Notice you need to use the new <code>await</code> keyword in the <code>for</code> loop to let the compiler know you&rsquo;re iterating over an asynchronous sequence. Additionally, since <code>CombineAsyncStream</code> could throw, you need to use <code>try</code> as well.</p>
+<blockquote>
+<p><strong>Note</strong>: In other words you need to wrap this code in <code>do {} catch {}</code> or make the container method throwing. I opted for the latter to minimize the code samples in here.</p>
+</blockquote>
+<p>I have to say - this code <em>really</em>, <em>really</em> looks similar to what I&rsquo;d usually write with Combine, if you consider the loop body to be the subscription&rsquo;s <code>sink</code>.</p>
+<p><em>However</em>, looking at this fairly simple example we can see (at least) three <strong>big wins</strong>:</p>
+<ol>
+<li>You don&rsquo;t need to use a closure like with <code>sink(...)</code> - therefore there&rsquo;s no need to capture <code>self</code> or other values.</li>
+<li>You don&rsquo;t need to keep a <code>cancellable</code> around - the sequence (and the publisher) are automatically released when the <code>for</code> loop has finished.</li>
+<li>And, finally, you don&rsquo;t need to write your own error handling like with Combine. You can catch errors as usual, let the errors traverse the call hierarchy if your method is throwing, or even just crash by using a <code>try!</code>.</li>
+</ol>
+<p>OH&hellip; MY&hellip; GOD!</p>
+<p>All that is pretty big to me. <strong>It&rsquo;s insanely good.</strong> In fact.</p>
+<blockquote>
+<p><strong>Note</strong>: OK, at this point I think I need to write a bit more briefly because I feel like I have way too much to say about all these new features.</p>
+</blockquote>
+<p>Let&rsquo;s run the app in the Simulator - we get our ticks printed out in the console!</p>
+<p><img src="https://trycombine.com/images/asyncsequence/ticks.gif" alt="Ticks printed in the Xcode console"></p>
+<p>Let&rsquo;s do another one! How about getting the screen orientation via <code>NotificationCenter</code>?</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">orientationStream</span> = NotificationCenter
+   .<span style="color:#6ab825;font-weight:bold">default</span>
+   .publisher(<span style="color:#6ab825;font-weight:bold">for</span>: UIDevice.orientationDidChangeNotification)
+   .map { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> UIDevice.current.orientation.isLandscape }
+   .removeDuplicates()
+   .asyncStream()</code></pre></td></tr></table>
+</div>
+</div>
+<p>I get a publisher out of the <code>UIDevice.orientationDidChangeNotification</code> notification, remove duplicates, and map the values to a <code>Bool</code> which shows if I&rsquo;m in landscape orientation or not.</p>
+<p>Next, I can iterate over that stream like a bauss:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await orientation <span style="color:#6ab825;font-weight:bold">in</span> orientationStream {
+  print(<span style="color:#ed9d13">&#34;Landscape: </span><span style="color:#ed9d13">\(</span>orientation<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Rotating the iPhone simulator prints series of <code>true</code> and <code>false</code> values like so:</p>
+<p><img src="https://trycombine.com/images/asyncsequence/orientation.png" alt="Series of true and false values printed in Xcode&rsquo;s console"></p>
+<h3 id="cancelling-the-async-iterator">Cancelling the async iterator</h3>
+<p>One cool new feature this year is that you can use the new <code>task()</code> view modifier in SwiftUI to run async code when your view is being added on screen. Therefore to continuously display the screen orientation (from above) you can simply do:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Text(myText)
+  .task {
+    <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await orientation <span style="color:#6ab825;font-weight:bold">in</span> orientationStream {
+      myText = orientation
+    }
+  }</code></pre></td></tr></table>
+</div>
+</div>
+<p>And best of all, when the view is removed from screen - that will also automatically cancel the <code>for</code> loop so you don&rsquo;t need to do anything extra yourself to cancel the iterator!</p>
+<p>Good job SwiftUI! But how about if you need to cancel the sequence when using UIKit or in your view model?</p>
+<p>Let&rsquo;s add cancellability to <code>CombineAsyncStream</code>!</p>
+<p>I am (anyways) keeping around the publisher cancellable - why not add a method that calls <code>cancel()</code> on it? Additionally, I&rsquo;ll add a debug log in my <code>deinit()</code> to make sure I&rsquo;m indeed cleanly exiting my iterator:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">cancel</span>() {
+  cancellable?.cancel()
+  cancellable = <span style="color:#6ab825;font-weight:bold">nil</span>
+}
+
+<span style="color:#6ab825;font-weight:bold">deinit</span> {
+  print(<span style="color:#ed9d13">&#34;[Stream Deinit]&#34;</span>)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Ta-da! Now I have a way to cancel the iterator which will effectively exit my <code>for</code> loop.</p>
+<p>To try this last piece of code, I&rsquo;ll iterate over a timer and cancel the stream few seconds later:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// Create a Timer async stream.</span>
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span> = Timer
+  .publish(every: <span style="color:#3677a9">1.0</span>, tolerance: <span style="color:#3677a9">1.0</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
+  .autoconnect()
+  .asyncStream()
+
+<span style="color:#999;font-style:italic">// Cancel stream after 5 seconds.</span>
+Task.detached {
+  await Task.sleep(<span style="color:#3677a9">5_000_000_000</span>)
+  stream.cancel()
+}
+
+<span style="color:#999;font-style:italic">// Print timer ticks to the console.</span>
+<span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await tick <span style="color:#6ab825;font-weight:bold">in</span> stream {
+  print(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>tick.formatted<span style="color:#ed9d13">(</span>date: .omitted, time: .standard<span style="color:#ed9d13">))</span><span style="color:#ed9d13">&#34;</span>)
+}
+
+<span style="color:#999;font-style:italic">// Print when the for loop completes</span>
+print(<span style="color:#ed9d13">&#34;Completed.&#34;</span>)</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m running the app one last time and the output in the console is:</p>
+<p><img src="https://trycombine.com/images/asyncsequence/cancelled.png" alt="Five entries printed to the console, followed by a completion text."></p>
+<ul>
+<li>The <code>for</code> loop prints five times to the console.</li>
+<li>The line after the loop prints &ldquo;Completed&rdquo;.</li>
+<li>Finally, the sequence is released and <code>deinit</code> also prints.</li>
+</ul>
+<h2 id="the-complete-code">The complete code</h2>
+<p>Getting here was somewhat convoluted but the final code isn&rsquo;t all that complex:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">56
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
+  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = Upstream.Output
+  <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = CombineAsyncStream&lt;Upstream&gt;
+  
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; <span style="color:#6ab825;font-weight:bold">Self</span> {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">self</span>
+  }
+
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span>: 
+    AsyncThrowingStream&lt;Upstream.Output, Error&gt;
+
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">lazy</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">iterator</span> = stream.makeAsyncIterator()
+  
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellable</span>: AnyCancellable?
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(<span style="color:#6ab825;font-weight:bold">_</span> upstream: Upstream) {
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscription</span>: AnyCancellable? = <span style="color:#6ab825;font-weight:bold">nil</span>
+    
+    stream = AsyncThrowingStream&lt;Upstream.Output, Error&gt;
+    (Upstream.Output.<span style="color:#6ab825;font-weight:bold">self</span>) { continuation <span style="color:#6ab825;font-weight:bold">in</span>
+      subscription = upstream
+        .handleEvents(
+          receiveCancel: {
+            continuation.finish(throwing: <span style="color:#6ab825;font-weight:bold">nil</span>)
+          }
+        )
+        .sink(receiveCompletion: { completion <span style="color:#6ab825;font-weight:bold">in</span>
+          <span style="color:#6ab825;font-weight:bold">switch</span> completion {
+            <span style="color:#6ab825;font-weight:bold">case</span> .failure(<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">error</span>): 
+              continuation.finish(throwing: error)
+            <span style="color:#6ab825;font-weight:bold">case</span> .finished: continuation.finish(throwing: <span style="color:#6ab825;font-weight:bold">nil</span>)
+          }
+        }, receiveValue: { value <span style="color:#6ab825;font-weight:bold">in</span>
+          continuation.yield(value)
+        })
+    }
+    
+    cancellable = subscription
+  }
+  
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">cancel</span>() {
+    cancellable?.cancel()
+    cancellable = <span style="color:#6ab825;font-weight:bold">nil</span>
+  }
+}
+
+<span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>: AsyncIteratorProtocol {
+  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; Upstream.Output? {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">try</span> await iterator.next()
+  }
+}
+
+<span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">asyncStream</span>() -&gt; CombineAsyncStream&lt;<span style="color:#6ab825;font-weight:bold">Self</span>&gt; {
+    <span style="color:#6ab825;font-weight:bold">return</span> CombineAsyncStream(<span style="color:#6ab825;font-weight:bold">self</span>)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>Is this the ultimate Combine to <code>AsyncSequence</code> converter? Hardly. There are publishers that buffer, others meant to be shared, further others that replay etc, etc. I didn&rsquo;t have a look into all publishers but it looks like getting a universal proxy together should be possible.</p>
+<p>The question on my mind is - what else could we do in the field of Combine - <code>AsyncSequence</code> coop? Converting from <code>AsyncSequence</code> to Combine sounds easy enough. Also, it seems that creating operator alternatives on <code>AsyncSequence</code> is likely to be fairly easy too.</p>
+<p>I&rsquo;m really excited to look more into these new Swift features. I hope you are too.</p>
+<p>Hit me up with your ideas, replies, and feedback on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+<hr>
+<p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
+</div>
+
+<div id="combinebook">
+				<a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+				</a>
+				<br/>
+				
+		<p class="meta">Posted on <span class="postdate">13. July 2021</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>

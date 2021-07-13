@@ -6,9 +6,20 @@
     <description>Recent content in Posts on try Combine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Proxy operator from Combine to AsyncSequence (p. 1)</title>
+      <title>Bridge from Combine to AsyncSequence - the code (p. 2)</title>
+      <link>https://trycombine.com/posts/combine-async-sequence-2/</link>
+      <pubDate>Tue, 13 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/combine-async-sequence-2/</guid>
+      <description>Yesterday I wrote about AsyncSequence, AsyncStream and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - Bridge from Combine to AsyncSequence - the plan (part 1).
+Today let&amp;rsquo;s put together the code as planned and see if that&amp;rsquo;s going to work out so we can easily use publishers as async sequences.
+CombineAsyncStream setup I&amp;rsquo;ll create a new type called CombineAsyncStream and make it conform to AsyncSequence.</description>
+    </item>
+    
+    <item>
+      <title>Bridge from Combine to AsyncSequence - the plan (p. 1)</title>
       <link>https://trycombine.com/posts/combine-async-sequence-1/</link>
       <pubDate>Mon, 12 Jul 2021 00:00:00 +0000</pubDate>
       
