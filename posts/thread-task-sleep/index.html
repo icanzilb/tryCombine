@@ -223,7 +223,7 @@ Tweet</a><p>
 <p>Let&rsquo;s just look at the <em>old</em> and <em>new</em> sleep APIs:</p>
 <ul>
 <li>
-<p><code>Thread.sleep()</code> is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles. It&rsquo;s the old way of thinking about threads occupying CPU cores to do work.</p>
+<p><code>Thread.sleep()</code> is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles. <strong>Edit</strong>: Turns out the core doesn&rsquo;t idle but <code>DispatchQueue.concurrentPerform</code> creates only as many threads as there are cores so even if the blocked treads don&rsquo;t do anything it doesn&rsquo;t create more threads to do more work during this time.</p>
 </li>
 <li>
 <p><code>Task.sleep()</code> is the new <code>async</code> API that does &ldquo;sleep&rdquo;. It <strong>suspends</strong> the current <code>Task</code> instead of blocking the <strong>thread</strong> — that means the CPU core is <strong>free to do something else</strong> for the duration of the sleep.</p>
@@ -251,9 +251,14 @@ Tweet</a><p>
 </thead>
 <tbody>
 <tr>
-<td>Blocks the thread, CPU core is idle</td>
+<td>Blocks the thread</td>
 <td></td>
 <td>Suspends and lets other tasks run</td>
+</tr>
+<tr>
+<td>Slow switching of threads on same core</td>
+<td></td>
+<td>Quickly switching via function calls to a continuation</td>
 </tr>
 <tr>
 <td>Rigid, cannot be cancelled</td>
@@ -261,7 +266,7 @@ Tweet</a><p>
 <td>Can be cancelled while suspended</td>
 </tr>
 <tr>
-<td>Code occupies the same thread</td>
+<td>Code resumes on the same thread</td>
 <td></td>
 <td>Could resume on another thread, threads don&rsquo;t matter</td>
 </tr>
@@ -291,7 +296,7 @@ print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d
 </div>
 <p>GCD spreads the concurrent work on all cores it can grab and on my machine the code prints:</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
-<p>The thing is — you always end up consuming <code>100</code> CPU <strong>core-seconds</strong>, even if you complete in just <code>9</code> astronomical seconds. The whole laptop is busy running a whole bunch of blocked threads.</p>
+<p>The thing is — you&rsquo;re limited to the amount of threads <code>DispatchQueue</code> will create for you as switching threads is very expensive and the system will try creating as few as possible. In the end the whole laptop is busy running a whole bunch of blocked threads.</p>
 <p>Let&rsquo;s have a look at the same code with the new <code>Task</code> APIs and <code>async/await</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
