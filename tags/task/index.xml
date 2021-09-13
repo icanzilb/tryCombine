@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>task on try Combine</title>
+    <link>https://trycombine.com/tags/task/</link>
+    <description>Recent content in task on try Combine</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 13 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/task/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The difference between Thread.sleep() and Task.sleep()</title>
+      <link>https://trycombine.com/posts/thread-task-sleep/</link>
+      <pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/thread-task-sleep/</guid>
+      <description>I wish more people would watch the WWDC videos and read the docs before forming an opinion on the new Swift concurrency APIs; but it&amp;rsquo;s understandable if they don&amp;rsquo;t, given very few apps can afford to only target iOS15 and macOS12 — yet to be released platforms.
+So here&amp;rsquo;s the simplest example I could think of, that could start explaining the new async/await &amp;amp; concurrency model without actually going into details.</description>
+    </item>
+    
+  </channel>
+</rss>

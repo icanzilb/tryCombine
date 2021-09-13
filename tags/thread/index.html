@@ -4,22 +4,22 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Posts</title>
+		<title>thread</title>
 		<meta name="viewport" content="width=device-width">
 		
-			<link href="https://trycombine.com/posts/index.xml" rel="alternate" type="application/rss+xml" title="try Combine" />
-			<link href="https://trycombine.com/posts/index.xml" rel="feed" type="application/rss+xml" title="try Combine" />
+			<link href="https://trycombine.com/tags/thread/index.xml" rel="alternate" type="application/rss+xml" title="try Combine" />
+			<link href="https://trycombine.com/tags/thread/index.xml" rel="feed" type="application/rss+xml" title="try Combine" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Posts" />
+		<meta property="og:title" content="thread" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/" />
+<meta property="og:url" content="https://trycombine.com/tags/thread/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -32,7 +32,7 @@
 <meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Posts">
+<meta name="twitter:title" content="thread">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -184,128 +184,18 @@
 
 	
 		<article class="post">
-			<h1><a href="https://trycombine.com/posts/announcing-timelane-combine/">Announcing: Timelane</a> </h1>
+			<h1><a href="https://trycombine.com/posts/thread-task-sleep/">The difference between Thread.sleep() and Task.sleep()</a> </h1>
 
 			<div class="post-content">
-				<p>Today I&rsquo;m announcing the public release of Timelane.
-Timelane is a free, open source Instrument that helps you profile and debug asynchronous code.
-Timelane is available today on: http://timelane.tools.
-The Timelane Instrument leverages signpost logging and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.
-Installation Install the latest build from http://timelane.tools or fork the repository on GitHub and build the app yourself.  … </p>
+				<p>I wish more people would watch the WWDC videos and read the docs before forming an opinion on the new Swift concurrency APIs; but it&rsquo;s understandable if they don&rsquo;t, given very few apps can afford to only target iOS15 and macOS12 — yet to be released platforms.
+So here&rsquo;s the simplest example I could think of, that could start explaining the new async/await &amp; concurrency model without actually going into details.  … </p>
 			</div>
 
-			<p class="meta">Posted on <span class="postdate">28. February 2020</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-property-wrappers/">Property Wrappers with Combine</a> </h1>
-
-			<div class="post-content">
-				<p>In this post I&rsquo;ll look into making more out of Combine code by using the newly introduced in Swift 5.1: Property Wrappers.
-Let&rsquo;s very quickly go into what property wrappers are in general and then dive into a Combine example.
-Swift Property Wrappers Property wrappers are a new feature in Swift 5.1 that allows you to abstract redundant functionality around handling type properties.
-Property wrappers are very handy in (my experience so far 🤓 ) two ways:  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">11. September 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/subscribe-on-receive-on/">subscribe(on:) vs receive(on:)</a> </h1>
-
-			<div class="post-content">
-				<p>In this post, instead of looking into the basics of multi-threading with Combine, we are going to have a look at the difference between subscribe(on:) and receive(on:) specifically.
-We&rsquo;re going to look at a typical subscription chain starting with a root publisher, a couple of operators, and a subscriber at the end.
-We&rsquo;ll look into more diagrams and some example code of how subscribe(on:) and receive(on:) affect subscriptions.
-subscribe(on:) subscribe(on:) sets the scheduler on which you&rsquo;d like the current subscription to be &ldquo;managed&rdquo; on.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">09. September 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">Binding a list with multiple sections and different cells</a> </h1>
-
-			<div class="post-content">
-				<p>Today&rsquo;s post showcases another real-life use case of using CombineDataSources, namely binding a list to a table view with multiple sections using different cell types.
-In my last post Binding a simple list to a UITableView we had a look at binding a list of data elements to a table view. It&rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.
-In this post I&rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">07. September 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a> </h1>
-
-			<div class="post-content">
-				<p>While still keep improving the current version of CombineDataSources I tought it&rsquo;d be nice to post few articles on the current API design along with some code samples.
-This would be nice in order to get some feedback and to try putting some of the code in context.
-CombineDataSources Introduction RxSwiftCommunity&rsquo;s excellent RxDataSources allows developers to reactively bind data to table and collection views. It uses a lot of the underlaying structure of RxSwift and it&rsquo;s very powerful.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">03. September 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/assert-max-subscriptions/">An assert operator: assertMaxSubscriptions()</a> </h1>
-
-			<div class="post-content">
-				<p>While I keep working on CombineDataSources I&rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.
-For example: in RxSwift when dealing with UI I&rsquo;d usually use shareReplayLatestWhileConnected() - this operator shares an observable and emits the latest value to all subscribers downstream. In Combine there is currently a share() operator which does a similar thing but does not &ldquo;replay&rdquo; the latest value.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/debug-logging-combineprintout/">Debug logging with CombinePrintout</a> </h1>
-
-			<div class="post-content">
-				<p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.
-In Simple custom Combine operators I wrote about how to create an operator that logs to the system Console app in just few lines.
-After playing with Combine some more I went ahead and created a micro framework called &ldquo;CombinePrintout&rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">16. August 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">Building a custom `sample` operator</a> </h1>
-
-			<div class="post-content">
-				<p>In Simple custom Combine operators I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom Publisher type.
-In this post I&rsquo;d like to show how this kind of &ldquo;cheap&rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.
-Let&rsquo;s look at sample(_)&hellip;
-The sample operator rxmarbles.com is a marveleous website where you can find visual and interactive presentations of a multitude of reactive operators (based in their implementation in RxJS).  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">06. August 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> </h1>
-
-			<div class="post-content">
-				<p>Creating simple custom operators is very straightforward in Combine.
-As long as your custom operator can be expressed via combining existing operators you don&rsquo;t need to create a new publisher type - you can simply extend the Publisher protocol with your own custom operator.
-Let&rsquo;s try quickly creating one now.
-Extending Publisher You can extend Publisher like any other protocol in Swift. For this post I&rsquo;ll create a debugging operator that writes logs to the system console.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">02. August 2019</span></p>
+			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
 		</article>
 	
 
 	
-	<nav class="pagination" role="pagination">
-		
-			<a class="newer-posts" href="https://trycombine.com/posts/"><span aria-hidden="true">&larr;</span> Newer Posts</a>
-		
-		<span class="page-number">Page 2 of 2</span>
-		
-	</nav>
-
 
 
 			</div>

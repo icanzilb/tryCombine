@@ -4,19 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>5 Stranger Things you can do with Timelane at NSSpain</title>
+		<title>The difference between Thread.sleep() and Task.sleep()</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="5 Stranger Things you can do with Timelane at NSSpain" />
+		<meta property="og:title" content="The difference between Thread.sleep() and Task.sleep()" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/timelane-nsspain-2020/" />
+<meta property="og:url" content="https://trycombine.com/posts/thread-task-sleep/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="5 Stranger Things you can do with Timelane at NSSpain">
+<meta name="twitter:title" content="The difference between Thread.sleep() and Task.sleep()">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -181,7 +181,7 @@
         </div>
 
 			
-		<h1>5 Stranger Things you can do with Timelane at NSSpain </h1>
+		<h1>The difference between Thread.sleep() and Task.sleep() </h1>
 
 <style>
   .twitter-share-button {
@@ -215,33 +215,122 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=5%20Stranger%20Things%20you%20can%20do%20with%20Timelane%20at%20NSSpain&url=https%3a%2f%2ftrycombine.com%2fposts%2ftimelane-nsspain-2020%2f"
+  href="https://twitter.com/intent/tweet?text=The%20difference%20between%20Thread.sleep%28%29%20and%20Task.sleep%28%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fthread-task-sleep%2f"
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>For my talk at <a href="https://nsspain.com">NSSpain 2020</a> I&rsquo;ve prepared a beyond-the-basics Timelane talk.</p>
-<p>I think everyone who&rsquo;s heard about <a href="http://timelane.tools">Timelane</a> by now knows what it does for its simplest use case - debugging some Combine based code. However, you can do much, much more with Timelane!</p>
-<p>So for my NSSpain 2020 talk I prepared 5 little examples on how to use Timelane beyond the simplest use case.</p>
-<p>I&rsquo;ve pushed all the demo apps I use in my talk to this repository:
-<a href="https://github.com/icanzilb/nsspain2020">https://github.com/icanzilb/nsspain2020</a>.</p>
-<h2 id="using-timelanecombine-to-debug-combine-code">Using TimelaneCombine to debug Combine code</h2>
-<p>This is the most straight-forward use case to debug a Combine-based app.</p>
-<p><a href="https://github.com/icanzilb/nsspain2020/tree/main/TimerApp-Combine">https://github.com/icanzilb/nsspain2020/tree/main/TimerApp-Combine</a></p>
-<h2 id="debugging-rxswift-code-with-rxtimelane">Debugging RxSwift code with RxTimelane</h2>
-<p>A timer app written in RxSwift (identical to the Combine version used in the talk into) that talks to Instruments via RxTimelane.</p>
-<p><a href="https://github.com/icanzilb/nsspain2020/tree/main/TimerApp-RxSwift">https://github.com/icanzilb/nsspain2020/tree/main/TimerApp-RxSwift</a></p>
-<h2 id="logging-any-data-to-instruments-via-timelanecore">Logging any data to Instruments via TimelaneCore</h2>
-<p>The demo uses a task queue and tracks the task queue load in Instruments via TimelaneCore:</p>
-<p><a href="https://github.com/icanzilb/nsspain2020/tree/main/BusyQueue">https://github.com/icanzilb/nsspain2020/tree/main/BusyQueue</a></p>
-<p>Additionally, the completed demo includes the smile-to-profile code from the last demo in the talk.</p>
-<h2 id="using-timelane-with-the-composable-architecture-by-pointfreeco">Using Timelane with the Composable Architecture by pointfree.co</h2>
-<p>This is an (almost) unchanged demo app from <a href="https://github.com/pointfreeco/swift-composable-architecture">https://github.com/pointfreeco/swift-composable-architecture</a> which is a ToDo app. Timelane logs in Instruments any user events and also plots ToDo items' lifetime.</p>
-<p><a href="https://github.com/icanzilb/nsspain2020/tree/main/Todos">https://github.com/icanzilb/nsspain2020/tree/main/Todos</a></p>
+		<div class="post-content"><p>I wish more people would watch the WWDC videos and read the docs before forming an opinion on the new Swift concurrency APIs; but it&rsquo;s understandable if they don&rsquo;t, given very few apps can afford to only target iOS15 and macOS12 — yet to be released platforms.</p>
+<p>So here&rsquo;s <strong>the simplest example I could think of</strong>, that could start explaining the new <code>async/await</code> &amp; concurrency model without actually going into details.</p>
+<h2 id="threadsleep-vs-tasksleep">Thread.sleep() vs Task.sleep()</h2>
+<p>Let&rsquo;s just look at the <em>old</em> and <em>new</em> sleep APIs:</p>
+<ul>
+<li>
+<p><code>Thread.sleep()</code> is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles. It&rsquo;s the old way of thinking about threads occupying CPU cores to do work.</p>
+</li>
+<li>
+<p><code>Task.sleep()</code> is the new <code>async</code> API that does &ldquo;sleep&rdquo;. It <strong>suspends</strong> the current <code>Task</code> instead of blocking the <strong>thread</strong> — that means the CPU core is <strong>free to do something else</strong> for the duration of the sleep.</p>
+</li>
+</ul>
+<p>Or to put them side by side:</p>
+
+
+
+
+
+
+
+
+
+
+<div class="table-responsive">
+<table class="table table-dark table-striped table-bordered">
+<thead class="table-light-dimmed">
+<tr>
+<th><strong><code>Thread.sleep()</code></strong></th>
+<th></th>
+<th><strong><code>Task.sleep()</code></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blocks the thread, CPU core is idle</td>
+<td></td>
+<td>Suspends and lets other tasks run</td>
+</tr>
+<tr>
+<td>Rigid, cannot be cancelled</td>
+<td></td>
+<td>Can be cancelled while suspended</td>
+</tr>
+<tr>
+<td>Code occupies the same thread</td>
+<td></td>
+<td>Could resume on another thread, threads don&rsquo;t matter</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<h2 id="the-difference-in-practice">The difference in practice</h2>
+<p>What do these mean in practice? This is how you&rsquo;d concurrenty have <code>100</code> sleeps with <code>DispatchQueue</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">100</span>) { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+  Thread.sleep(forTimeInterval: <span style="color:#3677a9">1</span>)
+}
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
+print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</code></pre></td></tr></table>
+</div>
+</div>
+<p>GCD spreads the concurrent work on all cores it can grab and on my machine the code prints:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
+<p>The thing is — you always end up consuming <code>100</code> CPU <strong>core-seconds</strong>, even if you complete in just <code>9</code> astronomical seconds. The whole laptop is busy running a whole bunch of blocked threads.</p>
+<p>Let&rsquo;s have a look at the same code with the new <code>Task</code> APIs and <code>async/await</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+await withThrowingTaskGroup(of: <span style="color:#24909d">Void</span>.<span style="color:#6ab825;font-weight:bold">self</span>, body: {
+  <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100</span> {
+    <span style="color:#40ffff">$0</span>.addTask {
+      <span style="color:#6ab825;font-weight:bold">try</span> await Task.sleep(nanoseconds: <span style="color:#3677a9">1_000_000_000</span>)
+    }
+  }
+})
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
+print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</code></pre></td></tr></table>
+</div>
+</div>
+<p>Running this code prints:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">1.05</span>s</code></pre></div>
+<p>While suspended, a <code>Task</code> takes no CPU core-seconds so the same core can run all of the hundred sleep tasks at the same time. You can have thousands of them if you want and the duration will still be just over <code>1</code> second.</p>
+<p>In the new model, asynchronous tasks collaborate by suspending when not actively doing work so all of the currently scheduled work can progress forward.</p>
+<p>Thanks for reading and see you next time 👋🏽</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p><!-- raw HTML omitted --></p>
-<p>If you want to learn more about Timelane, to download it for free, or watch some example videos head to: <a href="http://timelane.tools">http://timelane.tools</a>.</p>
-<p>Thank you and if you have any questions, feedback, or press inquiries do get in contact at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-<p>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+<p>I&rsquo;m really excited to look more into these new Swift features. If you want to hang around, I wrote few more posts during this summer about playing with the new APIs like <a href="https://trycombine.com/posts/swift-actors-combine/">this one</a> and <a href="https://trycombine.com/posts/combine-async-sequence-2/">that one</a>.</p>
+<p>Hit me up with your ideas, replies, and feedback on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+<hr>
+<p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
 </div>
 
 <div id="combinebook">
@@ -250,7 +339,7 @@ Tweet</a><p>
 				</a>
 				<br/>
 				
-		<p class="meta">Posted on <span class="postdate">20. November 2020</span></p>
+		<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
 	</article>
 	
 
