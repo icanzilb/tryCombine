@@ -225,7 +225,7 @@ Tweet</a><p>
 <p>First I added a lock and a raw key value to <code>NSObject</code> - you need the latter to &ldquo;assign&rdquo; a dynamic property to an Objective-C object, and the former to avoid data races:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -234,7 +234,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">NSObject</span> {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">NSObject</span> {
 
   <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellablesLock</span>: os_unfair_lock_s = 
     { os_unfair_lock_s() }()
@@ -249,7 +249,7 @@ Tweet</a><p>
 <p>Then I added a method that takes a list of <code>AnyCancellable</code> and adds it to a list of cancellables assigned to the current object. (And create an empty list if there is none found assigned already.)</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -265,7 +265,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addCancellables</span>(<span style="color:#6ab825;font-weight:bold">_</span> cancellables: [AnyCancellable]) {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">addCancellables</span>(<span style="color:#6ab825;font-weight:bold">_</span> cancellables: [AnyCancellable]) {
   os_unfair_lock_lock(&amp;<span style="color:#6ab825;font-weight:bold">Self</span>.cancellablesLock)
         
   <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">storage</span> = objc_getAssociatedObject(<span style="color:#6ab825;font-weight:bold">self</span>,
@@ -284,7 +284,7 @@ Tweet</a><p>
 <p>Now for the fun part - adding the <code>@resultBuilder</code>. I played with few scenarios but in the end it turned I only ever needed the <code>@resultBuilder</code> to collect the cancellables and pipe them through to <code>addCancellables()</code> which is already fleshed out.</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -294,7 +294,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@resultBuilder
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@resultBuilder
 <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CancellablesBuilder</span> {
   <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">buildBlock</span>(<span style="color:#6ab825;font-weight:bold">_</span> parts: AnyCancellable...) 
     -&gt; [AnyCancellable] {
@@ -309,14 +309,14 @@ Tweet</a><p>
 <p>Next, <code>CancellablesBuilder</code> can be used back in <code>NSObject</code> to provide a DSL-like API for managing subscriptions:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">ownedCancellables</span>(
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">ownedCancellables</span>(
   @CancellablesBuilder content: () -&gt; [AnyCancellable]) {
 
   addCancellables(content())
@@ -326,7 +326,7 @@ Tweet</a><p>
 <p>Sweet! With <code>ownedCancellables</code> in place you can easily batch-create all your Combine subscriptions, let&rsquo;s say in one of your view controllers, like so:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -338,7 +338,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyController</span>: UIViewController {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">MyController</span>: UIViewController {
   <span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
     ownedCancellables {
       myPublisher1.filter(...).map(...).sink(...)
@@ -357,14 +357,14 @@ Tweet</a><p>
 <p>With minimal effort the <code>AnyCancellable</code> extension looks like this:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AnyCancellable</span> {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AnyCancellable</span> {
   <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">owned</span>(by owner: NSObject) {
     owner.addCancellables([<span style="color:#6ab825;font-weight:bold">self</span>])
   }
@@ -374,12 +374,12 @@ Tweet</a><p>
 <p>Now, if you have a view model like so:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span>: NSObject {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span>: NSObject {
   ... some properties ...
 }</code></pre></td></tr></table>
 </div>
@@ -387,7 +387,7 @@ Tweet</a><p>
 <p>And you need for a given subscription to last as long as the view model is around you can do this:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -396,7 +396,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">vm</span> = ViewModel(...)
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">vm</span> = ViewModel(...)
 
 myPublisher
   .filter(...)

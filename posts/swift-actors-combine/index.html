@@ -236,7 +236,7 @@ Tweet</a><p>
 <p>The <code>compute()</code> function from part 1 which precomputes a bunch of hashes and adds them to the cache currently looks like so:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -250,7 +250,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() async {
   addHash(<span style="color:#6ab825;font-weight:bold">for</span>: <span style="color:#3677a9">42</span>)
     
   await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
@@ -270,7 +270,7 @@ Tweet</a><p>
 <p>Let&rsquo;s try that and let <code>compute()</code> return a publisher emitting its progress:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -284,7 +284,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() -&gt; AnyPublisher&lt;<span style="color:#24909d">Int</span>, Never&gt; {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">compute</span>() -&gt; AnyPublisher&lt;<span style="color:#24909d">Int</span>, Never&gt; {
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">progress</span> = CurrentValueSubject&lt;<span style="color:#24909d">Int</span>, Never&gt;(<span style="color:#3677a9">0</span>)
   
   async {
@@ -312,7 +312,7 @@ Tweet</a><p>
 <p>This is trivial - peaking in the headers shows me that <code>TaskGroup</code> conforms to <code>AsyncSequence</code> and I can get the result of each task when it completes by calling the sequence&rsquo;s <code>next()</code> method:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -330,7 +330,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">await withTaskGroup(of: <span style="color:#24909d">Bool</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
   <span style="color:#999;font-style:italic">// Schedule all the tasks.</span>
   <span style="color:#6ab825;font-weight:bold">for</span> number <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">15_000</span> {
     group.spawn {
@@ -360,7 +360,7 @@ Tweet</a><p>
 <p>That&rsquo;s the easiest task so far:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -371,7 +371,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">sub</span>: AnyCancellable?
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">sub</span>: AnyCancellable?
 
 <span style="color:#6ab825;font-weight:bold">static</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">main</span>() async {
   sub = await cache.compute()
@@ -384,7 +384,7 @@ Tweet</a><p>
 </div>
 <p><code>compute()</code> is not <code>async</code> anymore but since it&rsquo;s an actor method I still had to use <code>await</code>. The rest was easy as pie - <code>removeDuplicates()</code> emits only the unique progress values, and the code in <code>sink(...)</code> prints out the progress.</p>
 <p>When I build and run - the progress shows up in Xcode&rsquo;s console:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
 Computing: 96%
 Computing: 97%
 Computing: 98%
@@ -395,7 +395,7 @@ Program ended with exit code: 0</code></pre></div>
 <p>Here&rsquo;s how the complete <strong>App.swift</strong> developed in this post look like:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -456,7 +456,7 @@ Program ended with exit code: 0</code></pre></div>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">59
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Foundation</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Foundation</span>
 <span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">CryptoKit</span>
 <span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">Combine</span>
 

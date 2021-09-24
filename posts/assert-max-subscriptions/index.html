@@ -228,16 +228,16 @@ Tweet</a><p>
 <p>Let&rsquo;s start by adding a dictionary to track the current subscriptions (somewhere in the global context of a file):</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">fileprivate <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">uuids</span> = [<span style="color:#24909d">String</span>: <span style="color:#24909d">Int</span>]()</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">fileprivate <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">uuids</span> = [<span style="color:#24909d">String</span>: <span style="color:#24909d">Int</span>]()</code></pre></td></tr></table>
 </div>
 </div>
 <p>Then add a new <code>Publisher</code> operator:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -248,7 +248,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
   <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">assertMaxSubscriptions</span>(
     <span style="color:#6ab825;font-weight:bold">_</span> max: <span style="color:#24909d">Int</span>, 
     file: <span style="color:#24909d">StaticString</span> = <span style="color:#6ab825;font-weight:bold">#file</span>, 
@@ -264,17 +264,17 @@ Tweet</a><p>
 <p>Inside the method body I&rsquo;ll put together an identifier for the current invocation of the method by using the file name and line together:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">uuid</span> = <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>file<span style="color:#ed9d13">)</span><span style="color:#ed9d13">:</span><span style="color:#ed9d13">\(</span>line<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">uuid</span> = <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>file<span style="color:#ed9d13">)</span><span style="color:#ed9d13">:</span><span style="color:#ed9d13">\(</span>line<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This way the method knows if it&rsquo;s been called multiple times from the same spot, let&rsquo;s say &ldquo;<code>ViewController.swift:25</code>&rdquo;, or from different files/locations in the code.</p>
 <p>What&rsquo;s left to do is to count the subscriptions for the current <code>uuid</code> and fail if they are more than the given max amount:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -284,7 +284,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">return</span> handleEvents(receiveSubscription: { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">return</span> handleEvents(receiveSubscription: { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">count</span> = uuids[uuid] ?? <span style="color:#3677a9">0</span>
   <span style="color:#6ab825;font-weight:bold">guard</span> count &lt; max <span style="color:#6ab825;font-weight:bold">else</span> {
     assert(<span style="color:#6ab825;font-weight:bold">false</span>, <span style="color:#ed9d13">&#34;Publisher subscribed more than </span><span style="color:#ed9d13">\(</span>max<span style="color:#ed9d13">)</span><span style="color:#ed9d13"> times.&#34;</span>)
@@ -301,7 +301,7 @@ Tweet</a><p>
 <p>Below I have a publisher with two subscribers:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -315,7 +315,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
  ...
 }
 .eraseToAnyPublisher()
@@ -332,14 +332,14 @@ publisher
 <p>Each of the subscribers is creating a new subscription to <code>publisher</code>. Now you can add <code>assertMaxSubscriptions()</code> like so:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
  ...
 }
 .eraseToAnyPublisher()
@@ -351,7 +351,7 @@ publisher
 <p>You can now track down the issue and add a <code>share()</code> to the publisher you&rsquo;d like to subscribe multiple times, like so:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -359,7 +359,7 @@ publisher
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">publisher</span> = Publisher.MyPublisher {
  ...
 }
 .eraseToAnyPublisher()

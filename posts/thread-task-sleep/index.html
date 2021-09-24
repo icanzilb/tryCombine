@@ -217,8 +217,8 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>I wish more people would watch the WWDC videos and read the docs before forming an opinion on the new Swift concurrency APIs; but it&rsquo;s understandable if they don&rsquo;t, given very few apps can afford to only target iOS15 and macOS12 — yet to be released platforms.</p>
-<p>So here&rsquo;s <strong>the simplest example I could think of</strong>, that could start explaining the new <code>async/await</code> &amp; concurrency model without actually going into details.</p>
+		<div class="post-content"><p>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, <code>async/await</code> and friends are getting more and more relevant for all Swift developers.</p>
+<p>So here&rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.</p>
 <h2 id="threadsleep-vs-tasksleep">Thread.sleep() vs Task.sleep()</h2>
 <p>Let&rsquo;s just look at the <em>old</em> and <em>new</em> sleep APIs:</p>
 <ul>
@@ -278,7 +278,7 @@ Tweet</a><p>
 <p>What do these mean in practice? This is how you&rsquo;d concurrenty have <code>100</code> sleeps with <code>DispatchQueue</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -286,7 +286,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
 DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">100</span>) { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
   Thread.sleep(forTimeInterval: <span style="color:#3677a9">1</span>)
 }
@@ -295,12 +295,12 @@ print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d
 </div>
 </div>
 <p>GCD spreads the concurrent work on all cores it can grab and on my machine the code prints:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
 <p>The thing is — you&rsquo;re limited to the amount of threads <code>DispatchQueue</code> will create for you as switching threads is very expensive and the system will try creating as few as possible. In the end the whole laptop is busy running a whole bunch of blocked threads.</p>
 <p>Let&rsquo;s have a look at the same code with the new <code>Task</code> APIs and <code>async/await</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -312,7 +312,7 @@ print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
 await withThrowingTaskGroup(of: <span style="color:#24909d">Void</span>.<span style="color:#6ab825;font-weight:bold">self</span>, body: {
   <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100</span> {
     <span style="color:#40ffff">$0</span>.addTask {
@@ -325,7 +325,7 @@ print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d
 </div>
 </div>
 <p>Running this code prints:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">1.05</span>s</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">1.05</span>s</code></pre></div>
 <p>While suspended, a <code>Task</code> takes no CPU core-seconds so the same core can run all of the hundred sleep tasks at the same time. You can have thousands of them if you want and the duration will still be just over <code>1</code> second.</p>
 <p>In the new model, asynchronous tasks collaborate by suspending when not actively doing work so all of the currently scheduled work can progress forward.</p>
 <p>Thanks for reading and see you next time 👋🏽</p>

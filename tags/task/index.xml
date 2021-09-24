@@ -13,8 +13,10 @@
       <pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/thread-task-sleep/</guid>
-      <description>I wish more people would watch the WWDC videos and read the docs before forming an opinion on the new Swift concurrency APIs; but it&amp;rsquo;s understandable if they don&amp;rsquo;t, given very few apps can afford to only target iOS15 and macOS12 — yet to be released platforms.
-So here&amp;rsquo;s the simplest example I could think of, that could start explaining the new async/await &amp;amp; concurrency model without actually going into details.</description>
+      <description>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
+So here&amp;rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
+Thread.sleep() vs Task.sleep() Let&amp;rsquo;s just look at the old and new sleep APIs:
+  Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&amp;rsquo;t load the CPU, the core just idles.</description>
     </item>
     
   </channel>

@@ -230,7 +230,7 @@ Tweet</a><p>
 <p>Note: Except if you don&rsquo;t explictly set the downstream receving scheduler via <code>receive(on:)</code>, we&rsquo;ll look at that case further down.</p>
 </blockquote>
 <p>For the purpose of this post I&rsquo;ll use a custom publisher which when subscribed prints whether it&rsquo;s subscribed on the main thread or not:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publishers</span> {
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publishers</span> {
   <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">IsMainThread</span>: Publisher {
     <span style="color:#6ab825;font-weight:bold">typealias</span> Output = <span style="color:#24909d">String</span>
     <span style="color:#6ab825;font-weight:bold">typealias</span> Failure = Never
@@ -253,7 +253,7 @@ Tweet</a><p>
 <p>The <code>IsMainThread</code> publishers pushes an empty subscription to the subscriber and emits asynchronously a single test output value. The publisher always emits its only value on the main queue.</p>
 <p>Additionally, while receiving a new subscriber it prints whether the code runs on the main thread or not.</p>
 <p>Let&rsquo;s subscribe that publisher on the main thread and see the output:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
   Publishers.IsMainThread()
     .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
       print(<span style="color:#ed9d13">&#34;Sink: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
@@ -261,11 +261,11 @@ Tweet</a><p>
     .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)
 }</code></pre></div>
 <p>This outputs:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
 Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div>
 <p>So both the publisher and the sink code are executed on the main thread which is the current thread in a <code>viewDidLoad()</code> method.</p>
 <p>Let&rsquo;s try now inserting a <code>subscribe(on:)</code> directly after the publisher like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">override</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">viewDidLoad</span>() {
   Publishers.IsMainThread()
     .subscribe(on: DispatchQueue.global())
     .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
@@ -274,11 +274,11 @@ Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div
     .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)
 }</code></pre></div>
 <p>This time the output is:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">false</span>
 Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
 <p>This time <code>subscribe(on:)</code> subscribes its upstream on the given global queue and that&rsquo;s why the code inside <code>Publisher.IsMainThread</code> outputs <code>false</code>. As a side effect subscribing the publisher on a global queue also results in the output downstream being delivered on the same queue so sink also prints out a <code>false</code>.</p>
 <p>Now let&rsquo;s insert an operator (which means another publisher) in between <code>Publisher.IsMainThread</code> and <code>subscribe(on:)</code>:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
   .map { <span style="color:#40ffff">$0</span> }
   .subscribe(on: DispatchQueue.global())
   .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
@@ -286,11 +286,11 @@ Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></di
   }
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p>The output remains the same:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">false</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">false</span>
 Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
 <p>Subscribing to <code>map(...)</code> on a global queue leads to also subscribing <code>Publishers.IsMainThread</code> on that queue. So using <code>subscribe(on:)</code> sets the subscribing scheduler all the way up the stream.</p>
 <p>Let&rsquo;s see what will happen if we use two or more <code>subscribe(on:)</code> operators in the same chain:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
   .subscribe(on: DispatchQueue.main)
   .map { <span style="color:#40ffff">$0</span> }
   .subscribe(on: DispatchQueue.global())
@@ -299,7 +299,7 @@ Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></di
   }
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p>The output this time is:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
 Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div>
 <p>The subscribing works correctly up the stream - the upper most <code>subscribe(on:)</code> creates the <code>Publishers.IsMainThread</code> subscription on the main queue.</p>
 <p>However, the value delivered to the <code>sink</code> subscriber is also delivered on the main queue&hellip;</p>
@@ -310,18 +310,18 @@ Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div
 <p>You can use <code>receive(on:)</code> similarly to <code>subscribe(on:)</code>. You can use multiple <code>receive(on:)</code> operators and that will always change the downstream scheduler:</p>
 <p><img src="https://trycombine.com/images/subscribe-receive/receive-on.png" alt="Receive on operator"></p>
 <p>Let&rsquo;s try few examples. First let&rsquo;s revisit our first piece of code and try a <code>receive(on:)</code>:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
   .receive(on: DispatchQueue.global())
   .sink { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
     print(<span style="color:#ed9d13">&#34;Sink: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
   }
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p>The output this time:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
 Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></div>
 <p>So unlike trying the same thing with <code>subscribe(on:)</code>, <code>receive(on:)</code> changes the queue only to its downstream. That&rsquo;s why <code>Publisher.IsMainThread()</code> this time is created on the current thread (which in my case is the main one) and the sink code is ran on a global queue.</p>
 <p>We can try multiple <code>receive(on:)</code> operators by inserting an extra <code>map(...)</code> in between like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Publishers.IsMainThread()
   .receive(on: DispatchQueue.global())
   .map { value -&gt; <span style="color:#24909d">String</span> <span style="color:#6ab825;font-weight:bold">in</span>
     debugPrint(<span style="color:#ed9d13">&#34;Map: </span><span style="color:#ed9d13">\(</span>Thread.isMainThread<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
@@ -333,7 +333,7 @@ Sink: <span style="color:#6ab825;font-weight:bold">false</span></code></pre></di
   }
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p>Which prints:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">IsMainThread: <span style="color:#6ab825;font-weight:bold">true</span>
 Map: <span style="color:#6ab825;font-weight:bold">false</span>
 Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div>
 <p>This time around what goes down is:</p>
@@ -350,7 +350,7 @@ Sink: <span style="color:#6ab825;font-weight:bold">true</span></code></pre></div
 <p>This is very helpful when for example you&rsquo;re adding your code in a view controller callback like <code>viewDidLoad()</code> or another code running on the main queue. Your subscription can switch to a global queue in order to fetch data from the network or disk and process it, and finally switch back to the main queue to update your app&rsquo;s UI.</p>
 <h2 id="mix-and-match">Mix and Match</h2>
 <p>In a multi-threaded environment you are likely to want to control both on which schedulers you subscribe and receive output. Here&rsquo;s how a more complex chain that gets data from a resource intensive publisher (it reads data from disk for example), then processes the data in a global queue, and finally updates the UI looks like:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">[Resource Intensive Publisher]
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">[Resource Intensive Publisher]
   .subscribe(on: DispatchQueue.global())
   .receive(on: DispatchQueue.global())
   [Resource Intensive Processing of Output]

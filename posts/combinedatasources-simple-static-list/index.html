@@ -225,7 +225,7 @@ Tweet</a><p>
 <p>Additionally, in the current API iteration I had to introduce a <code>bind(subscriber:)</code> operator to fascilitate binding UI controls. It could happen that some sort of <code>bind</code> is introduced in later versions of Combine or in a popular in the future Combine 3rd party library but for the moment CombineDataSources has its own very simple operator for binding.</p>
 <h2 id="binding-a-static-list-of-elements">Binding a Static List of Elements</h2>
 <p>Let&rsquo;s have a look at the simplest code sample:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
   [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
 ]
 <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscriptions</span> = [AnyCancellable]()
@@ -245,7 +245,7 @@ people.publisher.bind(subscriber:
 <p>Instead of having to create a datasource object, retain it somewhere (your view controller or elsewhere), and then have series of methods that are called in specific order by UIKIt - you  simply declare the list of elements that you want to display, create a publisher out of it, and bind the elements to a table-specific subscriber.</p>
 <p>As you probably already guessed it - the magic happens thanks to the custom table-specific subscriber offered by CombineDataSources.</p>
 <p>In the code sample above you bind the list to a subscriber created via calling:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">tableView.rowsSubscriber(cellIdentifier:cellType:cellConfig:)</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">tableView.rowsSubscriber(cellIdentifier:cellType:cellConfig:)</code></pre></div>
 <p>This is one of the convenience methods on <code>UITableView</code> that CombineDataSources adds via an <code>extension</code> 🚀. (The API is modelled after RxDataSources&rsquo;s approach.)</p>
 <p>The returned subscriber can handle a flat table view with a single section thus the <code>rowsSubscriber</code> method name - it binds a list of elements to table rows.</p>
 <p>The method takes 3 parameters:</p>
@@ -268,7 +268,7 @@ people.publisher.bind(subscriber:
 </ol>
 <p>The <code>bind(subscriber:)</code> operator returns an <code>AnyCancellable</code> which allows you to memory manage the binding any way you want. The most straight forward way is to have a <code>[AnyCancellable]</code> property in the view controller managing the table view and append the binding cancellable to it. This way when the view controller is dismissed that will also cancel the table view binding.</p>
 <p>If we have another look at the same code sample it&rsquo;ll now make much more sense:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">people</span> = [
   [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
 ]
 <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscriptions</span> = [AnyCancellable]()
@@ -288,7 +288,7 @@ people.publisher.bind(subscriber:
 <h2 id="binding-a-dynamic-list">Binding a dynamic list</h2>
 <p>Admittedly, binding static lists (even tought superior to the traditional UIKit way) isn&rsquo;t all that exciting. But here comes the power of Combine - binding a static list vs a dynamic list is identical since Combine only cares that it receives a publisher and handles any incoming data in exactly the same way.</p>
 <p>So how can we turn the simple data list we had before into a dynamic list? Let&rsquo;s use <code>@Published</code> to do that. This time we&rsquo;ll have <code>people</code> as a property on a view controller and it&rsquo;ll use the <code>@Published</code> property wrapper:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">ViewController.swift:
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">ViewController.swift:
 
 @Published
 <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">people</span> = [Person(name: <span style="color:#ed9d13">&#34;Julia&#34;</span>), Person(name: <span style="color:#ed9d13">&#34;Vicki&#34;</span>)]
@@ -309,7 +309,7 @@ ViewController.viewDidLoad():
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p>As said - the binding code is exactly the same! The only difference is that instead of getting a collection publisher you use the <code>$people</code> wrapper.</p>
 <p>Now each time you add an element to <code>people</code> the custom table subscriber will receive the new data and update the table:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">people.append(Person(name: <span style="color:#ed9d13">&#34;Pete&#34;</span>))
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">people.append(Person(name: <span style="color:#ed9d13">&#34;Pete&#34;</span>))
 
 ...
 
@@ -321,7 +321,7 @@ people.append(Person(name: <span style="color:#ed9d13">&#34;Zoe&#34;</span>))</c
 <p><img src="https://trycombine.com/images/datasources/static-list2.gif" alt=""></p>
 <h2 id="collection-view-subscribers">Collection view subscribers</h2>
 <p>CombineDataSources adds matching subscribers also to <code>UICollectionView</code> so if you&rsquo;d like to do similar binding like above you&rsquo;d use <code>UICollectionView.itemsSubscriber(...)</code> like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#a61717;background-color:#e3d2d2">$</span>people.bind(subscriber:
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#a61717;background-color:#e3d2d2">$</span>people.bind(subscriber:
   collectionView.itemsSubscriber(cellIdentifier: <span style="color:#ed9d13">&#34;Cell&#34;</span>, 
     cellType: UICollectionViewCell.<span style="color:#6ab825;font-weight:bold">self</span>,
     cellConfig: { cell, indexPath, person <span style="color:#6ab825;font-weight:bold">in</span>

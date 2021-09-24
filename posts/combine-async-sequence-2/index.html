@@ -223,14 +223,14 @@ Tweet</a><p>
 <p>I&rsquo;ll create a new type called <code>CombineAsyncStream</code> and make it conform to <code>AsyncSequence</code>. As soon as I typed this, I got some errors as <code>AsyncSequence</code> requires me to defne its output type and its iterator type first:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
   <span style="color:#6ab825;font-weight:bold">typealias</span> Element = Upstream.Output
   <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = CombineAsyncStream&lt;Upstream&gt;
   
@@ -242,12 +242,12 @@ Tweet</a><p>
 <p>To satisfy <code>AsyncSequence</code>&rsquo;s only requirement I need to add a method to get the sequence iterator, which in my case is just <code>self</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; <span style="color:#6ab825;font-weight:bold">Self</span> {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; <span style="color:#6ab825;font-weight:bold">Self</span> {
   <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">self</span>
 }</code></pre></td></tr></table>
 </div>
@@ -260,25 +260,25 @@ Tweet</a><p>
 <p>To do this I&rsquo;ll need to add two things to <code>CombineAsyncStream</code> - a stream instance and its iterator:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span>: AsyncThrowingStream&lt;Upstream.Output, Error&gt;
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span>: AsyncThrowingStream&lt;Upstream.Output, Error&gt;
 <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">lazy</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">iterator</span> = stream.makeAsyncIterator()</code></pre></td></tr></table>
 </div>
 </div>
 <p>I&rsquo;ll let <code>AsyncStream</code> create the iterator and I will just proxy to it from my own type. I&rsquo;ll add an extension so I can conform <code>CombineAsyncStream</code> to <code>AsyncIteratorProtocol</code> and have it be my iterator too:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>: AsyncIteratorProtocol {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>: AsyncIteratorProtocol {
   <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; Upstream.Output? {
     <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">try</span> await iterator.next()
   }
@@ -290,7 +290,7 @@ Tweet</a><p>
 <p>I&rsquo;ll add an initializer that takes a publisher and wires up my underlaying async stream. I&rsquo;ve broken down this into steps - first, let&rsquo;s add the basics:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -304,7 +304,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellable</span>: AnyCancellable?
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">cancellable</span>: AnyCancellable?
 
 <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(<span style="color:#6ab825;font-weight:bold">_</span> upstream: Upstream) {
   <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">subscription</span>: AnyCancellable? = <span style="color:#6ab825;font-weight:bold">nil</span>
@@ -323,7 +323,7 @@ Tweet</a><p>
 <p>Let&rsquo;s add some code in the closure:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -340,7 +340,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">subscription = upstream
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">subscription = upstream
 .handleEvents(
   receiveCancel: {
     continuation.finish(throwing: <span style="color:#6ab825;font-weight:bold">nil</span>)
@@ -369,14 +369,14 @@ Tweet</a><p>
 <p>To give <code>CombineAsyncStream</code> a try I&rsquo;ll create a simple operator that&rsquo;ll help me easily proxy publishers to streams:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
   <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">asyncStream</span>() -&gt; CombineAsyncStream&lt;<span style="color:#6ab825;font-weight:bold">Self</span>&gt; {
     <span style="color:#6ab825;font-weight:bold">return</span> CombineAsyncStream(<span style="color:#6ab825;font-weight:bold">self</span>)
   }
@@ -387,7 +387,7 @@ Tweet</a><p>
 <p>I&rsquo;m going to try some of the code in a simple iOS project. For fun let&rsquo;s first run this:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -395,7 +395,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await tick <span style="color:#6ab825;font-weight:bold">in</span> Timer
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await tick <span style="color:#6ab825;font-weight:bold">in</span> Timer
       .publish(every: <span style="color:#3677a9">1.0</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
       .autoconnect()
       .asyncStream() {
@@ -424,7 +424,7 @@ Tweet</a><p>
 <p>Let&rsquo;s do another one! How about getting the screen orientation via <code>NotificationCenter</code>?</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -432,7 +432,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">orientationStream</span> = NotificationCenter
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">orientationStream</span> = NotificationCenter
    .<span style="color:#6ab825;font-weight:bold">default</span>
    .publisher(<span style="color:#6ab825;font-weight:bold">for</span>: UIDevice.orientationDidChangeNotification)
    .map { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> UIDevice.current.orientation.isLandscape }
@@ -444,12 +444,12 @@ Tweet</a><p>
 <p>Next, I can iterate over that stream like a bauss:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await orientation <span style="color:#6ab825;font-weight:bold">in</span> orientationStream {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await orientation <span style="color:#6ab825;font-weight:bold">in</span> orientationStream {
   print(<span style="color:#ed9d13">&#34;Landscape: </span><span style="color:#ed9d13">\(</span>orientation<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
 }</code></pre></td></tr></table>
 </div>
@@ -460,7 +460,7 @@ Tweet</a><p>
 <p>One cool new feature this year is that you can use the new <code>task()</code> view modifier in SwiftUI to run async code when your view is being added on screen. Therefore to continuously display the screen orientation (from above) you can simply do:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -468,7 +468,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Text(myText)
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Text(myText)
   .task {
     <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await orientation <span style="color:#6ab825;font-weight:bold">in</span> orientationStream {
       myText = orientation
@@ -482,7 +482,7 @@ Tweet</a><p>
 <p>I am (anyways) keeping around the publisher cancellable - why not add a method that calls <code>cancel()</code> on it? Additionally, I&rsquo;ll add a debug log in my <code>deinit()</code> to make sure I&rsquo;m indeed cleanly exiting my iterator:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
@@ -492,7 +492,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">cancel</span>() {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">cancel</span>() {
   cancellable?.cancel()
   cancellable = <span style="color:#6ab825;font-weight:bold">nil</span>
 }
@@ -506,7 +506,7 @@ Tweet</a><p>
 <p>To try this last piece of code, I&rsquo;ll iterate over a timer and cancel the stream few seconds later:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -527,7 +527,7 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// Create a Timer async stream.</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// Create a Timer async stream.</span>
 <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">stream</span> = Timer
   .publish(every: <span style="color:#3677a9">1.0</span>, tolerance: <span style="color:#3677a9">1.0</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
   .autoconnect()
@@ -559,7 +559,7 @@ print(<span style="color:#ed9d13">&#34;Completed.&#34;</span>)</code></pre></td>
 <p>Getting here was somewhat convoluted but the final code isn&rsquo;t all that complex:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
@@ -617,7 +617,7 @@ print(<span style="color:#ed9d13">&#34;Completed.&#34;</span>)</code></pre></td>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">56
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CombineAsyncStream</span>&lt;Upstream: Publisher&gt;: AsyncSequence {
   <span style="color:#6ab825;font-weight:bold">typealias</span> Element = Upstream.Output
   <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = CombineAsyncStream&lt;Upstream&gt;
   

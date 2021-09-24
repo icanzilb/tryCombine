@@ -244,11 +244,11 @@ Tweet</a><p>
 <h2 id="cocoapods-and-carthage-support-alongside-spm">CocoaPods and Carthage support alongside SPM</h2>
 <p><strong>Yes!</strong></p>
 <h3 id="cocoapods">CocoaPods</h3>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">pod <span style="color:#ed9d13">&#39;TimelaneCombine&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.4&#39;</span>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">pod <span style="color:#ed9d13">&#39;TimelaneCombine&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.4&#39;</span>
 pod <span style="color:#ed9d13">&#39;RxTimelane&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.3&#39;</span>
 pod <span style="color:#ed9d13">&#39;TimelaneCore&#39;</span>, <span style="color:#ed9d13">&#39;~&gt; 1.0.3&#39;</span>
 </code></pre></div><h3 id="carthage">Carthage</h3>
-<pre><code class="language-none" data-lang="none">github &quot;icanzilb/TimelaneCombine&quot; &quot;1.0.4&quot;
+<pre tabindex="0"><code class="language-none" data-lang="none">github &quot;icanzilb/TimelaneCombine&quot; &quot;1.0.4&quot;
 github &quot;icanzilb/RxTimelane&quot; &quot;1.0.3&quot;
 github &quot;icanzilb/TimelaneCore&quot; &quot;1.0.3&quot;
 </code></pre><ul>
@@ -262,12 +262,12 @@ github &quot;icanzilb/TimelaneCore&quot; &quot;1.0.3&quot;
 <h3 id="format-the-reported-values">Format the reported values</h3>
 <p>Available in TimelaneCombine and RxTimelane - the <code>lane()</code> operator now accepts a closure to format the reported values.</p>
 <p>You can, for example, format numbers:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myNumberPublisher
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myNumberPublisher
   .lane(<span style="color:#ed9d13">&#34;Numbers&#34;</span>) { number <span style="color:#6ab825;font-weight:bold">in</span>
     <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;%.2f&#34;</span>, number)
   }
 </code></pre></div><p>Or for emitted arrays, log the count on the lane in Instruments:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myPhotosPublisher
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">myPhotosPublisher
   .lane(<span style="color:#ed9d13">&#34;Photos&#34;</span>) { photos <span style="color:#6ab825;font-weight:bold">in</span>
     <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>photos.count<span style="color:#ed9d13">)</span><span style="color:#ed9d13"> photos&#34;</span>
   }
@@ -276,9 +276,9 @@ github &quot;icanzilb/TimelaneCore&quot; &quot;1.0.3&quot;
 </ul>
 <h3 id="use-a-propertywrapper-to-log-in-timelane">Use a @PropertyWrapper to log in Timelane</h3>
 <p>Meet the easiest way to use TimelaneCombine. If you have a published property on your type like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
 </code></pre></div><p>Replace it with <code>@PublishedOnLane()</code> to log its values in Timelane:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@PublishedOnLane(<span style="color:#ed9d13">&#34;Timer&#34;</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@PublishedOnLane(<span style="color:#ed9d13">&#34;Timer&#34;</span>) <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timestamp</span>: TimeInterval
 </code></pre></div><ul>
 <li><a href="https://github.com/icanzilb/TimelaneCombine/pull/2">#2 Add PublishedOnLane</a></li>
 </ul>

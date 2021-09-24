@@ -221,7 +221,7 @@ Tweet</a><p>
 <p>In my last post <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a> we had a look at binding a list of data elements to a table view. It&rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.</p>
 <p>In this post I&rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.</p>
 <p>In the previous post I used the <code>rowsSubscriber(...)</code> extension on <code>UITableView</code> like so:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">bind(subscriber:
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">bind(subscriber:
   tableView.rowsSubscriber(
     cellIdentifier:
     cellType:
@@ -237,7 +237,7 @@ Tweet</a><p>
 <p><img src="https://trycombine.com/images/datasources/mail-storyboard.png" alt="Mail app storyboard"></p>
 <p>Each cell is a different type (<code>InboxCell</code> and <code>OutboxCell</code>) and features its own custom UI in the Storyboard.</p>
 <p>I also need a data model for the inbox and outbox messages:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Message</span>: <span style="color:#24909d">Hashable</span> {
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Message</span>: <span style="color:#24909d">Hashable</span> {
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">title</span>: <span style="color:#24909d">String</span>
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">text</span>: <span style="color:#24909d">String</span>
 }
@@ -263,7 +263,7 @@ Tweet</a><p>
 </ul>
 <p>The <code>cellFactory</code> closure is given the table view, the controller, and the data and is expected to dequeue a cell and return it ready for displaying.</p>
 <p>I&rsquo;m gonna do that my view controller&rsquo;s <code>viewDidLoad()</code> method:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">listController</span> = TableViewItemsController&lt;[[Message]]&gt;
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">listController</span> = TableViewItemsController&lt;[[Message]]&gt;
   { (controller, table, indexPath, message) -&gt; UITableViewCell <span style="color:#6ab825;font-weight:bold">in</span>
 
   }</code></pre></div>
@@ -276,7 +276,7 @@ Tweet</a><p>
 <li>the data element to bind for this row</li>
 </ul>
 <p>Since I have a different cell type per section I will switch over the current row&rsquo;s index path and decide what cell to return. The closure body becomes:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">switch</span> indexPath.section {
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">switch</span> indexPath.section {
 <span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">0</span>:  <span style="color:#999;font-style:italic">// Outbox section</span>
   <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
     withIdentifier: OutboxCell.identifier) <span style="color:#6ab825;font-weight:bold">as</span>! OutboxCell
@@ -293,7 +293,7 @@ Tweet</a><p>
 }</code></pre></div>
 <p>In each of my cases I&rsquo;m free to configure the cells as I please - above I just set the row&rsquo;s title.</p>
 <p>With an initialized controller in hand, I simply need to bind the message list to a table subscriber. Right after the code from above, I&rsquo;ll add:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just(messages)
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just(messages)
   .bind(subscriber: tableView.sectionsSubscriber(listController))
   .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
 <p><code>tableView.sectionsSubscriber(listController)</code> creates a sections subscriber by using the given <code>listController</code> controller.</p>
