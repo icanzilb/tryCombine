@@ -221,12 +221,12 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>I do a lot of performance and instrumenting work and have found Peter Steinberger&rsquo;s <a href="https://gist.github.com/steipete/36350a8a60693d440954b95ea6cbbafc">post here</a> very useful when comparing lock alternatives.</p>
-<p>As I did more and more work with <code>async/await</code> and actors this summer, I thought it&rsquo;d be nice to put together myself a short post that does some basic benchmarking of actors vs. the existing synchronization mechanisms.</p>
+		<div class="post-content"><p>I do a lot of performance and instrumenting work and I&rsquo;ve found Peter Steinberger&rsquo;s <a href="https://gist.github.com/steipete/36350a8a60693d440954b95ea6cbbafc">post here</a> very useful when comparing lock alternatives.</p>
+<p>As I worked with <code>async/await</code> and actors more and more this summer, I thought it’d be nice to put together a short post offering some basic benchmarking of actors vs. the existing synchronization mechanisms.</p>
 <h3 id="disclaimer">Disclaimer</h3>
-<p>Benchmarking depends heavily on the system, temporary conditions, and more — as with any amateur benchmarks, take the numbers in this post with a grain of salt.</p>
+<p>Benchmarking depends heavily on the system, temporary conditions, and more. As with any amateur benchmarks, take the numbers in this post with a grain of salt.</p>
 <h2 id="the-benchmark-setup">The Benchmark Setup</h2>
-<p>I&rsquo;ve prepared a super-duper simple SwiftUI app that increments a counter 10_000 times. This is a very limited use case but since a counter is often times the first example about synchronization — I&rsquo;ll go with it.</p>
+<p>I&rsquo;ve prepared a super-duper simple SwiftUI app that increments a counter 10,000 times. This is a very limited use case but since a counter is often the first example used to teach about synchronization — I&rsquo;ll go with it.</p>
 <p>The project source is available here: <a href="https://github.com/icanzilb/ActorBench">https://github.com/icanzilb/ActorBench</a>.</p>
 <p>This is my setup to build and run the benchmark:</p>
 <ul>
@@ -235,13 +235,13 @@ Tweet</a><p>
 <li><strong>no debugger</strong> attached</li>
 <li>on my iPhone SE device running iOS 15.0(19A346).</li>
 </ul>
-<h2 id="running-the-benchmarks">Running the benchmarks</h2>
+<h2 id="running-the-benchmarks">Running the Benchmarks</h2>
 <p>The app has a very simple UI that allows me to manually start each benchmark in turn:</p>
 
 <img alt="App user interface with three buttons to run various benchmarks" src="https://trycombine.com/images/performance/ui.png" style="max-width:400px;"/>
 
 <h3 id="actor-counter">Actor counter</h3>
-<p>The code of my <code>actor</code> counter is very minimal:</p>
+<p>My <code>actor</code> counter uses very minimal code:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -264,8 +264,8 @@ Tweet</a><p>
 </div>
 <p>The actor serializes calls to <code>increment()</code> and protects <code>counter</code> from data races. Calling <code>increment()</code> 10,000 times on my device gives me an average of:</p>
 <div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.132 seconds
-</code></pre></div><h3 id="dispatchqueue-counter">DispatchQueue counter</h3>
-<p>The code for the same counter using a <code>DispatchQueue</code>:</p>
+</code></pre></div><h3 id="dispatchqueue-counter">DispatchQueue Counter</h3>
+<p>And now, the code for the same counter using a <code>DispatchQueue</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -292,10 +292,10 @@ Tweet</a><p>
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>In here I use a serial <code>DispatchQueue</code> to safely &amp; synchronously increment the counter. The averaged result for 10,000 increments:</p>
+<p>Here, I use a serial <code>DispatchQueue</code> to safely and synchronously increment the counter. The averaged result for 10,000 increments:</p>
 <div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.016 seconds
-</code></pre></div><h3 id="using-unfair-lock">Using unfair lock</h3>
-<p>Finally, the same counter but using <code>os_unfair_lock_s</code> which is the latest and greatest lock on Apple&rsquo;s platforms:</p>
+</code></pre></div><h3 id="using-unfair-lock">Using Unfair Lock</h3>
+<p>Finally, here&rsquo;s the same counter, but using <code>os_unfair_lock_s</code> which is the latest and greatest lock on Apple&rsquo;s platforms:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -325,12 +325,12 @@ Tweet</a><p>
 <p>To prevent data-races, this code locks and unlocks the lock for the duration it needs exclusive access to the counter. The averaged result on my device is:</p>
 <div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.009 seconds
 </code></pre></div><h2 id="results">Results</h2>
-<p>The results are pretty straight-forward with <code>os_unfair_lock</code> being the clear winner for the given performance benchmark:</p>
+<p>The results are pretty straightforward, with <code>os_unfair_lock</code> being the clear winner for the given performance benchmark:</p>
 
 <img alt="App user interface with three buttons to run various benchmarks" src="https://trycombine.com/images/performance/chart.png" style="max-width:400px;"/>
 
-<p>As said earlier, take the results with a grain of salt. Actors do much more than being simple locks — that&rsquo;s why an actual lock was much more performant in this benchmark.</p>
-<p>Actors offer safety and design clarity but naturally, they aren&rsquo;t the ultimate solution to all problems. As always, use the right tool for the task — for locking, the right tool is a lock 🔐😊.</p>
+<p>As mentioned earlier, take the results with a grain of salt. Actors do much more than being simple locks do. That&rsquo;s why an actual lock was much more performant in this benchmark.</p>
+<p>Actors offer safety and design clarity but, naturally, they aren&rsquo;t the ultimate solution to all problems. As always, use the right tool for the task — for locking, the right tool is a lock 🔐😊.</p>
 <p>Thanks for reading and see you next time 👋🏽</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>Interested in the new <code>async/await</code> Swift syntax? Hit me up on twitter if you think I should write a short book about it to cover everything in detail: <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>

@@ -13,9 +13,9 @@
       <pubDate>Thu, 30 Sep 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/performance-actor-queue-lock-benchmark/</guid>
-      <description>I do a lot of performance and instrumenting work and have found Peter Steinberger&amp;rsquo;s post here very useful when comparing lock alternatives.
-As I did more and more work with async/await and actors this summer, I thought it&amp;rsquo;d be nice to put together myself a short post that does some basic benchmarking of actors vs. the existing synchronization mechanisms.
-Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more — as with any amateur benchmarks, take the numbers in this post with a grain of salt.</description>
+      <description>I do a lot of performance and instrumenting work and I&amp;rsquo;ve found Peter Steinberger&amp;rsquo;s post here very useful when comparing lock alternatives.
+As I worked with async/await and actors more and more this summer, I thought it’d be nice to put together a short post offering some basic benchmarking of actors vs. the existing synchronization mechanisms.
+Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more. As with any amateur benchmarks, take the numbers in this post with a grain of salt.</description>
     </item>
     
   </channel>
