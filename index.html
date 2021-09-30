@@ -82,6 +82,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
       </li>
     
@@ -181,6 +185,18 @@
 			</div>
         </div>
 
+	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">Performance: Actor vs queue vs lock</a> </h1>
+
+			<div class="post-content">
+				<p>I do a lot of performance and instrumenting work and have found Peter Steinberger&rsquo;s post here very useful when comparing lock alternatives.
+As I did more and more work with async/await and actors this summer, I thought it&rsquo;d be nice to put together myself a short post that does some basic benchmarking of actors vs. the existing synchronization mechanisms.
+Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more — as with any amateur benchmarks, take the numbers in this post with a grain of salt.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">30. September 2021</span></p>
+		</article>
 	
 		<article class="post">
 			<h1><a href="https://trycombine.com/posts/thread-task-sleep/">The difference between Thread.sleep() and Task.sleep()</a> </h1>
@@ -290,20 +306,6 @@ Creating a real custom instrument, however, is a little more complicated as you 
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">19. April 2020</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/timelane-combine-update/">Timelane - the first two weeks!</a> </h1>
-
-			<div class="post-content">
-				<p>It&rsquo;s been two weeks since I released Timelane and I&rsquo;m really humbled by the community&rsquo;s super positive response.
-Since much has happened since the launch, I&rsquo;m writing this to give everyone a detailed update.
-The current versions are as follows:
- TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.
-Here&rsquo;s a summary of what&rsquo;s new.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">13. March 2020</span></p>
 		</article>
 	
 

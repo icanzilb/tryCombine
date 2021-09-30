@@ -6,7 +6,18 @@
     <description>Recent content in task on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/task/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/task/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Performance: Actor vs queue vs lock</title>
+      <link>https://trycombine.com/posts/performance-actor-queue-lock-benchmark/</link>
+      <pubDate>Thu, 30 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/performance-actor-queue-lock-benchmark/</guid>
+      <description>I do a lot of performance and instrumenting work and have found Peter Steinberger&amp;rsquo;s post here very useful when comparing lock alternatives.
+As I did more and more work with async/await and actors this summer, I thought it&amp;rsquo;d be nice to put together myself a short post that does some basic benchmarking of actors vs. the existing synchronization mechanisms.
+Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more — as with any amateur benchmarks, take the numbers in this post with a grain of salt.</description>
+    </item>
+    
     <item>
       <title>The difference between Thread.sleep() and Task.sleep()</title>
       <link>https://trycombine.com/posts/thread-task-sleep/</link>

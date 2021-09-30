@@ -4,19 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Bridge from Combine to AsyncSequence - the plan (p. 1)</title>
+		<title>Performance: Actor vs queue vs lock</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Bridge from Combine to AsyncSequence - the plan (p. 1)" />
+		<meta property="og:title" content="Performance: Actor vs queue vs lock" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Series of Combine framework programming related blog posts." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/combine-async-sequence-1/" />
+<meta property="og:url" content="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Series of Combine framework programming related blog posts." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Bridge from Combine to AsyncSequence - the plan (p. 1)">
+<meta name="twitter:title" content="Performance: Actor vs queue vs lock">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -183,7 +183,7 @@
         </div>
 
 			
-		<h1>Bridge from Combine to AsyncSequence - the plan (p. 1) </h1>
+		<h1>Performance: Actor vs queue vs lock </h1>
 
 <style>
   .twitter-share-button {
@@ -217,82 +217,123 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Bridge%20from%20Combine%20to%20AsyncSequence%20-%20the%20plan%20%28p.%201%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fcombine-async-sequence-1%2f"
+  href="https://twitter.com/intent/tweet?text=Performance%3a%20Actor%20vs%20queue%20vs%20lock&url=https%3a%2f%2ftrycombine.com%2fposts%2fperformance-actor-queue-lock-benchmark%2f"
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>Previously, I wrote about actors in <a href="https://trycombine.com/posts/swift-actors/">Actors part 1</a> and <a href="https://trycombine.com/posts/swift-actors-combine/">Actors part 2</a>; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple <code>for</code> loop.</p>
-<blockquote>
-<p><strong>Note</strong>: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of <code>AsyncStream</code>. If you&rsquo;re using beta 3 or later <code>AsyncStream</code> is likely supported out of the box.</p>
-</blockquote>
-<h2 id="asyncsequence-and-asyncstream">AsyncSequence and AsyncStream</h2>
-<p><code>AsyncSequence</code> is a new API introduced in iOS15/macOS12 that allows you to use the new async/await Swift syntax to create asynchronous sequence iterators.</p>
-<p>The existing Swift standard library <code>Sequence</code> protocol provides a mechanism for working with finite or infinite sequences of elements.</p>
-<p><code>AsyncSequence</code>, simply put, is exactly the same sequence protocol with the difference that getting the next element in the sequence is asynchronous - i.e. you optionally <em>might</em> non-blockingly wait for the next element to become available.</p>
-<p>Let&rsquo;s look at a practical example: Foundation offers a new API on the <code>URL</code> type - <code>URL.lines</code>. <code>lines</code> is an asynchronous sequence that makes text lines of a file at the given URL available as elements in a sequence as soon as they are available. In other words, if you&rsquo;re reading a remote file, you can iterate over  <code>URL.lines</code> in a simple <code>for</code> loop and it will non-blockingly run the body of the loop for each text line of the file when it&rsquo;s received from the server.</p>
-<p>The mechanics of making an async sequence are the same as for sync sequences. The async sequence protocol requires a single method that makes an iterator:</p>
+		<div class="post-content"><p>I do a lot of performance and instrumenting work and have found Peter Steinberger&rsquo;s <a href="https://gist.github.com/steipete/36350a8a60693d440954b95ea6cbbafc">post here</a> very useful when comparing lock alternatives.</p>
+<p>As I did more and more work with <code>async/await</code> and actors this summer, I thought it&rsquo;d be nice to put together myself a short post that does some basic benchmarking of actors vs. the existing synchronization mechanisms.</p>
+<h3 id="disclaimer">Disclaimer</h3>
+<p>Benchmarking depends heavily on the system, temporary conditions, and more — as with any amateur benchmarks, take the numbers in this post with a grain of salt.</p>
+<h2 id="the-benchmark-setup">The Benchmark Setup</h2>
+<p>I&rsquo;ve prepared a super-duper simple SwiftUI app that increments a counter 10_000 times. This is a very limited use case but since a counter is often times the first example about synchronization — I&rsquo;ll go with it.</p>
+<p>The project source is available here: <a href="https://github.com/icanzilb/ActorBench">https://github.com/icanzilb/ActorBench</a>.</p>
+<p>This is my setup to build and run the benchmark:</p>
+<ul>
+<li>Xcode Version 13.0 (13A233)</li>
+<li>a <strong>Release</strong> configuration build</li>
+<li><strong>no debugger</strong> attached</li>
+<li>on my iPhone SE device running iOS 15.0(19A346).</li>
+</ul>
+<h2 id="running-the-benchmarks">Running the benchmarks</h2>
+<p>The app has a very simple UI that allows me to manually start each benchmark in turn:</p>
+
+<img alt="App user interface with three buttons to run various benchmarks" src="https://trycombine.com/images/performance/ui.png" style="max-width:400px;"/>
+
+<h3 id="actor-counter">Actor counter</h3>
+<p>The code of my <code>actor</code> counter is very minimal:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// Source abbreviated</span>
-<span style="color:#6ab825;font-weight:bold">protocol</span> <span style="color:#447fcf;text-decoration:underline">AsyncSequence</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; <span style="color:#6ab825;font-weight:bold">Self</span>.AsyncIterator
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">actor ActorBench {
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#3677a9">0.0</span>
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">increment</span>() {
+    counter += <span style="color:#3677a9">1.2</span>
+  }
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>The iterator protocol is also pretty flexible with only a single requirement that returns asynchronously the next element or a <code>nil</code> to terminate the sequence:</p>
+<p>The actor serializes calls to <code>increment()</code> and protects <code>counter</code> from data races. Calling <code>increment()</code> 10,000 times on my device gives me an average of:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.132 seconds
+</code></pre></div><h3 id="dispatchqueue-counter">DispatchQueue counter</h3>
+<p>The code for the same counter using a <code>DispatchQueue</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#999;font-style:italic">// Source abbreviated</span>
-<span style="color:#6ab825;font-weight:bold">protocol</span> <span style="color:#447fcf;text-decoration:underline">AsyncIteratorProtocol</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; <span style="color:#6ab825;font-weight:bold">Self</span>.Element?
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Queue</span> {
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#3677a9">0.0</span>
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">queue</span> = DispatchQueue(label: <span style="color:#ed9d13">&#34;counter&#34;</span>)
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">increment</span>() {
+    queue.sync {
+      counter += <span style="color:#3677a9">1.2</span>
+    }
+  }
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>The neat thing then is that you can use your custom async sequence in a normal <code>for</code> loop without the need to pass around closures or fiddle with cancellables or other rituals:</p>
+<p>In here I use a serial <code>DispatchQueue</code> to safely &amp; synchronously increment the counter. The averaged result for 10,000 increments:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.016 seconds
+</code></pre></div><h3 id="using-unfair-lock">Using unfair lock</h3>
+<p>Finally, the same counter but using <code>os_unfair_lock_s</code> which is the latest and greatest lock on Apple&rsquo;s platforms:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await element <span style="color:#6ab825;font-weight:bold">in</span> myAsyncSequence {
-  print(element)
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Lock</span> {
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">lock</span> = os_unfair_lock_s()
+  <span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#3677a9">0.0</span>
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">increment</span>() {
+    os_unfair_lock_lock(&amp;lock)
+    counter += <span style="color:#3677a9">1.2</span>
+    os_unfair_lock_unlock(&amp;lock)
+  }
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>Making your own async sequences is quite easy but for most simple cases using the default <code>AsyncStream</code> implementation is sufficient. <code>AsyncStream.init(...)</code> takes a single closure that can yield elements, complete, or error. The closure is transparently used as the sequence iterator without the need for you to implement an iterator yourself.</p>
-<h2 id="combine-and-asyncstream">Combine and AsyncStream</h2>
-<p>In this blog series we&rsquo;re going to put <code>AsyncStream</code> and Combine side by side and see where are the similarities and make a simple plan how to make an operator to proxy Combine&rsquo;s publishers to async sequences.</p>
-<p>We&rsquo;re, more specifically, going to compare Combine&rsquo;s <code>Subscriber</code> and <code>AsyncStream</code> types. Let&rsquo;s have a look at:</p>
-<ol>
-<li><strong>Elements type</strong> - Combine subscribers are typed and receive a single type of element (<code>Input</code>); async streams also yield only a single value type (<code>Element</code>).</li>
-<li><strong>Emitting an element</strong> - subscribers have a method called <code>receive(_:)</code> which emits a single element, async stream uses a continuation that can emit a value called <code>yield(_:)</code>.</li>
-<li><strong>Erroring</strong> - subscribers have a method <code>receive(completion:)</code> to which you can pass a failure with an error; a stream&rsquo;s continuation has a <code>finish(throwing:)</code> method that takes an error too.</li>
-<li><strong>Completing successfully</strong> - as previously, subscribers have <code>receive(completion:)</code> with a successful enum case, stream&rsquo;s continuation accepts <code>nil</code> as the error in  <code>finish(throwing:)</code> for successful completion.</li>
-</ol>
-<p>The only remaining open question is publisher cancellation. Some publishers implement specific behavior when they are cancelled (usually resource cleanup). Cancelling is simply the consumer stopping being interested in the publisher.</p>
-<p>This is a bit of a head scratcher.</p>
-<p>Generally when you&rsquo;re iterating over a sequence in a <code>for</code> loop there is no easy way to cancel the iterator. Your sequence might have a built-in mechanism to complete or error but not necessarily for being cancelled. But it <strong>might</strong> have a cancel mechanism since it&rsquo;s a good idea for async code in general to have a way for being cancelled.</p>
-<p>So for the purpose of building a proxy from Combine to async sequence (this blog series' ultimate goal) I think the async sequence should complete successfully if the publisher is cancelled. Erroring out seems inappropriate, and doing nothing will leave a <code>for</code> loop hanging forever.</p>
-<p>It looks like, then, we can easily map all events of a Combine publisher to calling the respective methods on an async stream&rsquo;s continuation!</p>
-<p>We&rsquo;ll do that in the next post: <a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (part 2)</a></p>
-<hr>
+<p>To prevent data-races, this code locks and unlocks the lock for the duration it needs exclusive access to the counter. The averaged result on my device is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">Duration: 0.009 seconds
+</code></pre></div><h2 id="results">Results</h2>
+<p>The results are pretty straight-forward with <code>os_unfair_lock</code> being the clear winner for the given performance benchmark:</p>
+
+<img alt="App user interface with three buttons to run various benchmarks" src="https://trycombine.com/images/performance/chart.png" style="max-width:400px;"/>
+
+<p>As said earlier, take the results with a grain of salt. Actors do much more than being simple locks — that&rsquo;s why an actual lock was much more performant in this benchmark.</p>
+<p>Actors offer safety and design clarity but naturally, they aren&rsquo;t the ultimate solution to all problems. As always, use the right tool for the task — for locking, the right tool is a lock 🔐😊.</p>
+<p>Thanks for reading and see you next time 👋🏽</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p>All of the concurrency features in Swift are still work in progress. I&rsquo;m using an Xcode beta version plus a swift.org toolchain right now to get all of the above working but it&rsquo;s still interesting to play with all those new APIs and get a feeling of the future of Swift code.</p>
-<p>Hit me up with your ideas, replies, and feedback on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+<p>Interested in the new <code>async/await</code> Swift syntax? Hit me up on twitter if you think I should write a short book about it to cover everything in detail: <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
 <hr>
 <p><em>To learn about all Combine check <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</em></p>
 </div>
@@ -303,7 +344,7 @@ Tweet</a><p>
 				</a>
 				<br/>
 				
-		<p class="meta">Posted on <span class="postdate">12. July 2021</span></p>
+		<p class="meta">Posted on <span class="postdate">30. September 2021</span></p>
 	</article>
 	
 
