@@ -300,7 +300,7 @@ print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d
 </div>
 <p>GCD spreads the concurrent work on all cores it can grab and on my machine the code prints:</p>
 <div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
-<p>The thing is — you&rsquo;re limited to the amount of threads <code>DispatchQueue</code> will create for you as switching threads is very expensive and the system will try creating as few as possible. In the end the whole laptop is busy running a whole bunch of blocked threads.</p>
+<p>The thing is — you&rsquo;re limited to the amount of threads <code>DispatchQueue</code> will create for you as switching threads is very expensive and the system will try creating as few as possible. In the end the machine is &ldquo;busy&rdquo; running nothing.</p>
 <p>Let&rsquo;s have a look at the same code with the new <code>Task</code> APIs and <code>async/await</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
