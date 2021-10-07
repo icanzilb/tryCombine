@@ -4,32 +4,32 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Building a custom `sample` operator</title>
+		<title>Inspecting actors, the cooperative pool and threads</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Building a custom `sample` operator" />
+		<meta property="og:title" content="Inspecting actors, the cooperative pool and threads" />
 <meta property="og:type" content="website" />
-<meta property="og:description" content="How to create a more complex custom operator" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-actor-dispatch-queues/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
-<meta name="description" content="How to create a more complex custom operator">
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
 <meta name="author" content="Marin Todorov">
 
 <link href rel="alternate" type="application/rss+xml" title="try Combine">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:description" content="How to create a more complex custom operator" />
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Building a custom `sample` operator">
+<meta name="twitter:title" content="Inspecting actors, the cooperative pool and threads">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -78,7 +78,7 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues/">&raquo; &nbsp; 6/Oct &middot; Inspecting actors, the cooperative pool and threads</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -188,7 +188,7 @@
         </div>
 
 			
-		<h1>Building a custom `sample` operator </h1>
+		<h1>Inspecting actors, the cooperative pool and threads </h1>
 
 <style>
   .twitter-share-button {
@@ -222,23 +222,17 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Building%20a%20custom%20%60sample%60%20operator&url=https%3a%2f%2ftrycombine.com%2fposts%2fmore-simple-custom-combine-operators-with-sample%2f"
+  href="https://twitter.com/intent/tweet?text=Inspecting%20actors%2c%20the%20cooperative%20pool%20and%20threads&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-actor-dispatch-queues%2f"
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>In <a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> I spoke about how you can cheaply create your own custom Combine operator without the need to create a new custom <code>Publisher</code> type.</p>
-<p>In this post I&rsquo;d like to show how this kind of &ldquo;cheap&rdquo; operators could actually be quite complex and useful; still being created only by creatively combining existing operators.</p>
-<p>Let&rsquo;s look at <code>sample(_)</code>&hellip;</p>
-<h2 id="the-sample-operator">The <code>sample</code> operator</h2>
-<p><a href="https://rxmarbles.com">rxmarbles.com</a> is a marveleous website where you can find visual and interactive presentations of a multitude of reactive operators (based in their implementation in RxJS).</p>
-<p>One operator from Rx that I really like but I still don&rsquo;t see implemented in Combine is <code>sample</code>.</p>
-<p><code>sample</code> is very handy and you can see it in action here: (<a href="https://rxmarbles.com/#sample">https://rxmarbles.com/#sample</a>). It allows you to take the values of a publisher only at given times when a second publisher (a source or a trigger) emits.</p>
-<p>The second publisher&rsquo;s values are ignored - it only serves as a &ldquo;trigger&rdquo; as to when should the latest value of the first publisher be emitted.</p>
-<p>A practical application of <code>sample</code> is having a timer but you only take the current value when a button is pressed like so:</p>
-<p><img src="https://trycombine.com/images/sample/sample-dia.png" alt=""></p>
-<p>Now let&rsquo;s look at how to quickly re-implement <code>sample</code> by combining built-in Combine operators.</p>
-<h2 id="re-implementing-sample-in-combine">Re-implementing <code>sample</code> in Combine</h2>
-<p>First we will start with defining an extension on <code>Publisher</code> - again we will not create a new <code>Publisher</code> implementation but rather extend the protocol with a &ldquo;cheap&rdquo; operator.</p>
+		<div class="post-content"><p>After I started doing some benchmarking how different APIs perform when used to <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">build a simple counter</a>, I got really interested to learn more about how the new Swift concurrency model behaves at runtime.</p>
+<p>So in this post I&rsquo;ll use a couple of actors and make them do concurrent computations and check how the thread list and dispatch-queueus look like in the debugger.</p>
+<h2 id="the-test-setup">The Test Setup</h2>
+<p>I&rsquo;ve prepared a super-duper simple SwiftUI app that does a bunch of floating-point multiplication and division.</p>
+<p>In this post, I&rsquo;m using an Xcode 13.0 (13A233) running the test project in an iOS Simulator on my 2018 macbook pro.</p>
+<h2 id="a-crunch-actor">A Crunch Actor</h2>
+<p>I have a simple actor called <code>CrunchActor1</code> that includes a single method that does some number crunching:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -248,67 +242,70 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">Publisher</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
-    -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
-    <span style="color:#6ab825;font-weight:bold">where</span> P: Publisher, P.Output: <span style="color:#24909d">Equatable</span>, 
-    P.Failure == <span style="color:#6ab825;font-weight:bold">Self</span>.Failure {
-
-  }
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">actor CrunchActor1 {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">crunch</span>() -&gt; <span style="color:#24909d">Double</span> {
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">result</span> = <span style="color:#3677a9">1.0</span>
+    <span style="color:#6ab825;font-weight:bold">for</span> i <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">10000000</span> {
+      result = result * <span style="color:#3677a9">1.085648466</span>
+      result = result / <span style="color:#3677a9">2.085648466</span>
+      ...</code></pre></td></tr></table>
+</div>
+</div>
+<p>The point of this is to simply have an actor that does <em>something</em> on its thread for a little while so I can break in the debugger and look at the GCD runtime-situation.</p>
+<h3 id="running-a-single-actor-method">Running a single actor method</h3>
+<p>On my first try, I&rsquo;m running a single call to <code>crunch()</code> in a SwiftUI task:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 1: </span><span style="color:#ed9d13">\(</span>crunchActor.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p><code>sample</code> will operate on the values of the current publisher. The method takes a single parameter which is the &ldquo;trigger&rdquo; or &ldquo;source&rdquo; publisher.</p>
-<p>The source publisher needs to meet a couple of conditions:</p>
+<p>When I break inside <code>crunch()</code>, I get to learn a few interesting facts:</p>
+
+<img alt="Debugger showing a single dispatch queue with a single thread" src="https://trycombine.com/images/performance/debugger-single-method.png" style="max-width:400px;"/>
+
 <ul>
-<li>first, the values emitted by <code>source</code> need to be, regardless of their actual type, <code>Equatable</code> so we can check for a new value by comparing the current one to the last one.</li>
-<li>second, the <code>Failure</code> types of <code>source</code> and <code>self</code> need to match as this is a requirement of <code>combineLatest(_)</code> which we will use in the method body.</li>
+<li>The &ldquo;cooperative thread pool&rdquo; that was mentioned in the WWDC videos is a <strong>concurrent dispatch queue</strong> called <code>com.apple.root.default-qos.cooperative</code>.</li>
+<li>The pool-queue has a <strong>default</strong> quality of service.</li>
+<li>The concurrent queue is currently running one code-block in <code>CrunchActor1.crunch()</code> on a single thread.</li>
 </ul>
-<p>Now let&rsquo;s see about the imlementation. First we will start by combinging the two publishers together via <code>combineLatest</code>:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">combineLatest(source)</code></pre></td></tr></table>
-</div>
-</div>
-<p>That will combine the values of <code>self</code> and <code>source</code> into a single stream of tuples, each containing the latest values of both publishers.</p>
-<p>Next we will filter any repeating values of the <code>source</code> publisher by removing duplicates via a custom closure:</p>
+<p>If you are familiar with GCD this really starts to paint a picture.</p>
+<p>Also, I heard speculations that an actor is just a serial dispatch queue with compile-time guarantees but it seeems that the debugger disagrees — technically, we get a single GCD queue and that&rsquo;s the cooperative pool.</p>
+<h3 id="running-actor-methods-concurrently">Running actor methods concurrently</h3>
+<p>Next, to quickly confirm that the actor behaves as expected, I&rsquo;m trying two calls to <code>crunch()</code> in parallel:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.removeDuplicates(by: { 
-  (tuple1, tuple2) -&gt; <span style="color:#24909d">Bool</span> <span style="color:#6ab825;font-weight:bold">in</span>
-  tuple1.<span style="color:#3677a9">1</span> == tuple2.<span style="color:#3677a9">1</span>
-})</code></pre></td></tr></table>
-</div>
-</div>
-<p>This will remove any values where the source publisher hasn&rsquo;t emitted a new value.</p>
-<p>Finally we need to get rid of the extra value in the tuple: the <code>source</code> element which is of no interest for this operator. And also erase the operator type to remove some of the complexity of the return type:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.map { tuple <span style="color:#6ab825;font-weight:bold">in</span>
-  tuple.<span style="color:#3677a9">0</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 1: </span><span style="color:#ed9d13">\(</span>crunchActor.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
 }
-.eraseToAnyPublisher()</code></pre></td></tr></table>
+Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 2: </span><span style="color:#ed9d13">\(</span>crunchActor.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
+}</code></pre></td></tr></table>
 </div>
 </div>
-<p>And the final implementation is:</p>
+<p>This code launches two tasks in parallel and each of them calls <code>crunch()</code>. The debugger shows exactly the same layout as before:</p>
+
+<img alt="Debugger showing a single dispatch queue with a single thread" src="https://trycombine.com/images/performance/debugger-two-concurrent-methods.png" style="max-width:400px;"/>
+
+<p>The actor transparently serializes calls to <code>crunch()</code> so the cooperative pool still <strong>creates a single thread</strong> to execute this code.</p>
+<h3 id="running-mulitple-actors-in-parallel">Running mulitple actors in parallel</h3>
+<p>So, how would the cooperative pool look like if I run two different actors in parallel? For this example I&rsquo;ll use <strong>two actors</strong> — <code>crunchActor1</code> and <code>crunchActor2</code>:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -323,62 +320,30 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">sample</span>&lt;P&gt;(source: P) 
-  -&gt; AnyPublisher&lt;<span style="color:#6ab825;font-weight:bold">Self</span>.Output, <span style="color:#6ab825;font-weight:bold">Self</span>.Failure&gt;
-  <span style="color:#6ab825;font-weight:bold">where</span> P: Publisher, P.Output: <span style="color:#24909d">Equatable</span>, 
-  P.Failure == <span style="color:#6ab825;font-weight:bold">Self</span>.Failure {
-
-  combineLatest(source)
-    .removeDuplicates(by: { 
-      (tuple1, tuple2) -&gt; <span style="color:#24909d">Bool</span> <span style="color:#6ab825;font-weight:bold">in</span>
-      tuple1.<span style="color:#3677a9">1</span> == tuple2.<span style="color:#3677a9">1</span>
-    })
-    .map { tuple <span style="color:#6ab825;font-weight:bold">in</span>
-      tuple.<span style="color:#3677a9">0</span>
-    }
-    .eraseToAnyPublisher()
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 1: </span><span style="color:#ed9d13">\(</span>crunchActor1.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
+}
+Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 2: </span><span style="color:#ed9d13">\(</span>crunchActor1.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
+}
+Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 3: </span><span style="color:#ed9d13">\(</span>crunchActor2.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
+}
+Task.detached {
+  result = await <span style="color:#ed9d13">&#34;Result 4: </span><span style="color:#ed9d13">\(</span>crunchActor2.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span>
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>We recreated <code>sample</code> as implemented in Rx by combinin/g <code>combineLatest</code>, <code>removeDuplicates</code>, and a <code>map</code>. Now we could use <code>sample</code> in all kinds of use-cases (though I personally find it most practical when using UI controls for the source). Let&rsquo;s try a quick and practical test.</p>
-<h2 id="getting-sample-out-for-a-spin">Getting <code>sample</code> out for a spin</h2>
-<p>A really simple test scenario could be:</p>
-<ul>
-<li>first publisher is a counter that emits consequtive integer values,</li>
-<li>second publisher (source, which could be a UI button or a timer) emits periodically to output the current counter value.</li>
-</ul>
-<p>Let&rsquo;s first get the counter going:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">counter</span> = Timer
-  .publish(every: <span style="color:#3677a9">0.17</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
-  .autoconnect()
-  .scan(<span style="color:#3677a9">0</span>) { result, <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
-    <span style="color:#6ab825;font-weight:bold">return</span> result + <span style="color:#3677a9">1</span>
-  }</code></pre></td></tr></table>
-</div>
-</div>
-<p>The counter (when subscribed) will continuously count like so:</p>
-<pre tabindex="0"><code>1
-2
-3
-4
-5
-...
-</code></pre><p>Then add a timer firing each 5 seconds to use as the &ldquo;source&rdquo;:</p>
+<p>When I break in the debugger now, I see that the pool is using two threads to run the calls to my two actors:</p>
+
+<img alt="Debugger showing a single dispatch queue with two threads" src="https://trycombine.com/images/performance/debugger-multiple-actors.png" style="max-width:400px;"/>
+
+<p>You see that the concurrent queue is running 2 blocks simultaneously on two threads — one actor-instance crunching in parallel on each thread.</p>
+<p>Next, is where things become <strong>a bit weird</strong> 🎃.</p>
+<h3 id="running-nonisolated-actor-code">Running nonisolated actor code</h3>
+<p>So, I&rsquo;m exploring ways to design highly-concurrent code. On a first try, I just annotated <code>crunch()</code> with <code>nonisolated</code> which removes the state-isolation harness for that method.</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -386,12 +351,28 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">trigger</span> = Timer
-  .publish(every: <span style="color:#3677a9">5</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .common)
-  .autoconnect()</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">actor CrunchActor1 {
+  nonisolated <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">crunch</span>() -&gt; <span style="color:#24909d">Double</span> {
+  ...</code></pre></td></tr></table>
 </div>
 </div>
-<p>And finally use <code>sample</code> to use the two publishers together:</p>
+<p>Xcode instantly nudges me to remove the <code>await</code> keywords — so I do and now I&rsquo;m calling <code>crunch()</code> synchronously:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">result = <span style="color:#ed9d13">&#34;Result 1: </span><span style="color:#ed9d13">\(</span>crunchActor.crunch<span style="color:#ed9d13">())</span><span style="color:#ed9d13">&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Running the debugger, I see that, yet again, only two of my four tasks run concurrently:</p>
+
+<img alt="Debugger showing a single dispatch queue with two threads" src="https://trycombine.com/images/performance/debugger-concurrent-nonisolated.png" style="max-width:400px;"/>
+
+<p>So, this time the calls to <code>crunch()</code> run free but the cooperative pool gives me <strong>only two threads</strong> at a time to run my four concurrent tasks.</p>
+<p>Unfortunately, looking at the docs, I&rsquo;m not sure how to <strong>ask for more threads</strong> so it seems I can only &ldquo;spread&rdquo; my work on two CPU cores 🤔. Additionally, I got feedback, that it depends on the machine hardware as to how many cores your pool can spare.</p>
+<h3 id="falling-back-on-classes">Falling back on classes</h3>
+<p>So I&rsquo;m trying to figure out if maybe actors still somehow serialize or limit the execution of methods even if they are <code>nonisolated</code>. I&rsquo;m going to ditch actors, fall back on classes and check how many threads do I get in that case:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -401,26 +382,47 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">sub</span> = counter
-  .sample(source: trigger)
-  .sink { value <span style="color:#6ab825;font-weight:bold">in</span>
-    print(value)
-  }</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CrunchActor1</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">crunch</span>() -&gt; <span style="color:#24909d">Double</span> {
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">result</span> = <span style="color:#3677a9">1.0</span>
+    <span style="color:#6ab825;font-weight:bold">for</span> i <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ... <span style="color:#3677a9">10000000</span> {
+    ...</code></pre></td></tr></table>
 </div>
 </div>
-<p>That will print the current value of <code>counter</code> each time <code>trigger</code>  fires:</p>
-<pre tabindex="0"><code>29
-58
-88
-117
-147
-176
-205
-...
-</code></pre><p>All works as expected so that&rsquo;s a wrap for today!</p>
+<p>Yet again, the cooperative pool runs only two blocks at a time on two separate threads:</p>
+
+<img alt="Debugger showing a single dispatch queue with two threads" src="https://trycombine.com/images/performance/debugger-multiple-classes.png" style="max-width:400px;"/>
+
+<p>So it seems that the cooperative pool has <strong>a limit on how much concurrency</strong> should you have access to (to spare you some reading, I&rsquo;m skipping using <code>TaskGroup</code> which produces the same results).</p>
+<p>I think to a point, these results make some sense — with this black-box limit you&rsquo;re <strong>really</strong> not able to drain the system resources and make other apps unresponsive&hellip;</p>
+<h3 id="falling-back-on-dispatchqueueconcurrentperform">Falling back on DispatchQueue.concurrentPerform(&hellip;)</h3>
+<p>But what if you <strong>really, really</strong> wanted to do some good, concurrent work? So far, the only solution I found is removing my <code>Task</code> code altogether and falling back on <code>DispatchQueue.concurrentPerform(...)</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">4</span>) { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+  <span style="color:#6ab825;font-weight:bold">_</span> = act1.crunch()
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>This code still produces, as pre-iOS 15, a <strong>thread explosion</strong> 🔥 that runs your parallel code unhindered:</p>
+
+<img alt="Debugger showing a custom queue with four threads" src="https://trycombine.com/images/performance/debugger-concurrent-perform.png" style="max-width:400px;"/>
+
+<p>Pay attention that this is not the cooperative pool anymore — it&rsquo;s just a concurrent GCD queue created by <code>concurrentPerform()</code>. It runs code on four threads in parallel and is utilizing four CPU cores quite neatly:</p>
+
+<img alt="Debugger showing an over 350% load of the CPU" src="https://trycombine.com/images/performance/debugger-cpu-four-cores.png" style="max-width:400px;"/>
+
+<h2 id="results">Results</h2>
+<p>So it seems that the pool automatically allots threads to <code>async/await</code> code and actors. For most apps this should be perfect — the new concurrency model will only get better with time so using the defaults is the best way forward.</p>
+<p>For apps where you need to make the most of the machine, it looks like the current solution is <code>DispatchQueue.concurrentPerform(...)</code> or your own operations or threads-based code.</p>
+<p>What do you think?</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p>You saw how to create more useful and reusable but &ldquo;cheap&rdquo; to make Combine operators. Next you&rsquo;d probably want to look into creating custom operators via implementing new <code>Publisher</code> types!</p>
-<p>To learn more about implementing custom operators and publishers check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a> - this is where you can see all updates, discuss in the website forums, and more.</p>
+<p>Interested in the new <code>async/await</code> Swift syntax? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
 </div>
     <hr/>
     <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
@@ -447,7 +449,7 @@ Tweet</a><p>
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">06. August 2019</span></p>
+		<p class="meta">Posted on <span class="postdate">06. October 2021</span></p>
 	</article>
 	
 

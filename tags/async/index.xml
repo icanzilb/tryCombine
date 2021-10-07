@@ -6,7 +6,18 @@
     <description>Recent content in async on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/async/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/async/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Actors, the cooperative pool and concurrency</title>
+      <link>https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/</link>
+      <pubDate>Wed, 06 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/</guid>
+      <description>After I started doing some benchmarking how different APIs perform, when used to build a simple counter, I got really interested to learn more about how the new Swift concurrency model behaves at runtime.
+So in this post I&amp;rsquo;ll use a couple of actors and make them do concurrent computations and check how the thread list and dispatch-queues look like in the debugger.
+The Test Setup I&amp;rsquo;ve prepared a super-duper simple SwiftUI app that does a bunch of floating-point multiplication and division.</description>
+    </item>
+    
     <item>
       <title>Performance: Actor vs queue vs lock</title>
       <link>https://trycombine.com/posts/performance-actor-queue-lock-benchmark/</link>
