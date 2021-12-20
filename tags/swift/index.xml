@@ -6,7 +6,18 @@
     <description>Recent content in swift on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Extending Xcode with power-ups</title>
+      <link>https://trycombine.com/posts/xcode-powerups/</link>
+      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/xcode-powerups/</guid>
+      <description>In this post I describe the technical setup of a small language experiment I developed to aid myself working on custom Xcode instruments.
+The need for a more flexible coding inside Xcode Last month, I prototyped a Swift IDE and became very interested in enhancing the experience of building with Swift. (Since Apple doesn&amp;rsquo;t hire remotely, I wonder what other companies are working in that area?)
+A little later, I came back to updating my custom Xcode Instrument called Timelane to support debugging new code based on the new Swift modern concurrency APIs:</description>
+    </item>
+    
     <item>
       <title>Announcing: “Modern Concurrency in Swift”</title>
       <link>https://trycombine.com/posts/announcing-modern-swift-concurrency-book/</link>
