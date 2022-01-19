@@ -2,19 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://trycombine.com/posts/xcode-powerups/</loc>
-    <lastmod>2021-12-20T00:00:00+00:00</lastmod>
+    <loc>https://trycombine.com/tags/async/</loc>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/asyncsequence/</loc>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/await/</loc>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2021-12-20T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/swift/</loc>
-    <lastmod>2021-12-20T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/swift-async-sequence-extensions-1/</loc>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2021-12-20T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/</loc>
+    <lastmod>2022-01-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/xcode-powerups/</loc>
     <lastmod>2021-12-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/xcode/</loc>
@@ -24,12 +36,6 @@
     <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/announcing-modern-swift-concurrency-book/</loc>
-    <lastmod>2021-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/async/</loc>
-    <lastmod>2021-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/await/</loc>
     <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/book/</loc>
@@ -52,9 +58,6 @@
   </url><url>
     <loc>https://trycombine.com/tags/thread/</loc>
     <lastmod>2021-09-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/asyncsequence/</loc>
-    <lastmod>2021-07-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/asyncstream/</loc>
     <lastmod>2021-07-13T00:00:00+00:00</lastmod>
