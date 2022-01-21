@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Swift Async Sequence extensions (part 2)</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Swift Async Sequence extensions (part 2)" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-async-sequence-extensions-2/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Swift Async Sequence extensions (part 2)">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+				
+			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/concurrency-book.png" style="width:140px; box-shadow: 2px 3px #354465;border-radius:5px;"/>
+				  </a>
+				  <a href="http://swiftconcurrencybook.com">Modern Concurrency<br/> in Swift</a> <span class="new-badge">New</span>
+			</div>
+        </div>
+
+			
+		<h1>Swift Async Sequence extensions (part 2) </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Swift%20Async%20Sequence%20extensions%20%28part%202%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-async-sequence-extensions-2%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">Swift Async Sequence extensions (part 1)</a> I covered simple ways to create an async sequence using a custom factory method and binding a sequence to a UI control via a custom <code>assign</code> method.</p>
+<p>This covered the &ldquo;beginning&rdquo; and &ldquo;end&rdquo; of the data stream (so to say) but what about processing or converting the data along the way? If you draw a parallel to Combine code — how would you build custom &ldquo;operators&rdquo; for your async sequence?</p>
+<p>In this post I&rsquo;ll show you exactly that — building a method that converts one async sequence into another.</p>
+<h2 id="existing-asyncsequence-methods">Existing AsyncSequence methods</h2>
+<p>Plenty of the new Swift Concurrency code is freely available at Apple&rsquo;s GitHub so should you want to peak in you can.</p>
+<p>For example here&rsquo;s the <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncFilterSequence.swift#L36-L41"><code>AsyncSequence.filter(_:)</code></a> source code:</p>
+<ul>
+<li>It defines an extension on <code>AsyncSequence</code></li>
+<li>Adds the <code>filter</code> method</li>
+<li>And finally declares a type called <code>AsyncFilterSequence</code> — this is what the  <code>filter</code> method returns.</li>
+</ul>
+<p>This is very similar setup to what the Combine operators do — most often they are a method on the <code>Publisher</code> protocol and return some kind of custom publisher that implements the operator logic. So no surprises here.</p>
+<p>If you want inspiration for build your own async sequence methods you can check out <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncMapSequence.swift#L46-L51"><code>map</code></a>, <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncPrefixSequence.swift#L39-L46"><code>prefix</code></a>, and so on.</p>
+<blockquote>
+<p>Note: The whole repo is very interesting to read through. For example have a look at how <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/TaskSleep.swift"><code>Task.sleep(...)</code></a> looks like.</p>
+</blockquote>
+<h2 id="building-a-custom-async-sequence-method">Building a custom async sequence method</h2>
+<p>For this article I&rsquo;ll build an alternative of the <code>Publisher.replaceNil(_:)</code> method from Combine. It&rsquo;s a handy operator that replaces any <code>nil</code> values in the stream with a given constant.</p>
+<p>Following the pattern established in the files I linked above, I&rsquo;ll start by creating a custom async sequence type called <code>AsyncReplaceNilSequence</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">AsyncReplaceNilSequence</span>&lt;T, Base: AsyncSequence&gt; :
+  AsyncSequence <span style="color:#6ab825;font-weight:bold">where</span> Base.Element == T? {
+
+  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
+
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>This new sequence <code>AsyncReplaceNilSequence</code> is generic (<code>T</code>) over its elements. An additional <code>where</code> clause requires that the base sequence has optional values (<code>T?</code>). This way if the base sequence contains, for example, elements <code>String?</code> — the resulting new sequence will have all <code>nil</code> values replaced and the output elements will be of type <code>String</code>.</p>
+<p>Next, I need a proper initializer that will take the base sequence and the constant to replace <code>nil</code> values with:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">base</span>: Base
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: T
+
+<span style="color:#6ab825;font-weight:bold">init</span>(
+  <span style="color:#6ab825;font-weight:bold">_</span> base: Base,
+  replaceValue: T
+) {
+  <span style="color:#6ab825;font-weight:bold">self</span>.base = base
+  <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>The property <code>base</code> holds onto the &ldquo;source&rdquo; sequence (or the base sequence) and <code>replaceValue</code> is a constant to replace <code>nil</code> values with.</p>
+<p>The final step in building the sequence is to define the sequence iterator. First I&rsquo;ll add the sequence method that creates the iterator:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; Iterator {
+  <span style="color:#6ab825;font-weight:bold">return</span> Iterator(
+    base.makeAsyncIterator(), 
+    replaceValue: replaceValue
+  )
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>And then I&rsquo;ll add <code>Iterator</code> as a nested structure inside <code>AsyncReplaceNilSequence</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Iterator</span>: AsyncIteratorProtocol {
+  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
+
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">baseIterator</span>: Base.AsyncIterator
+  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: Base.Element
+
+  <span style="color:#6ab825;font-weight:bold">init</span>(
+    <span style="color:#6ab825;font-weight:bold">_</span> baseIterator: Base.AsyncIterator,
+    replaceValue: Base.Element
+  ) {
+    <span style="color:#6ab825;font-weight:bold">self</span>.baseIterator = baseIterator
+    <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Very similarly to the sequence type itself, the iterator also holds on to its base counterpart and the value to use for replacing.</p>
+<p>The meaningful step here is defining the iterator <code>next()</code> method that will <strong>pull</strong> values from the base sequence and <strong>replay</strong> them while replacing any <code>nil</code> values:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">mutating</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; T? {
+  <span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">element</span> = <span style="color:#6ab825;font-weight:bold">try</span> await baseIterator.next() <span style="color:#6ab825;font-weight:bold">else</span> {
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
+  }
+
+  <span style="color:#6ab825;font-weight:bold">guard</span> element != <span style="color:#6ab825;font-weight:bold">nil</span> <span style="color:#6ab825;font-weight:bold">else</span> {
+    <span style="color:#6ab825;font-weight:bold">return</span> replaceValue
+  }
+
+  <span style="color:#6ab825;font-weight:bold">return</span> element
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>The method fetches the <code>next()</code> value from its base iterator and in case the result is <code>nil</code> it returns the replace constant instead.</p>
+<p>So now I have an async sequence and a working iterator. I only need the method on <code>AsyncSequence</code> before I wrap up. I chose to mimic the method signature of Combine&rsquo;s <code>replaceNil()</code> like so:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AsyncSequence</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">replaceNil</span>&lt;T&gt;(with output: T) 
+    -&gt; AsyncReplaceNilSequence&lt;T, <span style="color:#6ab825;font-weight:bold">Self</span>&gt; <span style="color:#6ab825;font-weight:bold">where</span> Element == T? 
+  {
+    <span style="color:#6ab825;font-weight:bold">return</span> AsyncReplaceNilSequence(<span style="color:#6ab825;font-weight:bold">self</span>, replaceValue: output)
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>The method is generic over its parameter type and that allows it to accept a <code>String</code> parameter if the sequence is <code>String?</code> or an <code>Int</code> parameter if the sequence is <code>Int?</code>, and not be available at all if the sequence is not of an optional element type.</p>
+<h2 id="trying-the-code-in-a-view">Trying the code in a view</h2>
+<p>Let&rsquo;s give the code a try. I&rsquo;ll reuse my code from <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">part 1</a> including my <code>Array.spread()</code> and <code>AsyncSequence.assign()</code> methods that create a sequence of values over time and bind them to a label on screen.</p>
+<p>I&rsquo;ll use an <code>[Int?]</code> array to display some numbers on screen:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ContentView</span>: View {
+  @State <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#ed9d13">&#34;&#34;</span>
+
+  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">body</span>: some View {
+    Text(<span style="color:#ed9d13">&#34;Update: </span><span style="color:#ed9d13">\(</span>counter<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+      .task {
+
+        [<span style="color:#3677a9">1</span>, <span style="color:#3677a9">2</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">4</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">6</span>]
+          .spread(delay: <span style="color:#3677a9">1.5</span>)
+          .map { <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span> }
+          .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.counter, on: <span style="color:#6ab825;font-weight:bold">self</span>)
+      }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m using <code>map</code> to convert the optional number to a string before binding it to the <code>@State</code> property. That displays the <strong>description</strong> of the optional instead of the value by default:</p>
+
+<img src="https://trycombine.com/images/asyncsequence/assign-optional.gif" width=400/>
+
+<p>And this is one of the common use cases that <code>replaceNil(_:)</code> is good for — if you have a fallback value for <code>nil</code> you can unwrap the sequence by removing the optional from the generic and bind the sequence directly like so:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">[<span style="color:#3677a9">1</span>, <span style="color:#3677a9">2</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">4</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">6</span>]
+  .spread(delay: <span style="color:#3677a9">1.5</span>)
+  .replaceNil(with: <span style="color:#3677a9">0</span>)
+  .map { <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span> }
+  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.counter, on: <span style="color:#6ab825;font-weight:bold">self</span>)</code></pre></td></tr></table>
+</div>
+</div>
+
+<img src="https://trycombine.com/images/asyncsequence/assign-replace-nil.gif" width=400/>
+
+<p>And that&rsquo;s all for today! I this code and spelling out the steps was useful — you can find the complete source code below.</p>
+<h2 id="the-completed-source-code">The completed source code</h2>
+<p>This is a whole bunch of code but including it below in case you&rsquo;d like to copy it over and play with it:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">60
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AsyncSequence</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">replaceNil</span>&lt;T&gt;(with output: T)
+    -&gt; AsyncReplaceNilSequence&lt;T, <span style="color:#6ab825;font-weight:bold">Self</span>&gt; <span style="color:#6ab825;font-weight:bold">where</span> Element == T?
+  {
+    <span style="color:#6ab825;font-weight:bold">return</span> AsyncReplaceNilSequence(<span style="color:#6ab825;font-weight:bold">self</span>, replaceValue: output)
+  }
+}
+
+<span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">AsyncReplaceNilSequence</span>&lt;T, Base: AsyncSequence&gt;
+  : AsyncSequence <span style="color:#6ab825;font-weight:bold">where</span> Base.Element == T? {
+
+  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
+  <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = Iterator
+
+  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">base</span>: Base
+  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: T
+
+  <span style="color:#6ab825;font-weight:bold">init</span>(
+    <span style="color:#6ab825;font-weight:bold">_</span> base: Base,
+    replaceValue: T
+  ) {
+    <span style="color:#6ab825;font-weight:bold">self</span>.base = base
+    <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
+  }
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; Iterator {
+    <span style="color:#6ab825;font-weight:bold">return</span> Iterator(
+      base.makeAsyncIterator(),
+      replaceValue: replaceValue
+    )
+  }
+
+  <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Iterator</span>: AsyncIteratorProtocol {
+    <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
+
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">baseIterator</span>: Base.AsyncIterator
+    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: Base.Element
+
+    <span style="color:#6ab825;font-weight:bold">init</span>(
+      <span style="color:#6ab825;font-weight:bold">_</span> baseIterator: Base.AsyncIterator,
+      replaceValue: Base.Element
+    ) {
+      <span style="color:#6ab825;font-weight:bold">self</span>.baseIterator = baseIterator
+      <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
+    }
+
+    <span style="color:#6ab825;font-weight:bold">mutating</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; T? {
+      <span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">element</span> = <span style="color:#6ab825;font-weight:bold">try</span> await baseIterator.next() <span style="color:#6ab825;font-weight:bold">else</span> {
+        <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
+      }
+
+      <span style="color:#6ab825;font-weight:bold">guard</span> element != <span style="color:#6ab825;font-weight:bold">nil</span> <span style="color:#6ab825;font-weight:bold">else</span> {
+        <span style="color:#6ab825;font-weight:bold">return</span> replaceValue
+      }
+
+      <span style="color:#6ab825;font-weight:bold">return</span> element
+    }
+
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>One final note — when you&rsquo;re building a method like this for production it makes sense to optimize for performance and add inline-able decorators. If you want to get some insight on how Apple&rsquo;s done that have a look at <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncMapSequence.swift#L46-L51"><code>AsyncSequence.map</code></a>&rsquo;s source code.</p>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
+<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
+<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">21. January 2022</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>
