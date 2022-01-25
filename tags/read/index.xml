@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>read on try Code</title>
+    <link>https://trycombine.com/tags/read/</link>
+    <description>Recent content in read on try Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/read/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yielding accessors in Swift nightly</title>
+      <link>https://trycombine.com/posts/swift-read-modify-coroutines/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-read-modify-coroutines/</guid>
+      <description>Note: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!
+ It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
+I was reading through a pitch by Joe Groff on some improvements to ARC and ownership the other day when I noticed that he mentions that accessor coroutines are available in Swift trunk.</description>
+    </item>
+    
+  </channel>
+</rss>

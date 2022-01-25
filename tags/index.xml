@@ -6,13 +6,49 @@
     <description>Recent content in Tags on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>async</title>
       <link>https://trycombine.com/tags/async/</link>
-      <pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/async/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>coroutines</title>
+      <link>https://trycombine.com/tags/coroutines/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/coroutines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>modify</title>
+      <link>https://trycombine.com/tags/modify/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/modify/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>read</title>
+      <link>https://trycombine.com/tags/read/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/read/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>swift</title>
+      <link>https://trycombine.com/tags/swift/</link>
+      <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/swift/</guid>
       <description></description>
     </item>
     
@@ -31,15 +67,6 @@
       <pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/await/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>swift</title>
-      <link>https://trycombine.com/tags/swift/</link>
-      <pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/swift/</guid>
       <description></description>
     </item>
     

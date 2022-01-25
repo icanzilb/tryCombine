@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Yielding accessors in Swift nightly</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="Yielding accessors in Swift nightly" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-read-modify-coroutines/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Yielding accessors in Swift nightly">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift nightly</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+				
+			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/concurrency-book.png" style="width:140px; box-shadow: 2px 3px #354465;border-radius:5px;"/>
+				  </a>
+				  <a href="http://swiftconcurrencybook.com">Modern Concurrency<br/> in Swift</a> <span class="new-badge">New</span>
+			</div>
+        </div>
+
+			
+		<h1>Yielding accessors in Swift nightly </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Yielding%20accessors%20in%20Swift%20nightly&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-read-modify-coroutines%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><blockquote>
+<p><strong>Note</strong>: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!</p>
+</blockquote>
+<p>It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.</p>
+<p>I was reading through a pitch by <a href="https://forums.swift.org/u/Joe_Groff">Joe Groff</a> on some <a href="https://forums.swift.org/t/a-roadmap-for-improving-swift-performance-predictability-arc-improvements-and-ownership-control/54206">improvements to ARC and ownership</a> the other day when I noticed that he mentions that <strong>accessor coroutines</strong> are available in Swift trunk.</p>
+<p>I remember coroutines and generators being in discussion some time ago but I honestly had the impression the new Swift Concurrency solved most of the problems coroutines address. So I grabbed the <a href="https://download.swift.org/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a-osx.pkg">Jan 9, 2022 nightly toolchain</a> and gave accessor coroutines a quick try in Xcode.</p>
+
+<img src="https://trycombine.com/images/yield/toolchains.png" width=400/>
+
+<h2 id="the-yield-keyword">The yield keyword</h2>
+<p>This whole article is based on Joe Groff&rsquo;s <a href="https://forums.swift.org/t/a-roadmap-for-improving-swift-performance-predictability-arc-improvements-and-ownership-control/54206#read-and-modify-accessor-coroutines-for-in-place-borrowing-and-mutation-of-data-structures-4">read and modify section in his pitch</a> — I just expanded a little the context with a more practical example and put a perspective on the performance implications.</p>
+<p>Coroutines, generally, allow a function to yield execution in order to participate in cooperative multitasking and also to be able to return a value mutliple times. In other langauges you&rsquo;d use a <code>yield</code> operator somewhat like a <code>return</code> but the function body could possibly continue execution after it.</p>
+<p>All of this sounds a bit like how tasks and async sequences work in Swift right now. In fact, here&rsquo;s an excerpt from an <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/yield#examples">async iterator</a> implemented in C# using <code>yield</code> to asynchronously return the sequence values:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plain" data-lang="plain">int result = 1;
+
+for (int i = 0; i &lt; exponent; i++)
+  {
+    result = result * number;
+    yield return result;
+  }</code></pre></td></tr></table>
+</div>
+</div>
+<p>But let&rsquo;s get back to Swift!</p>
+<p>In the pitch Joe mentions that a cool effect from using <code>yield</code> is that the function retains ownership over the returned value so it could <em>safely</em> provide in-place mutation of value-semantic data.</p>
+<p>Let&rsquo;s look at the expanded example from the pitch and what it all means.</p>
+<h2 id="copy-on-write-types-and-dynamic-properties">Copy-on-write types and dynamic properties</h2>
+<p>In this article I&rsquo;ll build a mock api request type for some app that sends data over to a web server. <code>APIRequest</code> features some useful methods like <code>send()</code>, <code>dump()</code> and more, and it holds an instance of <code>Attachment</code> which is a type wrapping a collection of bytes (the api request data):</p>
+
+<img src="https://trycombine.com/images/yield/apirequest-type.png" width=500/>
+
+<p>The code for this model looks somewhat like that:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">APIRequest</span> {
+	<span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Attachment</span> {
+		<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">bytes</span>: [<span style="color:#24909d">UInt8</span>]
+		<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">encoding</span>: <span style="color:#24909d">String</span>.Encoding = .nextstep
+	}
+
+	<span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">attachment</span> = Attachment(
+	  bytes: <span style="color:#24909d">Array</span>(repeating: <span style="color:#3677a9">65</span>, count: <span style="color:#3677a9">1_000_000</span>)
+	)
+
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">send</span>() { ... }
+  ...
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m initializing the attachment with roughly a megabyte of sample data.</p>
+<p>Some of the constraints of my example model are that the API users should not be able to modify the attachment <code>encoding</code> property but should be able to freely manipulate <code>bytes</code>.</p>
+<p>The quickest approach is to add a dynamic property to <code>APIRequest</code> which exposes <code>Attachment.bytes</code> while keeping the <code>attachment</code> property <em>private</em>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">bytes</span>: [<span style="color:#24909d">UInt8</span>] {
+  <span style="color:#6ab825;font-weight:bold">get</span> {
+    <span style="color:#6ab825;font-weight:bold">return</span> attachment.bytes
+  }
+  <span style="color:#6ab825;font-weight:bold">set</span> {
+    attachment.bytes = newValue
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>This code doesn&rsquo;t seem <em>unreasonable</em> — the code is simple and clear, and if you ever hardly use <code>bytes</code> it&rsquo;s not likely to become an issue.</p>
+<p>The detail here is that since the array is a copy-on-write type, returning the value out of the <code>get</code> accessor produces a copy if you want to mutate the result. E.g. appending a byte to the <code>bytes</code> property needs to, in fact, make a copy of the array, add the byte, and then assign it back to the property.</p>
+<p>Let&rsquo;s try this out in code! My app needs to create an api request and then, while processing some data, add a bunch of bytes to the attachment:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">request</span> = APIRequest()
+
+<span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">growAttachment</span>(<span style="color:#6ab825;font-weight:bold">_</span> request: <span style="color:#6ab825;font-weight:bold">inout</span> APIRequest) {
+	request.bytes.append(<span style="color:#3677a9">42</span>)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p><code>growAttachment(_)</code> takes a request and adds a byte to it — I&rsquo;ll call this method several times as my app process some dynamic input.</p>
+<blockquote>
+<p>Note: Again, some of these APIs are a bit artificial but I&rsquo;m trying to showcase the problem in the least possible amount of code.</p>
+</blockquote>
+<p>To test this setup, I&rsquo;ll add a loop to call <code>growAttachment()</code> repeatedly like so:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100_000</span> {
+	growAttachment(&amp;request)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Firing up my favorite dev-tool <strong>Instruments</strong>, I can&rsquo;t but notice some chilling memory usage numbers:</p>
+
+<img src="https://trycombine.com/images/yield/memory-by-copy.png" width=600/>
+
+<p>The memory usage is a little over two megabytes throughout the program execution. You only hold two copies of <code>attachment</code> at a time because the copying is performed serially — the memory is released before making a new copy for the next mutation.</p>
+<p>However, the sum of all allocations is over 180Gb — this is all the memory in-flux during the execution as you make copies on-the-fly.</p>
+<h2 id="yielding-accessors">Yielding accessors</h2>
+<p>Now let&rsquo;s try the same setup with the work-in-progress <code>_read</code> and <code>_modify</code> yielding accessors (only available in the nightly toolchains).</p>
+<p>As in Joe&rsquo;s example — I&rsquo;ll use a single <code>yield</code> to return values but retain ownership to allow mutation in-place:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">bytesRef</span>: [<span style="color:#24909d">UInt8</span>] {
+  _read {
+    yield attachment.bytes
+  }
+  _modify {
+    yield &amp;attachment.bytes
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Note how the <code>_modify</code> accessor returns a reference to <code>attachment.bytes</code>. You don&rsquo;t, however, need to do anything special when mutating the property. Treat it as any other property and the compiler will take care to automatically edit the value in-place.</p>
+<p>Let&rsquo;s give <code>bytesRef</code> a try:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">growAttachmentRef</span>(<span style="color:#6ab825;font-weight:bold">_</span> request: <span style="color:#6ab825;font-weight:bold">inout</span> APIRequest) {
+  request.bytesRef.append(<span style="color:#3677a9">42</span>)
+}
+
+<span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100_000</span> {
+	growAttachmentRef(&amp;request)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p><code>growAttachmentRef(_)</code> is identical to <code>growAttachment(_)</code> with the single difference that it uses <code>bytesRef</code> instead of <code>bytes</code>. To test this new function, I run a loop calling it the same amount of times as for <code>growAttachment(_)</code>.</p>
+<p>Profiling this new code in Instruments paints a different picture:</p>
+
+<img src="https://trycombine.com/images/yield/memory-by-ref.png" width=600/>
+
+<p><code>_modify</code> allows the runtime to safely modify the <code>bytes</code> array in place and there is no need to copy the memory around for each mutation.</p>
+<h2 id="performance-benefits">Performance benefits</h2>
+<p>You might be asking why is this important since the actual memory usage is about the same as you anyways need only two copies of the array in memory at a time.</p>
+<p>Copying values takes time&hellip; As I said in the beginning, if you hardly ever mutate <code>bytes</code> the initial approach might be just fine for you. However, in the given example where I mutate the array 100, 000 times it really makes a difference if you copy memory for each call to <code>append()</code> or edit the value in-place.</p>
+<p>I added some logging to the code and plotted the duration for the two identical operations over <code>bytes</code> and <code>bytesRef</code> in Instruments. The <code>&quot;By copy&quot;</code> region is the duration of the initial solution followed by the <code>&quot;By ref&quot;</code> which is the duration of the <code>yield</code> code (I added an arrow so you can see it):</p>
+
+<img src="https://trycombine.com/images/yield/duration-combined-graph.png" width=600/>
+
+<p>In fact, let&rsquo;s look at the tabular view to grok what the exact difference is:</p>
+
+<img src="https://trycombine.com/images/yield/duration-combined-table.png" width=400/>
+
+<p>I mean&hellip; it&rsquo;s not fair comparing the two anyways (since the latter doesn&rsquo;t do <em>any</em> memory copying) but I&rsquo;m trying to make the point that a seemingly innocent dynamic property added while budiling the data model might be a real performance hit.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The feature looks fairly polished and even features helpful diagnostics — for example when <code>yield</code> is missing you get this in Xcode:</p>
+
+<img src="https://trycombine.com/images/yield/accessor-no-yield.png" width=500/>
+
+<p>Joe writes that <code>read</code> and <code>modify</code> are already implemented in the compiler (as I got to experience first hand with the nightly build) and the standard library has, and I quote, &ldquo;experimented extensively with these features&rdquo; and the team sees great value in adopting them.</p>
+<p>All in all, I hope this will land in Swift 5.6, if not earlier, so we can use it in production code.</p>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
+<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
+<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">25. January 2022</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-34358526-8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-34358526-8');
+</script>
+	</body>
+</html>
