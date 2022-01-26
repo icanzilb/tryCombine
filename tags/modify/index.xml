@@ -14,8 +14,8 @@
       
       <guid>https://trycombine.com/posts/swift-read-modify-coroutines/</guid>
       <description>Note: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!
- It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
-I was reading through a pitch by Joe Groff on some improvements to ARC and ownership the other day when I noticed that he mentions that accessor coroutines are available in Swift trunk.</description>
+  Edit: Correction accessors like _read and _modify are also available in release toolchains, they&amp;rsquo;re just _ prefixed to signify they are work-in-progress.
+ It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.</description>
     </item>
     
   </channel>

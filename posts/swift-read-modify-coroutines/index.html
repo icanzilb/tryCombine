@@ -249,6 +249,9 @@ Tweet</a><p>
 		<div class="post-content"><blockquote>
 <p><strong>Note</strong>: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!</p>
 </blockquote>
+<blockquote>
+<p><strong>Edit</strong>: Correction accessors like <code>_read</code> and <code>_modify</code> are also available in release toolchains, they&rsquo;re just _ prefixed to signify they are work-in-progress.</p>
+</blockquote>
 <p>It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.</p>
 <p>I was reading through a pitch by <a href="https://forums.swift.org/u/Joe_Groff">Joe Groff</a> on some <a href="https://forums.swift.org/t/a-roadmap-for-improving-swift-performance-predictability-arc-improvements-and-ownership-control/54206">improvements to ARC and ownership</a> the other day when I noticed that he mentions that <strong>accessor coroutines</strong> are available in Swift trunk.</p>
 <p>I remember coroutines and generators being in discussion some time ago but I honestly had the impression the new Swift Concurrency solved most of the problems coroutines address. So I grabbed the <a href="https://download.swift.org/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a-osx.pkg">Jan 9, 2022 nightly toolchain</a> and gave accessor coroutines a quick try in Xcode.</p>
