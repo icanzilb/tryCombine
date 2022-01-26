@@ -8,14 +8,14 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 25 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/modify/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Yielding accessors in Swift nightly</title>
+      <title>Yielding accessors in Swift</title>
       <link>https://trycombine.com/posts/swift-read-modify-coroutines/</link>
       <pubDate>Tue, 25 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/swift-read-modify-coroutines/</guid>
-      <description>Note: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!
-  Edit: Correction accessors like _read and _modify are also available in release toolchains, they&amp;rsquo;re just _ prefixed to signify they are work-in-progress.
- It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.</description>
+      <description>Edit: The post previsouly said yielding accessors were available only in nightly toolchains, but _read and _modify are also available in release Swift builds; they&amp;rsquo;re just _ prefixed to signify they are work-in-progress.
+ It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
+I was reading through a pitch by Joe Groff on some improvements to ARC and ownership the other day when I noticed that he mentions that accessor coroutines are available in Swift trunk.</description>
     </item>
     
   </channel>

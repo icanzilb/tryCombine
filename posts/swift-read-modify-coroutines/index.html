@@ -4,14 +4,14 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Yielding accessors in Swift nightly</title>
+		<title>Yielding accessors in Swift</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Yielding accessors in Swift nightly" />
+		<meta property="og:title" content="Yielding accessors in Swift" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Yielding accessors in Swift nightly">
+<meta name="twitter:title" content="Yielding accessors in Swift">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -78,7 +78,7 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift nightly</a>
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -208,7 +208,7 @@
         </div>
 
 			
-		<h1>Yielding accessors in Swift nightly </h1>
+		<h1>Yielding accessors in Swift </h1>
 
 <style>
   .twitter-share-button {
@@ -242,19 +242,16 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Yielding%20accessors%20in%20Swift%20nightly&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-read-modify-coroutines%2f"
+  href="https://twitter.com/intent/tweet?text=Yielding%20accessors%20in%20Swift&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-read-modify-coroutines%2f"
   data-size="medium">
 Tweet</a><p>
 
 		<div class="post-content"><blockquote>
-<p><strong>Note</strong>: This post is about a work-in-progress Swift language feature — the code works with a nightly build of the toolchain but might not work or work differently in the future!</p>
-</blockquote>
-<blockquote>
-<p><strong>Edit</strong>: Correction accessors like <code>_read</code> and <code>_modify</code> are also available in release toolchains, they&rsquo;re just _ prefixed to signify they are work-in-progress.</p>
+<p><strong>Edit</strong>: The post previsouly said yielding accessors were available only in nightly toolchains, but <code>_read</code> and <code>_modify</code> are also available in release Swift builds; they&rsquo;re just _ prefixed to signify they are work-in-progress.</p>
 </blockquote>
 <p>It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.</p>
 <p>I was reading through a pitch by <a href="https://forums.swift.org/u/Joe_Groff">Joe Groff</a> on some <a href="https://forums.swift.org/t/a-roadmap-for-improving-swift-performance-predictability-arc-improvements-and-ownership-control/54206">improvements to ARC and ownership</a> the other day when I noticed that he mentions that <strong>accessor coroutines</strong> are available in Swift trunk.</p>
-<p>I remember coroutines and generators being in discussion some time ago but I honestly had the impression the new Swift Concurrency solved most of the problems coroutines address. So I grabbed the <a href="https://download.swift.org/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a-osx.pkg">Jan 9, 2022 nightly toolchain</a> and gave accessor coroutines a quick try in Xcode.</p>
+<p>I remember coroutines and generators being in discussion some time ago but I honestly had the impression the new Swift Concurrency solved most of the problems coroutines address. For this post I used the latest available toolchain <a href="https://download.swift.org/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a/swift-DEVELOPMENT-SNAPSHOT-2022-01-09-a-osx.pkg">Jan 9, 2022 nightly</a> and gave accessor coroutines a quick try in Xcode.</p>
 
 <img src="https://trycombine.com/images/yield/toolchains.png" width=400/>
 
