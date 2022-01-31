@@ -6,7 +6,18 @@
     <description>Recent content in swift on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 31 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Swift Light IDE update, Jan 31st</title>
+      <link>https://trycombine.com/posts/swift-light-ide-update-jan/</link>
+      <pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-light-ide-update-jan/</guid>
+      <description>For the ones who missed it last November, I&amp;rsquo;ve been playing with a Swift IDE prototype which allows you to easily develop Swift scripts for the mac.
+I shared a video showcase demoing how the tight integration of the IDE with the toolchain allows you to write scripts, capture inputs and outputs, and all that in a neat SwiftUI interface:
+More than anything else I worked on this to explore and demonstrate how easily I can build powerful Swift tools.</description>
+    </item>
+    
     <item>
       <title>Yielding accessors in Swift</title>
       <link>https://trycombine.com/posts/swift-read-modify-coroutines/</link>
