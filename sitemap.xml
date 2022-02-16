@@ -2,25 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://trycombine.com/tags/concurrency/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/swift/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/task/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/taskgroup/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/swift-concurrency-task-group/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2022-02-16T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/ide/</loc>
     <lastmod>2022-01-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/light/</loc>
     <lastmod>2022-01-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/swift/</loc>
-    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://trycombine.com/posts/swift-light-ide-update-jan/</loc>
-    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2022-01-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/</loc>
     <lastmod>2022-01-31T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/async/</loc>
@@ -63,12 +75,6 @@
     <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/book/</loc>
-    <lastmod>2021-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/concurrency/</loc>
-    <lastmod>2021-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/task/</loc>
     <lastmod>2021-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/</loc>

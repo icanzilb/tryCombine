@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
       </li>
     
@@ -509,8 +513,12 @@ Task.detached {
 <script src="https://unpkg.com/@telemetrydeck/sdk/dist/telemetrydeck.min.js" defer></script>
 
 <script>
-  window.td = window.td || [];
-  td.push(['app', '6DB9CD84-C400-4746-9E87-56EAD0D97492'], ['user', 'anonymous'], ['signal']);
+  if (window.location.href.indexOf("localhost") < 0) {
+    window.td = window.td || [];
+    td.push(['app', '6DB9CD84-C400-4746-9E87-56EAD0D97492'], ['user', 'anonymous'], ['signal']);
+  } else {
+      console.log('localhost');
+  }
 </script>
 	</body>
 </html>

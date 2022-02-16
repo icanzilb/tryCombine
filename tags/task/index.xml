@@ -6,7 +6,18 @@
     <description>Recent content in task on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/task/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/task/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The issue with task groups or how I discovered a solved problem</title>
+      <link>https://trycombine.com/posts/swift-concurrency-task-group/</link>
+      <pubDate>Wed, 16 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-concurrency-task-group/</guid>
+      <description>This post is not my usual format but there is a moral at the end, so hang around if you have a little time to waste.
+The setup I&amp;rsquo;m working on a longer blog post about the process of optimizing some concurrency Swift code. At a point I used John Sundell&amp;rsquo;s CollectionConcurrencyKit to compare the performance of different approaches.
+After I had my numbers, I peaked into his code to double check what exactly am I measuring.</description>
+    </item>
+    
     <item>
       <title>Announcing: “Modern Concurrency in Swift”</title>
       <link>https://trycombine.com/posts/announcing-modern-swift-concurrency-book/</link>

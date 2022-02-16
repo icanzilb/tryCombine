@@ -4,22 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>asyncstream</title>
+		<title>The issue with task groups or how I discovered a solved problem</title>
 		<meta name="viewport" content="width=device-width">
-		
-			<link href="https://trycombine.com/tags/asyncstream/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
-			<link href="https://trycombine.com/tags/asyncstream/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="asyncstream" />
+		<meta property="og:title" content="The issue with task groups or how I discovered a solved problem" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/tags/asyncstream/" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-concurrency-task-group/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -32,7 +29,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="asyncstream">
+<meta name="twitter:title" content="The issue with task groups or how I discovered a solved problem">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -204,7 +201,8 @@
 
 			<div id="content">
 				
-			<div id="promo">
+	<article class="post">
+				<div id="promo">
 				
 			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
 				<style>
@@ -217,33 +215,160 @@
 			</div>
         </div>
 
+			
+		<h1>The issue with task groups or how I discovered a solved problem </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=The%20issue%20with%20task%20groups%20or%20how%20I%20discovered%20a%20solved%20problem&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-concurrency-task-group%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>This post is not my usual format but there is a moral at the end, so hang around if you have a little time to waste.</p>
+<h3 id="the-setup">The setup</h3>
+<p>I&rsquo;m working on a longer blog post about the process of optimizing some concurrency Swift code. At a point I used John Sundell&rsquo;s <a href="https://github.com/JohnSundell/CollectionConcurrencyKit">CollectionConcurrencyKit</a> to compare the performance of different approaches.</p>
+<p>After I had my numbers, I peaked into his code to double check what exactly am I measuring. The code concurrently runs a task for each element in a sequence so I expected to find a task group but instead the implementation is simply:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">tasks</span> = map { element <span style="color:#6ab825;font-weight:bold">in</span>
+  Task(priority: priority) {
+    await transform(element)
+  }
+}
+... (continues) ...</code></pre></td></tr></table>
+</div>
+</div>
+<p>I asked him why did he use a bunch of loose tasks and he said he did it to easily preserve the order of elements in the result. (Which definitely makes sense to me given the task at hand in his library.)</p>
+<blockquote>
+<p><strong>Note</strong>: Would it not be very handy if <code>TaskGroup.addTask</code> returned the task instead of void? In such case you&rsquo;d be able to either process task results in order by walking the tasks or as they get completed by iterating the group.</p>
+</blockquote>
+<p>So, next I rearranged his code to use a <code>TaskGroup</code> and, just in case, measured the performance again.</p>
+<p>To my surprise, the results weren&rsquo;t even similar — the <code>TaskGroup</code> code was about three times slower than the loose <code>Task</code> variant&hellip;</p>
+<p>I went few times back and forth to remove code cruft and optimize as much as I can but the task group code was still much, much slower.</p>
+<p>In fact, I used Attabench and plotted the performance of the same amount of tasks as a loose bunch and in a group (higher is slower):</p>
+
+<img src="https://trycombine.com/images/performance/attabench1.png" width=650/>
+
+<p>After I ruled any problems with my bespoke, artisinal code I remembered Károly&rsquo;s pre-Apple talk about <a href="https://www.youtube.com/watch?v=UdZP6JeTCkM">Optimizing Collections</a> and how at a given size the under-the-hood algorithm will change and performance will too.</p>
+<blockquote>
+<p><strong>Note</strong>: Watch that talk — it&rsquo;s a complete cs class in 20 minutes and Károly is great at presenting the results.</p>
+</blockquote>
+<p>So my best guess was that to keep track of the group hierarchy, tasks are stored in some data structure, probably a tree, that borks the performance of adding/removing a node at a certain size.</p>
+<h3 id="a-solution">A solution</h3>
+<p>At this point I was already getting anxious because I have a perfect record of unanswered radars and that seemed like an issue that needed to actually be reported and fixed.</p>
+<p>Luckily, I thought I&rsquo;d first check in with some other people if they see the same issue and this is how I got directed to this PR: <a href="https://github.com/apple/swift/pull/41192">5.6: Fix SR-15785 by adding a cached reference to &hellip;</a> — it spoke about my exact problem and even mentioned accessing the last node in a <strong>linked list</strong> as the root cause!</p>
+<p>Looking at the changes it seems that this <a href="https://github.com/apple/swift/pull/41192/files#diff-b73a6a0d0dc5dc515b17b127d9a807e8589c23b45422994d8fbf07d2a6d1ffa6L194-L196">comment</a> and code below it made it into the 5.5 release:</p>
+<pre tabindex="0"><code>// We need to traverse the siblings to find the last one and add the child
+// there.
+// FIXME: just set prepend to the current head, no need to traverse.
+</code></pre><p>Well, good news everyone! The fix is already merged to swift/main and the 5.6 merge is pending at the moment.</p>
+<p>So I took my test app that was supposed to go into radar and compared the results. The app runs loose tasks and groups of various sizes and measures how much time they spend on average per completed task.</p>
+<p>Release <strong>Swift 5.5</strong> results:</p>
+<pre tabindex="0"><code>swift build -c release &amp;&amp; ./.build/release/TaskGroupTestApp
+
+ Group: Size 64, Rep 99/100
+Task: 0.0025s x task, Group: 0.0024s x task
+-----------------------------------------------
+ Group: Size 2048, Rep 99/100
+Task: 0.0022s x task, Group: 0.0026s x task
+-----------------------------------------------
+ Group: Size 17000, Rep 99/100
+Task: 0.0030s x task, Group: 0.0077s x task
+</code></pre><p>You see that the 17K task group runs more than 100% slower than the loose tasks and performance only gets worse when increasing the group size onwards.</p>
+<p>Running the same code with swift/main and <strong>5.7-dev</strong>:</p>
+<pre tabindex="0"><code>swift-dev build -c release &amp;&amp; 
+DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib/swift/macosx/ \
+./.build/release/TaskGroupTestApp
+
+ Group: Size 64, Rep 99/100
+Task: 0.0024s x task, Group: 0.0024s x task
+-----------------------------------------------
+ Group: Size 2048, Rep 99/100
+Task: 0.0023s x task, Group: 0.0025s x task
+-----------------------------------------------
+ Group: Size 17000, Rep 99/100
+Task: 0.0028s x task, Group: 0.0032s x task
+</code></pre><p>Awesome! There is still a slight decrease in performance but it looks like a reasonable cost to pay for the group hierarchy, en-mass cancellation, and so forth. Props to <a href="https://github.com/Catfish-Man">David Smith</a> for the fix!</p>
+<h3 id="moral-of-the-story">Moral of the story</h3>
+<p>As promised &hellip; there is a moral in this story, even a few. Let&rsquo;s see:</p>
+<ol>
+<li>When it comes to performance, don&rsquo;t trust anyone and measure everything. I would&rsquo;ve expected a note in the <code>TaskGroup</code> docs for such a big performance issue but alas.</li>
+<li>The tooling <em>is getting better</em>. But especially with big changes like the new concurent model it happens iteratively over time.</li>
+<li>Community is important — within few hours of posting on slack I got reaffirmation of the problem, discussed it, and ultimately got the PR link and tested with the fixed compiler build.</li>
+</ol>
+<p>I think this is a good story after all&hellip; and I think it makes a good prelude to my next post where I show optimizing some concurrent code. Till then!</p>
+<hr>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
+<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
+<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">16. February 2022</span></p>
+	</article>
 	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (p. 2)</a> </h1>
-
-			<div class="post-content">
-				<p>Yesterday I wrote about AsyncSequence, AsyncStream and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - Bridge from Combine to AsyncSequence - the plan (part 1).
-Today let&rsquo;s put together the code as planned and see if that&rsquo;s going to work out so we can easily use publishers as async sequences.
-CombineAsyncStream setup I&rsquo;ll create a new type called CombineAsyncStream and make it conform to AsyncSequence.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">13. July 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-1/">Bridge from Combine to AsyncSequence - the plan (p. 1)</a> </h1>
-
-			<div class="post-content">
-				<p>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
- Note: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">12. July 2021</span></p>
-		</article>
-	
-
-	
-
 
 			</div>
 
