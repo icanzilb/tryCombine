@@ -4,19 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Swift Async Sequence extensions (part 2)</title>
+		<title>TaskGroup as a workflow design tool</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Swift Async Sequence extensions (part 2)" />
+		<meta property="og:title" content="TaskGroup as a workflow design tool" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/swift-async-sequence-extensions-2/" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-concurrency-task-group-workflow/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Swift Async Sequence extensions (part 2)">
+<meta name="twitter:title" content="TaskGroup as a workflow design tool">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -220,7 +220,7 @@
         </div>
 
 			
-		<h1>Swift Async Sequence extensions (part 2) </h1>
+		<h1>TaskGroup as a workflow design tool </h1>
 
 <style>
   .twitter-share-button {
@@ -254,29 +254,55 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Swift%20Async%20Sequence%20extensions%20%28part%202%29&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-async-sequence-extensions-2%2f"
+  href="https://twitter.com/intent/tweet?text=TaskGroup%20as%20a%20workflow%20design%20tool&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-concurrency-task-group-workflow%2f"
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">Swift Async Sequence extensions (part 1)</a> I covered simple ways to create an async sequence using a custom factory method and binding a sequence to a UI control via a custom <code>assign</code> method.</p>
-<p>This covered the &ldquo;beginning&rdquo; and &ldquo;end&rdquo; of the data stream (so to say) but what about processing or converting the data along the way? If you draw a parallel to Combine code — how would you build custom &ldquo;operators&rdquo; for your async sequence?</p>
-<p>In this post I&rsquo;ll show you exactly that — building a method that converts one async sequence into another.</p>
-<h2 id="existing-asyncsequence-methods">Existing AsyncSequence methods</h2>
-<p>Plenty of the new Swift Concurrency code is freely available at Apple&rsquo;s GitHub so should you want to peak in you can.</p>
-<p>For example here&rsquo;s the <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncFilterSequence.swift#L36-L41"><code>AsyncSequence.filter(_:)</code></a> source code:</p>
+		<div class="post-content"><p>For my talk at iOS Conf SG 2022 I wanted to showcase some Swift concurrency use-cases that don&rsquo;t fall into the common scenarios. Revisiting the slides some weeks later, I think it&rsquo;d be fun to cover my <code>TaskGroup</code> example in more detail.</p>
+<p>In this post I&rsquo;ll show how to use <code>TaskGroup</code> to design a complete (but ficitional) user login-sequence.</p>
+<h2 id="what-is-taskgroup-good-for">What is <code>TaskGroup</code> good for?</h2>
+<p>Most examples floating around show using a <code>TaskGroup</code> to add a number of identical tasks to a group and execute them concurrently. This makes sense as one of the requirements of the group API is for all tasks to have the same return type. Here&rsquo;s a group running 100 tasks concurrently each returning its index:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">await withTaskGroup(of: <span style="color:#24909d">Int</span>.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+  (<span style="color:#3677a9">0.</span>.&lt;<span style="color:#3677a9">100</span>).forEach { num <span style="color:#6ab825;font-weight:bold">in</span>
+    group.addTask { num }
+  }
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>When we go beyond the most basic example, however, there is a lot a task group can do:</p>
+<ol>
+<li>the tasks can return any complex type like a struct, enum, etc.</li>
+<li>we can add more tasks depending on previous tasks having completed or failed</li>
+<li>the group fails automatically if any of its tasks throws</li>
+<li>and finally, by cancelling the group you cancel all running and scheduled group tasks.</li>
+</ol>
+<p>I&rsquo;d say all of these features are more than enough to design a complete asynchronous sequence like a user login in an app. I&rsquo;m not saying it&rsquo;s the best way to do it but I think it&rsquo;s very interesting that you can.</p>
+<h2 id="designing-an-async-sequence">Designing an async sequence</h2>
+<p>The quick requirements for the fictional login sequence are:</p>
 <ul>
-<li>It defines an extension on <code>AsyncSequence</code></li>
-<li>Adds the <code>filter</code> method</li>
-<li>And finally declares a type called <code>AsyncFilterSequence</code> — this is what the  <code>filter</code> method returns.</li>
+<li>fetch the device location</li>
+<li>ask for user permissions</li>
+<li>connect to the API server</li>
+<li>authenticate the user with the API</li>
+<li>log these steps on the server</li>
 </ul>
-<p>This is very similar setup to what the Combine operators do — most often they are a method on the <code>Publisher</code> protocol and return some kind of custom publisher that implements the operator logic. So no surprises here.</p>
-<p>If you want inspiration for build your own async sequence methods you can check out <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncMapSequence.swift#L46-L51"><code>map</code></a>, <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncPrefixSequence.swift#L39-L46"><code>prefix</code></a>, and so on.</p>
-<blockquote>
-<p>Note: The whole repo is very interesting to read through. For example have a look at how <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/TaskSleep.swift"><code>Task.sleep(...)</code></a> looks like.</p>
-</blockquote>
-<h2 id="building-a-custom-async-sequence-method">Building a custom async sequence method</h2>
-<p>For this article I&rsquo;ll build an alternative of the <code>Publisher.replaceNil(_:)</code> method from Combine. It&rsquo;s a handy operator that replaces any <code>nil</code> values in the stream with a given constant.</p>
-<p>Following the pattern established in the files I linked above, I&rsquo;ll start by creating a custom async sequence type called <code>AsyncReplaceNilSequence</code>:</p>
+<p>Some of these steps can run in parallel — others need to happen sequentially. Additionally, if any of these steps fail the sequence should also fail.</p>
+<p>Let&rsquo;s imagine the flow as many concurrent tasks (in silver) happening in <em>any order</em> and some others are <em>dependent</em> on each other (in blue). The blue ones are checkpoints at which we can add more blue or silver tasks and model the sequence as we go:</p>
+
+<img src="https://trycombine.com/images/concurrency/task-group-flow.png" width=450/>
+
+<p>Imagining the login sequence as a flow of concurrent tasks with checkpoints sprinkled in-between was the hard part, now let&rsquo;s see about the code.</p>
+<h2 id="task-results">Task results</h2>
+<p>In a group all tasks need to return the same result. This is fine — I&rsquo;ll define an <code>enum</code> of all the possible return values in the login group:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -284,132 +310,18 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">AsyncReplaceNilSequence</span>&lt;T, Base: AsyncSequence&gt; :
-  AsyncSequence <span style="color:#6ab825;font-weight:bold">where</span> Base.Element == T? {
-
-  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
-
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">enum</span> <span style="color:#447fcf;text-decoration:underline">LoginTaskResult</span> {
+  <span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#6ab825;font-weight:bold">none</span>
+  <span style="color:#6ab825;font-weight:bold">case</span> client(APIClient)
+  <span style="color:#6ab825;font-weight:bold">case</span> user(APIClient.User?)
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>This new sequence <code>AsyncReplaceNilSequence</code> is generic (<code>T</code>) over its elements. An additional <code>where</code> clause requires that the base sequence has optional values (<code>T?</code>). This way if the base sequence contains, for example, elements <code>String?</code> — the resulting new sequence will have all <code>nil</code> values replaced and the output elements will be of type <code>String</code>.</p>
-<p>Next, I need a proper initializer that will take the base sequence and the constant to replace <code>nil</code> values with:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">base</span>: Base
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: T
-
-<span style="color:#6ab825;font-weight:bold">init</span>(
-  <span style="color:#6ab825;font-weight:bold">_</span> base: Base,
-  replaceValue: T
-) {
-  <span style="color:#6ab825;font-weight:bold">self</span>.base = base
-  <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
-}</code></pre></td></tr></table>
-</div>
-</div>
-<p>The property <code>base</code> holds onto the &ldquo;source&rdquo; sequence (or the base sequence) and <code>replaceValue</code> is a constant to replace <code>nil</code> values with.</p>
-<p>The final step in building the sequence is to define the sequence iterator. First I&rsquo;ll add the sequence method that creates the iterator:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; Iterator {
-  <span style="color:#6ab825;font-weight:bold">return</span> Iterator(
-    base.makeAsyncIterator(), 
-    replaceValue: replaceValue
-  )
-}</code></pre></td></tr></table>
-</div>
-</div>
-<p>And then I&rsquo;ll add <code>Iterator</code> as a nested structure inside <code>AsyncReplaceNilSequence</code>:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Iterator</span>: AsyncIteratorProtocol {
-  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
-
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">baseIterator</span>: Base.AsyncIterator
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: Base.Element
-
-  <span style="color:#6ab825;font-weight:bold">init</span>(
-    <span style="color:#6ab825;font-weight:bold">_</span> baseIterator: Base.AsyncIterator,
-    replaceValue: Base.Element
-  ) {
-    <span style="color:#6ab825;font-weight:bold">self</span>.baseIterator = baseIterator
-    <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
-  }
-}</code></pre></td></tr></table>
-</div>
-</div>
-<p>Very similarly to the sequence type itself, the iterator also holds on to its base counterpart and the value to use for replacing.</p>
-<p>The meaningful step here is defining the iterator <code>next()</code> method that will <strong>pull</strong> values from the base sequence and <strong>replay</strong> them while replacing any <code>nil</code> values:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">mutating</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; T? {
-  <span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">element</span> = <span style="color:#6ab825;font-weight:bold">try</span> await baseIterator.next() <span style="color:#6ab825;font-weight:bold">else</span> {
-    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
-  }
-
-  <span style="color:#6ab825;font-weight:bold">guard</span> element != <span style="color:#6ab825;font-weight:bold">nil</span> <span style="color:#6ab825;font-weight:bold">else</span> {
-    <span style="color:#6ab825;font-weight:bold">return</span> replaceValue
-  }
-
-  <span style="color:#6ab825;font-weight:bold">return</span> element
-}</code></pre></td></tr></table>
-</div>
-</div>
-<p>The method fetches the <code>next()</code> value from its base iterator and in case the result is <code>nil</code> it returns the replace constant instead.</p>
-<p>So now I have an async sequence and a working iterator. I only need the method on <code>AsyncSequence</code> before I wrap up. I chose to mimic the method signature of Combine&rsquo;s <code>replaceNil()</code> like so:</p>
+<p>Some tasks don&rsquo;t return a value — those will use <code>none</code>. The task connecting to the server API will return the connected client <code>APIClient</code> and the task that ultimately authenticates the current user will return the logged user data <code>APIClient.User</code>.</p>
+<p>I have the basic design of the group — each task will return a <code>LoginTaskResult</code> while the group as a whole will return an <code>APIClient.User</code> or throw an error.</p>
+<p>This constitues the basic frame of the <code>loginAction</code> function that logs the user in:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -421,19 +333,43 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AsyncSequence</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">replaceNil</span>&lt;T&gt;(with output: T) 
-    -&gt; AsyncReplaceNilSequence&lt;T, <span style="color:#6ab825;font-weight:bold">Self</span>&gt; <span style="color:#6ab825;font-weight:bold">where</span> Element == T? 
-  {
-    <span style="color:#6ab825;font-weight:bold">return</span> AsyncReplaceNilSequence(<span style="color:#6ab825;font-weight:bold">self</span>, replaceValue: output)
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">loginAction</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; APIClient.User {
+  <span style="color:#6ab825;font-weight:bold">try</span> await withThrowingTaskGroup(
+    of: LoginTaskResult.<span style="color:#6ab825;font-weight:bold">self</span>, 
+    returning: APIClient.User.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
+
   }
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>The method is generic over its parameter type and that allows it to accept a <code>String</code> parameter if the sequence is <code>String?</code> or an <code>Int</code> parameter if the sequence is <code>Int?</code>, and not be available at all if the sequence is not of an optional element type.</p>
-<h2 id="trying-the-code-in-a-view">Trying the code in a view</h2>
-<p>Let&rsquo;s give the code a try. I&rsquo;ll reuse my code from <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">part 1</a> including my <code>Array.spread()</code> and <code>AsyncSequence.assign()</code> methods that create a sequence of values over time and bind them to a label on screen.</p>
-<p>I&rsquo;ll use an <code>[Int?]</code> array to display some numbers on screen:</p>
+<h2 id="adding-a-task-batch">Adding a task batch</h2>
+<p>The key in this design is to add tasks to the group in batches — as a start I&rsquo;ll add all the tasks that <em>do not depend</em> on the first checkpoint. These are all the highlighted tasks below:</p>
+
+<img src="https://trycombine.com/images/concurrency/task-group-flow-1st-batch.png" width=450/>
+
+<p>Or to put that in code — I&rsquo;ll add the &ldquo;first&rdquo; three tasks to my group as shown below:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">group.addTask(operation: fetchLocation)
+group.addTask(operation: askForUserPermissions)
+group.addTask(priority: .high) {
+	<span style="color:#6ab825;font-weight:bold">return</span> .client(<span style="color:#6ab825;font-weight:bold">try</span> await APIClient.connect())
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;ve added some async functions to my project like <code>fetchLocation()</code> and <code>askForUserPermissions()</code> to mock the process. Additionally <code>APIClient.connect()</code> returns a &ldquo;connected&rdquo; instance of <code>APIClient</code>.</p>
+<p>And here we have the first checkpoint — the next tasks in the sequence need to use an <code>APIClient</code> to continue with the authentication so we can only add them to the group <em>after</em> we get back a client.</p>
+<h2 id="waiting-on-a-checkpoint">Waiting on a checkpoint</h2>
+<p>I can&rsquo;t wait on the connection task itself (as I don&rsquo;t get a <code>Task</code> back from the APIs) but I can loop over the group until I get a connected client instance (or the group throws).</p>
+<p>If you write this ad-hoc for every checkpoint the code gets messy pretty quickly. So I&rsquo;ll first add a function to <code>TaskGroup</code> that will allow me to wait for a specific task result.</p>
+<p>To do this I&rsquo;m going to use pointfree&rsquo;s excellent <a href="https://github.com/pointfreeco/swift-case-paths">swift-case-paths</a> package. The complete function looks like this:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -449,30 +385,133 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ContentView</span>: View {
-  @State <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">counter</span> = <span style="color:#ed9d13">&#34;&#34;</span>
-
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">body</span>: some View {
-    Text(<span style="color:#ed9d13">&#34;Update: </span><span style="color:#ed9d13">\(</span>counter<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
-      .task {
-
-        [<span style="color:#3677a9">1</span>, <span style="color:#3677a9">2</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">4</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">6</span>]
-          .spread(delay: <span style="color:#3677a9">1.5</span>)
-          .map { <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span> }
-          .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.counter, on: <span style="color:#6ab825;font-weight:bold">self</span>)
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">ThrowingTaskGroup</span> {
+  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">first</span>&lt;Value&gt;(
+    <span style="color:#6ab825;font-weight:bold">_</span> path: CasePath&lt;ChildTaskResult, Value&gt;
+  ) async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; Value? {
+  
+    <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">try</span> await result <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#6ab825;font-weight:bold">self</span> {
+      <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">match</span> = path.extract(from: result) {
+        <span style="color:#6ab825;font-weight:bold">return</span> match
       }
+    }
+    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
   }
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>I&rsquo;m using <code>map</code> to convert the optional number to a string before binding it to the <code>@State</code> property. That displays the <strong>description</strong> of the optional instead of the value by default:</p>
+<p>Using case paths is similar to using key paths in Swift. The new <code>ThrowingTaskGroup.first(_:)</code> function takes a <code>CasePath</code> which is to say, in my case, a case in <code>ChildTaskResult</code> and returns the first match wrapped-value.</p>
+<p><code>path.extract(from: result)</code> is where the code &ldquo;unwraps&rdquo; the enum associated value in order to return it.</p>
+<p>Let&rsquo;s see that in practice — I&rsquo;m gonna add the code to wait on the checkpoint so the whole group looks like this now:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">group.addTask(operation: fetchLocation)
+group.addTask(operation: askForUserPermissions)
+group.addTask(priority: .high) {
+  <span style="color:#6ab825;font-weight:bold">return</span> .client(<span style="color:#6ab825;font-weight:bold">try</span> await APIClient.connect())
+}
 
-<img src="https://trycombine.com/images/asyncsequence/assign-optional.gif" width=400/>
+<span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">client</span> = 
+  <span style="color:#6ab825;font-weight:bold">try</span> await group.first(/LoginTaskResult.client) <span style="color:#6ab825;font-weight:bold">else</span> {
+  <span style="color:#6ab825;font-weight:bold">throw</span> <span style="color:#ed9d13">&#34;Could not connect to API&#34;</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>That last line packs a real punch:</p>
+<ul>
+<li><code>first(/LoginTaskResult.client)</code> fetches the first encountered <code>LoginTaskResult.client</code></li>
+<li>it unwraps the <code>APIClient</code> value and assigns it to <code>client</code></li>
+<li>if the group completes and <code>first(_:)</code> doesn&rsquo;t find a client the code throws an error — thus failing the complete sequence!</li>
+</ul>
+<p>The line acts as a checkpoint barrier. It&rsquo;s required to get a client instance before the sequence continues!</p>
+<h2 id="contunue-with-the-sequence">Contunue with the sequence</h2>
+<p>Once I get an <code>APIClient</code> I&rsquo;m ready to continue with the login sequence by adding some more tasks. These are the ones that need to run strictly <strong>after</strong> the <em>first</em> checkpoint but <strong>before</strong> the <em>next checkpoint</em>. Those are highlighted below:</p>
 
-<p>And this is one of the common use cases that <code>replaceNil(_:)</code> is good for — if you have a fallback value for <code>nil</code> you can unwrap the sequence by removing the optional from the generic and bind the sequence directly like so:</p>
+<img src="https://trycombine.com/images/concurrency/task-group-flow-2nd-batch.png" width=450/>
+
+<p>Let&rsquo;s add an additional task to the group using the fetched <code>client</code> API object:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">tracer</span> = client.traceEvent
+group.addTask {
+  <span style="color:#6ab825;font-weight:bold">try</span> await tracer(.connected)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>The API client offers a tracer object that allows you to log events. Since none of the steps depend on the successful logging, I&rsquo;m adding the task to the group and forget about it. Since order is not issue here — this task might run concurrently with any of the previous tasks like fetching the location, etc.</p>
+<p>Don&rsquo;t worry though — in case logging the <code>.connected</code> event fails with an error that will also fail the complete group automatically.</p>
+<blockquote>
+<p><strong>Note</strong>: All of these requirements are kind of arbitrary just to demonstrate what&rsquo;s possible. You obviously need to write the code to describe your own desired workflow.</p>
+</blockquote>
+<p>Next, something quite interesting — logging in the user can fail and if so, I&rsquo;d like to keep retrying until the operation succeeds. <code>TaskGroup</code> allows me to add an arbitrary amount of tasks so retrying shouldn&rsquo;t be an issue.</p>
+<p>I&rsquo;m gonna add the following code to the group:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">user</span>: APIClient.User!
+
+<span style="color:#6ab825;font-weight:bold">while</span> user == <span style="color:#6ab825;font-weight:bold">nil</span> {
+	group.addTask(operation: client.logUserIn)
+	group.addTask {
+		<span style="color:#6ab825;font-weight:bold">try</span> await tracer(.login)
+	}
+
+	user = <span style="color:#6ab825;font-weight:bold">try</span> await group.first(/LoginTaskResult.user)
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m running a loop until I get a logged <code>APIClient.User</code> object. For each iteration I&rsquo;m adding a logging task to log the attempt and also add <code>APIClient.logUserIn</code> to the group.</p>
+<p>After adding the tasks for each login attempt I wait for the checkpoint result.
+If you&rsquo;re wondering how I&rsquo;m adding the client method as a group task — it&rsquo;s just a method that&rsquo;s <code>throwing</code> and <code>async</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Sendable <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">logUserIn</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; LoginTaskResult {
+  ...
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>Once the execution gets past the <code>while</code> loop I have my user data stored in <code>user</code>.</p>
+<blockquote>
+<p><strong>Note</strong>: In production you want to limit the number of retries here before throwing out of the group.</p>
+</blockquote>
+<h2 id="wrapping-up-the-sequence">Wrapping up the sequence</h2>
+<p>To complete the sequence I&rsquo;ll wait for all the scheduled tasks to complete, log a completion event, and finally return the logged in user out of the group:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -482,19 +521,20 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">[<span style="color:#3677a9">1</span>, <span style="color:#3677a9">2</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">4</span>, <span style="color:#6ab825;font-weight:bold">nil</span>, <span style="color:#3677a9">6</span>]
-  .spread(delay: <span style="color:#3677a9">1.5</span>)
-  .replaceNil(with: <span style="color:#3677a9">0</span>)
-  .map { <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span> }
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.counter, on: <span style="color:#6ab825;font-weight:bold">self</span>)</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">try</span> await group.waitForAll()
+
+<span style="color:#6ab825;font-weight:bold">_</span> = <span style="color:#6ab825;font-weight:bold">try</span> await tracer(.completedLoginSequence)
+
+<span style="color:#6ab825;font-weight:bold">return</span> user</code></pre></td></tr></table>
 </div>
 </div>
+<p>And that&rsquo;s a wrap! The complete login sequence is neatly modelled as a single <code>TaskGroup</code>.</p>
+<p>You can see the completed function in the code repo here <a href="https://github.com/icanzilb/TaskGroupDesign/blob/main/TaskGroupDesign/LoginAction.swift#L73-L108">LoginAction.swift</a>.</p>
+<p>The little demo app in the repo shows the login sequence in action — here&rsquo;s how that looks like in the Simulator with the workflow mocked to fail three times before logging in:</p>
 
-<img src="https://trycombine.com/images/asyncsequence/assign-replace-nil.gif" width=400/>
+<img src="https://trycombine.com/images/concurrency/task-group-flow-demo.gif" width=450/>
 
-<p>And that&rsquo;s all for today! I this code and spelling out the steps was useful — you can find the complete source code below.</p>
-<h2 id="the-completed-source-code">The completed source code</h2>
-<p>This is a whole bunch of code but including it below in case you&rsquo;d like to copy it over and play with it:</p>
+<h2 id="the-completed-code">The completed code</h2>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -538,90 +578,59 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">39
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">40
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">54
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">55
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">56
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">57
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">58
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">59
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">60
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">AsyncSequence</span> {
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">replaceNil</span>&lt;T&gt;(with output: T)
-    -&gt; AsyncReplaceNilSequence&lt;T, <span style="color:#6ab825;font-weight:bold">Self</span>&gt; <span style="color:#6ab825;font-weight:bold">where</span> Element == T?
-  {
-    <span style="color:#6ab825;font-weight:bold">return</span> AsyncReplaceNilSequence(<span style="color:#6ab825;font-weight:bold">self</span>, replaceValue: output)
-  }
-}
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">try</span> await withThrowingTaskGroup(
+  of: LoginTaskResult.<span style="color:#6ab825;font-weight:bold">self</span>, 
+  returning: APIClient.User.<span style="color:#6ab825;font-weight:bold">self</span>) { group <span style="color:#6ab825;font-weight:bold">in</span>
 
-<span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">AsyncReplaceNilSequence</span>&lt;T, Base: AsyncSequence&gt;
-  : AsyncSequence <span style="color:#6ab825;font-weight:bold">where</span> Base.Element == T? {
+	<span style="color:#999;font-style:italic">// First batch</span>
+	group.addTask(operation: fetchLocation)
+	group.addTask(operation: askForUserPermissions)
+	group.addTask(priority: .high) {
+		<span style="color:#6ab825;font-weight:bold">return</span> .client(<span style="color:#6ab825;font-weight:bold">try</span> await APIClient.connect())
+	}
 
-  <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
-  <span style="color:#6ab825;font-weight:bold">typealias</span> AsyncIterator = Iterator
+	<span style="color:#999;font-style:italic">// First checkpoint</span>
+	<span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">client</span> = 
+		<span style="color:#6ab825;font-weight:bold">try</span> await group.first(/LoginTaskResult.client) <span style="color:#6ab825;font-weight:bold">else</span> {
+		<span style="color:#6ab825;font-weight:bold">throw</span> <span style="color:#ed9d13">&#34;Could not connect to API&#34;</span>
+	}
 
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">base</span>: Base
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: T
+	<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">tracer</span> = client.traceEvent
+	group.addTask {
+		<span style="color:#6ab825;font-weight:bold">try</span> await tracer(.connected)
+	}
 
-  <span style="color:#6ab825;font-weight:bold">init</span>(
-    <span style="color:#6ab825;font-weight:bold">_</span> base: Base,
-    replaceValue: T
-  ) {
-    <span style="color:#6ab825;font-weight:bold">self</span>.base = base
-    <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
-  }
+	<span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">user</span>: APIClient.User!
 
-  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">makeAsyncIterator</span>() -&gt; Iterator {
-    <span style="color:#6ab825;font-weight:bold">return</span> Iterator(
-      base.makeAsyncIterator(),
-      replaceValue: replaceValue
-    )
-  }
+	<span style="color:#999;font-style:italic">// Retrying a login</span>
+	<span style="color:#6ab825;font-weight:bold">while</span> user == <span style="color:#6ab825;font-weight:bold">nil</span> {
+		group.addTask(operation: client.logUserIn)
+		group.addTask {
+			<span style="color:#6ab825;font-weight:bold">try</span> await tracer(.login)
+		}
 
-  <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Iterator</span>: AsyncIteratorProtocol {
-    <span style="color:#6ab825;font-weight:bold">typealias</span> Element = T
+		<span style="color:#999;font-style:italic">// Login checkpoint</span>
+		user = <span style="color:#6ab825;font-weight:bold">try</span> await group.first(/LoginTaskResult.user)
+	}
 
-    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">baseIterator</span>: Base.AsyncIterator
-    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">replaceValue</span>: Base.Element
+	<span style="color:#999;font-style:italic">// Wrapping up</span>
+	<span style="color:#6ab825;font-weight:bold">try</span> await group.waitForAll()
+	<span style="color:#6ab825;font-weight:bold">_</span> = <span style="color:#6ab825;font-weight:bold">try</span> await tracer(.completedLoginSequence)
 
-    <span style="color:#6ab825;font-weight:bold">init</span>(
-      <span style="color:#6ab825;font-weight:bold">_</span> baseIterator: Base.AsyncIterator,
-      replaceValue: Base.Element
-    ) {
-      <span style="color:#6ab825;font-weight:bold">self</span>.baseIterator = baseIterator
-      <span style="color:#6ab825;font-weight:bold">self</span>.replaceValue = replaceValue
-    }
-
-    <span style="color:#6ab825;font-weight:bold">mutating</span> <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">next</span>() async <span style="color:#6ab825;font-weight:bold">throws</span> -&gt; T? {
-      <span style="color:#6ab825;font-weight:bold">guard</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">element</span> = <span style="color:#6ab825;font-weight:bold">try</span> await baseIterator.next() <span style="color:#6ab825;font-weight:bold">else</span> {
-        <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">nil</span>
-      }
-
-      <span style="color:#6ab825;font-weight:bold">guard</span> element != <span style="color:#6ab825;font-weight:bold">nil</span> <span style="color:#6ab825;font-weight:bold">else</span> {
-        <span style="color:#6ab825;font-weight:bold">return</span> replaceValue
-      }
-
-      <span style="color:#6ab825;font-weight:bold">return</span> element
-    }
-
-  }
+	<span style="color:#6ab825;font-weight:bold">return</span> user
 }</code></pre></td></tr></table>
 </div>
 </div>
-<p>One final note — when you&rsquo;re building a method like this for production it makes sense to optimize for performance and add inline-able decorators. If you want to get some insight on how Apple&rsquo;s done that have a look at <a href="https://github.com/apple/swift/blob/e21d0aabe51adac8151b0ce05a7539e3a71cd88d/stdlib/public/Concurrency/AsyncMapSequence.swift#L46-L51"><code>AsyncSequence.map</code></a>&rsquo;s source code.</p>
+<p>What I really like about this implementation is that the code is:</p>
+<ul>
+<li>very simple and easy to read</li>
+<li>makes maximum use of the async error-handling, cancellation, and priority management</li>
+<li>is self-contained in a single function call at the point-of-use</li>
+</ul>
+<p>What do you think? Let me know!</p>
+<p>The completed code and the demo app are on github <a href="https://github.com/icanzilb/TaskGroupDesign">TaskGroupDesign</a>.</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
 <p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
@@ -652,7 +661,7 @@ Tweet</a><p>
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">21. January 2022</span></p>
+		<p class="meta">Posted on <span class="postdate">21. February 2022</span></p>
 	</article>
 	
 

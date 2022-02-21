@@ -81,6 +81,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
       </li>
     
@@ -219,6 +223,19 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/thread-task-sleep/">The difference between Thread.sleep() and Task.sleep()</a> </h1>
+
+			<div class="post-content">
+				<p>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
+So here&rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
+Thread.sleep() vs Task.sleep() Let&rsquo;s just look at the old and new sleep APIs:
+  Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (p. 2)</a> </h1>
 
 			<div class="post-content">
@@ -327,20 +344,6 @@ Here&rsquo;s a summary of what&rsquo;s new.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">13. March 2020</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/announcing-timelane-combine/">Announcing: Timelane</a> </h1>
-
-			<div class="post-content">
-				<p>Today I&rsquo;m announcing the public release of Timelane.
-Timelane is a free, open source Instrument that helps you profile and debug asynchronous code.
-Timelane is available today on: http://timelane.tools.
-The Timelane Instrument leverages signpost logging and the powerful Instruments UI to help you visually inspect asynchronous subscriptions and drill down through logged events over time.
-Installation Install the latest build from http://timelane.tools or fork the repository on GitHub and build the app yourself.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">28. February 2020</span></p>
 		</article>
 	
 
