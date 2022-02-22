@@ -259,7 +259,7 @@
 Tweet</a><p>
 
 		<div class="post-content"><p>For my talk at iOS Conf SG 2022 I wanted to showcase some Swift concurrency use-cases that don&rsquo;t fall into the common scenarios. Revisiting the slides some weeks later, I think it&rsquo;d be fun to cover my <code>TaskGroup</code> example in more detail.</p>
-<p>In this post I&rsquo;ll show how to use <code>TaskGroup</code> to design a complete (but ficitional) user login-sequence.</p>
+<p>In this post I&rsquo;ll show how to use <code>TaskGroup</code> to design a complete (but fictional) user login-sequence.</p>
 <h2 id="what-is-taskgroup-good-for">What is <code>TaskGroup</code> good for?</h2>
 <p>Most examples floating around show using a <code>TaskGroup</code> to add a number of identical tasks to a group and execute them concurrently. This makes sense as one of the requirements of the group API is for all tasks to have the same return type. Here&rsquo;s a group running 100 tasks concurrently each returning its index:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
@@ -321,7 +321,7 @@ Tweet</a><p>
 </div>
 <p>Some tasks don&rsquo;t return a value — those will use <code>none</code>. The task connecting to the server API will return the connected client <code>APIClient</code> and the task that ultimately authenticates the current user will return the logged user data <code>APIClient.User</code>.</p>
 <p>I have the basic design of the group — each task will return a <code>LoginTaskResult</code> while the group as a whole will return an <code>APIClient.User</code> or throw an error.</p>
-<p>This constitues the basic frame of the <code>loginAction</code> function that logs the user in:</p>
+<p>This constitutes the basic frame of the <code>loginAction</code> function that logs the user in:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -438,7 +438,7 @@ group.addTask(priority: .high) {
 <li>if the group completes and <code>first(_:)</code> doesn&rsquo;t find a client the code throws an error — thus failing the complete sequence!</li>
 </ul>
 <p>The line acts as a checkpoint barrier. It&rsquo;s required to get a client instance before the sequence continues!</p>
-<h2 id="contunue-with-the-sequence">Contunue with the sequence</h2>
+<h2 id="continue-with-the-sequence">Continue with the sequence</h2>
 <p>Once I get an <code>APIClient</code> I&rsquo;m ready to continue with the login sequence by adding some more tasks. These are the ones that need to run strictly <strong>after</strong> the <em>first</em> checkpoint but <strong>before</strong> the <em>next checkpoint</em>. Those are highlighted below:</p>
 
 <img src="https://trycombine.com/images/concurrency/task-group-flow-2nd-batch.png" width=450/>
@@ -528,7 +528,7 @@ If you&rsquo;re wondering how I&rsquo;m adding the client method as a group task
 <span style="color:#6ab825;font-weight:bold">return</span> user</code></pre></td></tr></table>
 </div>
 </div>
-<p>And that&rsquo;s a wrap! The complete login sequence is neatly modelled as a single <code>TaskGroup</code>.</p>
+<p>And that&rsquo;s a wrap! The complete login sequence is neatly modeled as a single <code>TaskGroup</code>.</p>
 <p>You can see the completed function in the code repo here <a href="https://github.com/icanzilb/TaskGroupDesign/blob/main/TaskGroupDesign/LoginAction.swift#L73-L108">LoginAction.swift</a>.</p>
 <p>The little demo app in the repo shows the login sequence in action — here&rsquo;s how that looks like in the Simulator with the workflow mocked to fail three times before logging in:</p>
 
@@ -630,7 +630,7 @@ If you&rsquo;re wondering how I&rsquo;m adding the client method as a group task
 <li>is self-contained in a single function call at the point-of-use</li>
 </ul>
 <p>What do you think? Let me know!</p>
-<p>The completed code and the demo app are on github <a href="https://github.com/icanzilb/TaskGroupDesign">TaskGroupDesign</a>.</p>
+<p>The completed code and the demo app are on GitHub <a href="https://github.com/icanzilb/TaskGroupDesign">TaskGroupDesign</a>.</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
 <p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
