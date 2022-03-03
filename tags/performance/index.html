@@ -4,19 +4,22 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Swift Light IDE update, Jan 31st</title>
+		<title>performance</title>
 		<meta name="viewport" content="width=device-width">
+		
+			<link href="https://trycombine.com/tags/performance/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
+			<link href="https://trycombine.com/tags/performance/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Swift Light IDE update, Jan 31st" />
+		<meta property="og:title" content="performance" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/swift-light-ide-update-jan/" />
+<meta property="og:url" content="https://trycombine.com/tags/performance/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -29,7 +32,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Swift Light IDE update, Jan 31st">
+<meta name="twitter:title" content="performance">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -209,8 +212,7 @@
 
 			<div id="content">
 				
-	<article class="post">
-				<div id="promo">
+			<div id="promo">
 				
 			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
 				<style>
@@ -223,130 +225,21 @@
 			</div>
         </div>
 
-			
-		<h1>Swift Light IDE update, Jan 31st </h1>
-
-<style>
-  .twitter-share-button {
-  	font-family: 'Helvetica Neue',Arial,sans-serif;
-  	background: #4793DA;
-  	color: white;
-  	padding-left: 16px;
-  	padding-right: 16px;
-  	margin-top: 2px;
-  	border-radius: 4px;
-  	font-size: 0.85em;
-  	line-height: 3em;
-  }
-
-  .twitter-share-button:hover {
-  	background: #3C769F;
-  	color: white;
-  	padding-left: 16px;
-  	padding-right: 16px;
-  	margin-top: 2px;
-  }
-
-  .twitter-share-button:active {
-  	background: #284F6A;
-  	color: white;
-  	padding-left: 16px;
-  	padding-right: 16px;
-  	margin-top: 2px;
-  }
-
-</style>
-
-<p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Swift%20Light%20IDE%20update%2c%20Jan%2031st&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-light-ide-update-jan%2f"
-  data-size="medium">
-Tweet</a><p>
-
-		<div class="post-content"><p>For the ones who missed it last November, I&rsquo;ve been playing with a Swift IDE prototype which allows you to easily develop Swift scripts for the mac.</p>
-<p>I shared a <a href="https://twitter.com/icanzilb/status/1460275096552148998">video showcase</a> demoing how the tight integration of the IDE with the toolchain allows you to write scripts, capture inputs and outputs, and all that in a neat SwiftUI interface:</p>
-
-<img src="https://trycombine.com/images/light/screen1.png" width=650/>
-
-<p>More than anything else I worked on this to explore and demonstrate how easily I can build powerful Swift tools. To build the IDE prototype only took a few weeks of on-and-off work.</p>
-<p>For personal reasons I couldn&rsquo;t do much since November but last week I had a few days of free time and worked on three cool concepts I&rsquo;d like to show you.</p>
-<h2 id="1-testing-scripts">1. Testing scripts</h2>
-<p>Firstly, I took few hours to add a test runner and <a href="">live tweeted</a> about it. The feature allows you to:</p>
-<ul>
-<li>add tests anywhere in the script, they are discovered automatically as you type</li>
-<li>automatically enable the test inspector when you import <code>XCTest</code></li>
-<li>run tests with one click in the inspector panel</li>
-<li>measure tests' duration and highlight any slow outliers</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 I made a short video to show what I achieved today. Diagnostics and benchmarks didn&#39;t make it in the video but ran out of time. That was fun 😊 <a href="https://t.co/H4d3jWQMCC">pic.twitter.com/H4d3jWQMCC</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1486728440350789647?ref_src=twsrc%5Etfw">January 27, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<h2 id="2-instrumenting-code">2. Instrumenting code</h2>
-<p>The next day, I thought it&rsquo;d be fun to add yet another build pipeline — for instrumenting. In the past I often needed to time (i.e. clock the duration of) random pieces of code, so I went forward and added that feature right in the UI:</p>
-<ul>
-<li>you can select a part of your source code directly in the editor</li>
-<li>when you run the project for profiling you see the execution duration</li>
-<li>if the code runs multiple times, you get a list of all durations</li>
-<li>the results are displayed inside the code editor alongside the code in question</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 Here&#39;s the video showing today&#39;s work - you can select pieces of the source code and time them. If the same code runs multiple times you see each iteration (should probably also show the total of all runs at the bottom too) 👌🏼 <a href="https://t.co/XE8HYyBKIo">pic.twitter.com/XE8HYyBKIo</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1487049835916283905?ref_src=twsrc%5Etfw">January 28, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<h2 id="3-extending-swift">3. Extending Swift</h2>
-<p>Finally, I worked on extending Swift from within the IDE. I really believe it could be very beneficial for the language if there was an easy way to extend it with new functionality so everyone could build features.</p>
-<p>So, I took few hours to add a <code>freeze</code> command to Swift that <em>freezes</em> a variable to prevent you from mutating it in a given context:</p>
-<ul>
-<li>use <code>freeze(myVariable,...) { ... }</code> anywhere in your code</li>
-<li>list one or more variables to freeze (including class instances)</li>
-<li>you can nest frozen contexts for fine-grained control</li>
-<li>get a compile error if you try modifying a frozen variable</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 Wow, this literally took less than 3 hours. A concept for a &quot;freeze&quot; <a href="https://twitter.com/SwiftLang?ref_src=twsrc%5Etfw">@SwiftLang</a> operator that forbids you from mutating variables in a given scope at compile time. Good Sunday fun 👌🏼 <a href="https://t.co/UxbDSEpW7X">pic.twitter.com/UxbDSEpW7X</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1487747795423567876?ref_src=twsrc%5Etfw">January 30, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>Needless to say, this was incredibly satisfying to work on (especially given how quickly it was implemented) because it made me feel a bit more in control of what Swift could do for me :)</p>
-<h2 id="whats-next-for-swift-light">What&rsquo;s next for Swift Light</h2>
-<p>At this point the prototype has a solid infrastructure that allows me to add faetures in mere hours as the key elements like the editor, diagnostics, toolchain and custom panels are playing very well together.</p>
-<p>On the other hand, there hasn&rsquo;t been too much of a reaction to the videos and the information I been sharing. I feel like I&rsquo;ve done plenty to share on all channels I have access to but that&rsquo;s barely moved the needle — no newsletter shared about this, I couldn&rsquo;t engage in a meaningful discussion about this publicly, and few people even shamed an Xcode alternative IDE in private.</p>
-<p>Maybe a bigger company could launch this to a success and effectively spark the interest in a powerful Swift IDE(s) for specialized tasks as I imagine it. But I don&rsquo;t think I can do much with the limited reach I have on my own.</p>
-<p>Do you have any thoughts about Swift Light? Know a company that could be interested in it?</p>
-<p>Reach out at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> or find me in one of the dev Slacks like <a href="https://combinecommunity.slack.com">https://combinecommunity.slack.com</a></p>
-<hr>
-<h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
-<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
-<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
-</div>
-    <hr/>
-    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
-
-    <div id="combinebook">
-      <table width="100%">
-        <tr>
-<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
-  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
-    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
-  </a>
-  <br/>
-  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
-</td>
-
-<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
-  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
-    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
-  </a>
-  <br/>
-  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
-</td>
-        </tr>
-      </table>
-				<br/>
-		</div>
-		<p class="meta">Posted on <span class="postdate">31. January 2022</span></p>
-	</article>
 	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Optimization in Swift, part 1</a> </h1>
+
+			<div class="post-content">
+				<p>This will be yet another exploratory series on my blog — this time around, I want to write a little about optimizing performance in Swift code. This is, of course, an endless topic so what I&rsquo;m going to do is, similarly to previous posts, focus on a problem and then track my way through working on it.
+Also, since this might turn into a somewhat longer read, I thought I&rsquo;d split it into several short parts; so if you are in fact interested to read through you don&rsquo;t have to put in all the time at once.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">03. March 2022</span></p>
+		</article>
+	
+
+	
+
 
 			</div>
 

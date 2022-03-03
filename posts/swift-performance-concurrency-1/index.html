@@ -4,19 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Swift Light IDE update, Jan 31st</title>
+		<title>Optimization in Swift, part 1</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="Swift Light IDE update, Jan 31st" />
+		<meta property="og:title" content="Optimization in Swift, part 1" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/swift-light-ide-update-jan/" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-performance-concurrency-1/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -29,7 +29,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Swift Light IDE update, Jan 31st">
+<meta name="twitter:title" content="Optimization in Swift, part 1">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -224,7 +224,7 @@
         </div>
 
 			
-		<h1>Swift Light IDE update, Jan 31st </h1>
+		<h1>Optimization in Swift, part 1 </h1>
 
 <style>
   .twitter-share-button {
@@ -258,62 +258,87 @@
 </style>
 
 <p><a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Swift%20Light%20IDE%20update%2c%20Jan%2031st&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-light-ide-update-jan%2f"
+  href="https://twitter.com/intent/tweet?text=Optimization%20in%20Swift%2c%20part%201&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-performance-concurrency-1%2f"
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>For the ones who missed it last November, I&rsquo;ve been playing with a Swift IDE prototype which allows you to easily develop Swift scripts for the mac.</p>
-<p>I shared a <a href="https://twitter.com/icanzilb/status/1460275096552148998">video showcase</a> demoing how the tight integration of the IDE with the toolchain allows you to write scripts, capture inputs and outputs, and all that in a neat SwiftUI interface:</p>
+		<div class="post-content"><p>This will be yet another exploratory series on my blog — this time around, I want to write a little about optimizing performance in Swift code. This is, of course, an endless topic so what I&rsquo;m going to do is, similarly to previous posts, focus on a problem and then track my way through working on it.</p>
+<p>Also, since this might turn into a somewhat longer read, I thought I&rsquo;d split it into several short parts; so if you are in fact interested to read through you don&rsquo;t have to put in all the time at once.</p>
+<h2 id="when-and-what-to-optimize">When and What to Optimize?</h2>
+<p>I&rsquo;m sure you&rsquo;ve heard the Donald Knuth quote &ldquo;premature optimization is the root of all evil&hellip;&rdquo; (<a href="https://en.wikiquote.org/wiki/Donald_Knuth">WikiQuote</a>) but what&rsquo;s more interesting is the full quote:</p>
+<p>&ldquo;<em>The real problem is that programmers have spent far too much time worrying about efficiency in the wrong places and at the wrong times; premature optimization is the root of all evil (or at least most of it) in programming.</em>&rdquo;</p>
+<p>My understanding of this is that there is a place and a time for optimizing the code and it&rsquo;s important to understand when and what to optimize.</p>
+<p><strong>As-you-go</strong>: If you have the experience, you should be optimizing automatically as you go because some red flags are hard to miss and taking care of them shouldn&rsquo;t require much time. For example, code where you use an O(N) operation inside a loop (let&rsquo;s say <code>Array.first(where:)</code>). Doing that might be required for what you want to achieve, but you should automatically stop and make sure there is no better way.</p>
+<p><strong>Data-driven</strong>: Then, once performance is an issue (and likely only then), you should know what metic are you optimizing for and how to measure your success. This is the kind of process I&rsquo;m going to explore a bit in these posts.</p>
+<p>So let&rsquo;s get started.</p>
+<h2 id="a-faster-filter">A Faster <code>filter</code></h2>
+<p>In these posts I&rsquo;ll explore my way to filtering data in my app a little faster. So here are the answers to the main points from the previous section:</p>
+<p>— <strong>Is performance an issue?</strong> We&rsquo;ll assume that I have an iOS app in the works, it needs to filter a big array of numbers coming from a sensor in order to update the UI, and the time it takes to do that deteriorates the user experience.</p>
+<p>— <strong>What metric needs optimization?</strong> Often times metrics are co-dependent — you could use less RAM but at the price of an increased duration, or you could keep the machine&rsquo;s thermal state nominal but at increased duration. In my case, I&rsquo;d like to filter <strong>faster</strong> in order to improve the UI update rate.</p>
+<p>— <strong>How to measure success?</strong> I&rsquo;ll pick some representative data sets to measure with and measure the time it takes to filter them. Ideally I&rsquo;d have a target I want to reach. Since I&rsquo;m not sure how faster I can make the code, let&rsquo;s aim for slashing <code>Array.filter</code>&rsquo;s duration in half.</p>
+<p>We won&rsquo;t talk right now about many other constraints you might have — concurrency limitations, asynchrony limitations, etc. We&rsquo;ll keep the post exploratory and mention few of these extra constraints along the way.</p>
+<h2 id="measuring-algorithms">Measuring Algorithms</h2>
+<p>I usually use Instruments to measure time intervals. I&rsquo;d do something along the lines of:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">os</span>
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">log</span> = OSLog(subsystem: <span style="color:#ed9d13">&#34;logs&#34;</span>, category: OSLog.Category.pointsOfInterest)
 
-<img src="https://trycombine.com/images/light/screen1.png" width=650/>
+...
 
-<p>More than anything else I worked on this to explore and demonstrate how easily I can build powerful Swift tools. To build the IDE prototype only took a few weeks of on-and-off work.</p>
-<p>For personal reasons I couldn&rsquo;t do much since November but last week I had a few days of free time and worked on three cool concepts I&rsquo;d like to show you.</p>
-<h2 id="1-testing-scripts">1. Testing scripts</h2>
-<p>Firstly, I took few hours to add a test runner and <a href="">live tweeted</a> about it. The feature allows you to:</p>
-<ul>
-<li>add tests anywhere in the script, they are discovered automatically as you type</li>
-<li>automatically enable the test inspector when you import <code>XCTest</code></li>
-<li>run tests with one click in the inspector panel</li>
-<li>measure tests' duration and highlight any slow outliers</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
+<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">data</span> = <span style="color:#24909d">Array</span>(repeating: <span style="color:#3677a9">156</span>, count: <span style="color:#3677a9">100_000_000</span>)
+os_signpost(.begin, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)
+<span style="color:#6ab825;font-weight:bold">_</span> = data.filter { <span style="color:#40ffff">$0</span> == <span style="color:#3677a9">34</span> }
+os_signpost(.end, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)</code></pre></td></tr></table>
+</div>
+</div>
+<p>Then I profile the project with the <strong>os_signpost</strong> instrument (not in combination with other instruments so the durations aren&rsquo;t affected by them):</p>
 
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 I made a short video to show what I achieved today. Diagnostics and benchmarks didn&#39;t make it in the video but ran out of time. That was fun 😊 <a href="https://t.co/H4d3jWQMCC">pic.twitter.com/H4d3jWQMCC</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1486728440350789647?ref_src=twsrc%5Etfw">January 27, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<img src="https://trycombine.com/images/performance/filter-instruments.png" width=550 class="rounded"/>
 
-<h2 id="2-instrumenting-code">2. Instrumenting code</h2>
-<p>The next day, I thought it&rsquo;d be fun to add yet another build pipeline — for instrumenting. In the past I often needed to time (i.e. clock the duration of) random pieces of code, so I went forward and added that feature right in the UI:</p>
-<ul>
-<li>you can select a part of your source code directly in the editor</li>
-<li>when you run the project for profiling you see the execution duration</li>
-<li>if the code runs multiple times, you get a list of all durations</li>
-<li>the results are displayed inside the code editor alongside the code in question</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
+<p>This works if you have a handful of cases you want to measure. However, for my current task I want to know the effect of my changes across different array sizes. Luckily, as I mentioned in <a href="https://trycombine.com/posts/swift-concurrency-task-group/">The issue with task groups&hellip;</a> <strong>Attabench</strong> is great for performing series of measures across series of data sets and plotting the results.</p>
+<p><a href="https://github.com/attaswift/Attabench">Attabench</a> allows me to create a Swift package and run it interactively to measure the code performance. As a start, I&rsquo;m gonna add a function to use when filtering (I&rsquo;m using an arbitrary filter logic for this test):</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">filterLight</span>(num: <span style="color:#24909d">Int</span>) -&gt; <span style="color:#24909d">Bool</span> {
+  <span style="color:#6ab825;font-weight:bold">return</span> num % <span style="color:#3677a9">6</span> == <span style="color:#3677a9">0</span>
+}</code></pre></td></tr></table>
+</div>
+</div>
+<p>And the code I&rsquo;m going to measure is below. <code>input</code> is the array provided by Attabench to the benchmark task:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">input.filter(filterLight)</code></pre></td></tr></table>
+</div>
+</div>
+<p>Adding a new benchmark task called <strong>Sequence.filter 🎈</strong> I can instantly see the measurements in Attabench:</p>
 
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 Here&#39;s the video showing today&#39;s work - you can select pieces of the source code and time them. If the same code runs multiple times you see each iteration (should probably also show the total of all runs at the bottom too) 👌🏼 <a href="https://t.co/XE8HYyBKIo">pic.twitter.com/XE8HYyBKIo</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1487049835916283905?ref_src=twsrc%5Etfw">January 28, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<img src="https://trycombine.com/images/performance/atta-filter-light.png" width=600 class="rounded"/>
 
-<h2 id="3-extending-swift">3. Extending Swift</h2>
-<p>Finally, I worked on extending Swift from within the IDE. I really believe it could be very beneficial for the language if there was an easy way to extend it with new functionality so everyone could build features.</p>
-<p>So, I took few hours to add a <code>freeze</code> command to Swift that <em>freezes</em> a variable to prevent you from mutating it in a given context:</p>
-<ul>
-<li>use <code>freeze(myVariable,...) { ... }</code> anywhere in your code</li>
-<li>list one or more variables to freeze (including class instances)</li>
-<li>you can nest frozen contexts for fine-grained control</li>
-<li>get a compile error if you try modifying a frozen variable</li>
-</ul>
-<p>You can see all of these in action in the embedded video player below:</p>
+<p>The metric plotted on this chart is the time it takes to filter the array adjusted for the size of the array. You see that the time to filter a single element eventually settles down to an (almost) flat line. And in fact, if you disable the logarithmic scale for the size-axis you see that the performance settles quite quickly indeed:</p>
 
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en" data-dnt="true" data-theme="dark"><p lang="en" dir="ltr">🎬 Wow, this literally took less than 3 hours. A concept for a &quot;freeze&quot; <a href="https://twitter.com/SwiftLang?ref_src=twsrc%5Etfw">@SwiftLang</a> operator that forbids you from mutating variables in a given scope at compile time. Good Sunday fun 👌🏼 <a href="https://t.co/UxbDSEpW7X">pic.twitter.com/UxbDSEpW7X</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1487747795423567876?ref_src=twsrc%5Etfw">January 30, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<img src="https://trycombine.com/images/performance/atta-filter-light-unlog.png" width=600 class="rounded"/>
 
-<p>Needless to say, this was incredibly satisfying to work on (especially given how quickly it was implemented) because it made me feel a bit more in control of what Swift could do for me :)</p>
-<h2 id="whats-next-for-swift-light">What&rsquo;s next for Swift Light</h2>
-<p>At this point the prototype has a solid infrastructure that allows me to add faetures in mere hours as the key elements like the editor, diagnostics, toolchain and custom panels are playing very well together.</p>
-<p>On the other hand, there hasn&rsquo;t been too much of a reaction to the videos and the information I been sharing. I feel like I&rsquo;ve done plenty to share on all channels I have access to but that&rsquo;s barely moved the needle — no newsletter shared about this, I couldn&rsquo;t engage in a meaningful discussion about this publicly, and few people even shamed an Xcode alternative IDE in private.</p>
-<p>Maybe a bigger company could launch this to a success and effectively spark the interest in a powerful Swift IDE(s) for specialized tasks as I imagine it. But I don&rsquo;t think I can do much with the limited reach I have on my own.</p>
-<p>Do you have any thoughts about Swift Light? Know a company that could be interested in it?</p>
-<p>Reach out at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> or find me in one of the dev Slacks like <a href="https://combinecommunity.slack.com">https://combinecommunity.slack.com</a></p>
-<hr>
+<p>So — I know what I&rsquo;ll be optimizing for and I have a plan how to measure my progress. In part 2 I will look into using some of the new <code>async/await</code> Swift concurrency to see if I can get my code to run faster.</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
 <p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
@@ -344,7 +369,7 @@ Tweet</a><p>
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">31. January 2022</span></p>
+		<p class="meta">Posted on <span class="postdate">03. March 2022</span></p>
 	</article>
 	
 

@@ -170,6 +170,11 @@ i {
 strong,
 b {
 	font-weight: bold;
+	background: #004255;
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+	border-radius: 3px;
 }
 small {
 	font-size: 0.85em;
@@ -736,3 +741,6 @@ pre[class*='language-']  * {
   font-size: 0.8em;
 }
 
+.rounded {
+  border-radius: 8px;
+}

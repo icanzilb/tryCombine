@@ -81,6 +81,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
       </li>
     
@@ -223,6 +227,17 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Optimization in Swift, part 1</a> </h1>
+
+			<div class="post-content">
+				<p>This will be yet another exploratory series on my blog — this time around, I want to write a little about optimizing performance in Swift code. This is, of course, an endless topic so what I&rsquo;m going to do is, similarly to previous posts, focus on a problem and then track my way through working on it.
+Also, since this might turn into a somewhat longer read, I thought I&rsquo;d split it into several short parts; so if you are in fact interested to read through you don&rsquo;t have to put in all the time at once.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">03. March 2022</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">TaskGroup as a workflow design tool</a> </h1>
 
 			<div class="post-content">
@@ -327,18 +342,6 @@ The Test Setup I&rsquo;ve prepared a super-duper simple SwiftUI app that does a 
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">06. October 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">Performance: Actor vs queue vs lock</a> </h1>
-
-			<div class="post-content">
-				<p>I do a lot of performance and instrumenting work and I&rsquo;ve found Peter Steinberger&rsquo;s post here very useful when comparing lock alternatives.
-As I worked with async/await and actors more and more this summer, I thought it’d be nice to put together a short post offering some basic benchmarking of actors vs. the existing synchronization mechanisms.
-Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more. As with any amateur benchmarks, take the numbers in this post with a grain of salt.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">30. September 2021</span></p>
 		</article>
 	
 
