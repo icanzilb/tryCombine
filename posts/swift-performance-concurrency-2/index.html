@@ -266,7 +266,7 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">Part 1</a> I wrote what this mini-series would be all about. Given the default array filtering is a performance bottleneck for my fictional app, I&rsquo;m going to explore if I can write code that performs better in my specific use case.</p>
+		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Part 1</a> I wrote what this mini-series would be all about. Given the default array filtering is a performance bottleneck for my fictional app, I&rsquo;m going to explore if I can write code that performs better in my specific use case.</p>
 <p>In this part, I&rsquo;m going to rewrite my initial filtering function and use the new <code>async/await</code> Swift concurrency syntax.</p>
 <h2 id="an-async-filter-function">An async filter function</h2>
 <p>Since <code>TaskGroup</code> still has a <a href="https://trycombine.com/posts/swift-concurrency-task-group/">performance issue</a> in the current version of Swift, I&rsquo;ll use a simplified code that uses only top tasks (e.g. no automatic cancellation, etc.).</p>
@@ -372,7 +372,7 @@ Tweet</a><p>
 <p>You can see that the <code>async/await</code> code performs somewhat slower for very small collections (while it still pays the cost for spreading over multiple cores) but as soon as I&rsquo;m working with more than 16 array elements I start reaping the concurrency benefits.</p>
 <p>So, all of this makes a lot of sense — if you&rsquo;re doing simple work, do it on one core so you don&rsquo;t slow down your app by adding concurrency overhead. If you do work that is much <em>heavier</em> than switching threads — concurrency makes a difference.</p>
 <p>What are good candidate tasks to do concurently? Encoding and decoding JSON, images or other data, processing data collections that requires some heavier work, image processing, etc.</p>
-<p>Anyways, it looks like simply converting the code to <code>async/await</code> won&rsquo;t help for my initial use case&hellip;</p>
+<p>So, for this series I&rsquo;ll keep looking at my two examples <code>filterLight</code> and <code>filterHeavy</code> and compare what are the results and what makes sense in the optimization process.</p>
 <p>In part 3 I&rsquo;ll review some of the standard library APIs that I have in mind that could eventually help me build a faster filter. See you then — let me know if that&rsquo;s been interesting so far!</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
