@@ -231,137 +231,25 @@
 
 	
 		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">Actors, the cooperative pool and concurrency</a> </h1>
+			<h1><a href="https://trycombine.com/posts/simple-custom-combine-operators/">Simple custom Combine operators</a> </h1>
 
 			<div class="post-content">
-				<p>After I started doing some benchmarking how different APIs perform, when used to build a simple counter, I got really interested to learn more about how the new Swift concurrency model behaves at runtime.
-So in this post I&rsquo;ll use a couple of actors and make them do concurrent computations and check how the thread list and dispatch-queues look like in the debugger.
-The Test Setup I&rsquo;ve prepared a super-duper simple SwiftUI app that does a bunch of floating-point multiplication and division.  … </p>
+				<p>Creating simple custom operators is very straightforward in Combine.
+As long as your custom operator can be expressed via combining existing operators you don&rsquo;t need to create a new publisher type - you can simply extend the Publisher protocol with your own custom operator.
+Let&rsquo;s try quickly creating one now.
+Extending Publisher You can extend Publisher like any other protocol in Swift. For this post I&rsquo;ll create a debugging operator that writes logs to the system console.  … </p>
 			</div>
 
-			<p class="meta">Posted on <span class="postdate">06. October 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">Performance: Actor vs queue vs lock</a> </h1>
-
-			<div class="post-content">
-				<p>I do a lot of performance and instrumenting work and I&rsquo;ve found Peter Steinberger&rsquo;s post here very useful when comparing lock alternatives.
-As I worked with async/await and actors more and more this summer, I thought it’d be nice to put together a short post offering some basic benchmarking of actors vs. the existing synchronization mechanisms.
-Disclaimer Benchmarking depends heavily on the system, temporary conditions, and more. As with any amateur benchmarks, take the numbers in this post with a grain of salt.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">30. September 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/thread-task-sleep/">The difference between Thread.sleep() and Task.sleep()</a> </h1>
-
-			<div class="post-content">
-				<p>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
-So here&rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
-Thread.sleep() vs Task.sleep() Let&rsquo;s just look at the old and new sleep APIs:
-  Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (p. 2)</a> </h1>
-
-			<div class="post-content">
-				<p>Yesterday I wrote about AsyncSequence, AsyncStream and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - Bridge from Combine to AsyncSequence - the plan (part 1).
-Today let&rsquo;s put together the code as planned and see if that&rsquo;s going to work out so we can easily use publishers as async sequences.
-CombineAsyncStream setup I&rsquo;ll create a new type called CombineAsyncStream and make it conform to AsyncSequence.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">13. July 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-1/">Bridge from Combine to AsyncSequence - the plan (p. 1)</a> </h1>
-
-			<div class="post-content">
-				<p>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
- Note: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">12. July 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors-combine/">Swift Actors: A practical example, part 2</a> </h1>
-
-			<div class="post-content">
-				<p>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
-If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
-When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &ldquo;What about Combine?  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">12. May 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors/">Swift Actors: A practical example, part 1</a> </h1>
-
-			<div class="post-content">
-				<p>I&rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
- &ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&rdquo;
- So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support  Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">10. May 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/self-weak-unowned/">Using self, weak, and unowned in Combine</a> </h1>
-
-			<div class="post-content">
-				<p>Updated with more examples on Mar 6th, 2021.
-One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:
-Should I use self, weak, or unowned with my reactive code?
-Given that most operators take closures, it&rsquo;s a fair question. In this post I&rsquo;ll go over common scenarios for using weak, unowned or simply self and include links with more information at the bottom.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">03. March 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/cancellor/">Owning AnyCancellable with Cancellor</a> </h1>
-
-			<div class="post-content">
-				<p>Swift 5.4 officially introduces @resultBuilder, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).
-I wanted to play with it and create something useful for Combine developers so I thought &ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&rdquo;.
-I remembered back in the day I used an extension on NSObject that adds automatically a dispose bag to all objects in case you need one created by Ash Furrow and I thought I&rsquo;d put together something in the same fashion.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">05. February 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/timelane-nsspain-2020/">5 Stranger Things you can do with Timelane at NSSpain</a> </h1>
-
-			<div class="post-content">
-				<p>For my talk at NSSpain 2020 I&rsquo;ve prepared a beyond-the-basics Timelane talk.
-I think everyone who&rsquo;s heard about Timelane by now knows what it does for its simplest use case - debugging some Combine based code. However, you can do much, much more with Timelane!
-So for my NSSpain 2020 talk I prepared 5 little examples on how to use Timelane beyond the simplest use case.
-I&rsquo;ve pushed all the demo apps I use in my talk to this repository: https://github.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">20. November 2020</span></p>
+			<p class="meta">Posted on <span class="postdate">02. August 2019</span></p>
 		</article>
 	
 
 	
 	<nav class="pagination" role="pagination">
 		
-			<a class="newer-posts" href="https://trycombine.com/posts/"><span aria-hidden="true">&larr;</span> Newer Posts</a>
+			<a class="newer-posts" href="https://trycombine.com/posts/page/3/"><span aria-hidden="true">&larr;</span> Newer Posts</a>
 		
-		<span class="page-number">Page 2 of 4</span>
-		
-			<a class="older-posts" href="https://trycombine.com/posts/page/3/">Older Posts <span aria-hidden="true">&rarr;</span></a>
+		<span class="page-number">Page 4 of 4</span>
 		
 	</nav>
 

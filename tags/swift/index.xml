@@ -6,7 +6,18 @@
     <description>Recent content in swift on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 09 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Optimization in Swift, part 2</title>
+      <link>https://trycombine.com/posts/swift-performance-concurrency-2/</link>
+      <pubDate>Wed, 09 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-performance-concurrency-2/</guid>
+      <description>In Part 1 I wrote what this mini-series would be all about. Given the default array filtering is a performance bottleneck for my fictional app, I&amp;rsquo;m going to explore if I can write code that performs better in my specific use case.
+In this part, I&amp;rsquo;m going to rewrite my initial filtering function and use the new async/await Swift concurrency syntax.
+An async filter function Since TaskGroup still has a performance issue in the current version of Swift, I&amp;rsquo;ll use a simplified code that uses only top tasks (e.</description>
+    </item>
+    
     <item>
       <title>Optimization in Swift, part 1</title>
       <link>https://trycombine.com/posts/swift-performance-concurrency-1/</link>
