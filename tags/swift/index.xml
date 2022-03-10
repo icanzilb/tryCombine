@@ -6,7 +6,17 @@
     <description>Recent content in swift on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 09 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Optimization in Swift, part 3</title>
+      <link>https://trycombine.com/posts/swift-performance-concurrency-3/</link>
+      <pubDate>Thu, 10 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-performance-concurrency-3/</guid>
+      <description>In Part 2 I wrote about trying to optimize a very tight filter function with async/await. This helped when the filter performs some heavy work for each of the collection elements but not with my initial fictional use case (all about the test setup you can find out in Part 1).
+Taking to the Standard Library Since I already know that I&amp;rsquo;m not going to keep pushing the async/await variant of the code, I think it&amp;rsquo;s a good idea to look into the standard library.</description>
+    </item>
+    
     <item>
       <title>Optimization in Swift, part 2</title>
       <link>https://trycombine.com/posts/swift-performance-concurrency-2/</link>

@@ -4,22 +4,19 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>book</title>
+		<title>Optimization in Swift, part 4</title>
 		<meta name="viewport" content="width=device-width">
-		
-			<link href="https://trycombine.com/tags/book/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
-			<link href="https://trycombine.com/tags/book/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
 		
-		<meta property="og:title" content="book" />
+		<meta property="og:title" content="Optimization in Swift, part 4" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/tags/book/" />
+<meta property="og:url" content="https://trycombine.com/posts/swift-performance-concurrency-4/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -32,7 +29,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="book">
+<meta name="twitter:title" content="Optimization in Swift, part 4">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -81,11 +78,15 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 4</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -220,7 +221,8 @@
 
 			<div id="content">
 				
-			<div id="promo">
+	<article class="post">
+				<div id="promo">
 				
 			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
 				<style>
@@ -233,22 +235,141 @@
 			</div>
         </div>
 
+			
+		<h1>Optimization in Swift, part 4 </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Optimization%20in%20Swift%2c%20part%204&url=https%3a%2f%2ftrycombine.com%2fposts%2fswift-performance-concurrency-4%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">Part 3</a> I wrote about another iteration of my filter code that used the standard library&rsquo;s <code>Array(unsafeUninitializedCapacity: initializingWith:)</code> to initialize a buffer in memory and then write the filtered collection to that buffer. This helped a tiny bit but still didn&rsquo;t considerably speed up the app for my fictional use case (all about the test setup you can find out in <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Part 1</a>).</p>
+<h2 id="taking-to-the-standard-library">Taking to the Standard Library</h2>
+<p>Since I already know that I&rsquo;m not going to keep digging into an <code>async/await</code> variant of the code, I think it&rsquo;s a good idea to look into the standard library. It often offers a specialized version of more common APIs to better suite a given use case.</p>
+<p>Looking at the performance chart when 1filtering with <code>Array.filter(_:)</code> I&rsquo;m noticing these strange peaks at certain sizes of the collection:</p>
+
+<img src="https://trycombine.com/images/performance/atta-filter-light-single.png" width=550 class="rounded"/>
+
+<p>I wonder if these might be related to certain sizes of the array storage in memory? Let&rsquo;s use a standard library API to reserve the array capacity in advance before populating it with data and see if I can see some improvement.</p>
+<p><code>Array.init(unsafeUninitializedCapacity:initializingWith:)</code> allows me to reserve a buffer in memory and then populate it with data.</p>
+<p>I&rsquo;m going to use this API to see if I can avoid performance artifacts related to the array size like so:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#24909d">Array</span>&lt;<span style="color:#24909d">Int</span>&gt;(
+  unsafeUninitializedCapacity: input.count,
+  initializingWith: { buffer, initializedCount <span style="color:#6ab825;font-weight:bold">in</span>
+  
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">index</span> = <span style="color:#3677a9">0</span>
+    input
+      .forEach { element <span style="color:#6ab825;font-weight:bold">in</span>
+        <span style="color:#6ab825;font-weight:bold">if</span> filterLight(element) {
+          buffer[index] = element
+          index += <span style="color:#3677a9">1</span>
+        }
+      }
+      
+    initializedCount = index
+  }
+)</code></pre></td></tr></table>
+</div>
+</div>
+<p>I&rsquo;m reserving a buffer in memory with the size of the original collection, then running <code>filterLight(_:)</code> on each item to determine whether to write it to the buffer or not. Finally, updating <code>initializedCount</code> sets the length of the resulting collection (i.e. the result can contain less elements that the buffer you initially reserve).</p>
+<p>This seems pretty straightforward so let&rsquo;s fire up Attabench and see how it fares against the original code and the <code>async/await</code> version.</p>
+
+<img src="https://trycombine.com/images/performance/atta-filter-light-unsafe.png" width=550 class="rounded"/>
+
+<p>Aha! It seems like the latest code beats all previous versions and it doesn&rsquo;t exhibit the performance degradation at certain collection sizes either.</p>
+<p>I wonder though if this code is <em>considerably</em> more performant? In other words, is it a worthy iteration in the optimization process to keep developing onto?</p>
+<p>Let&rsquo;s disable the logarithmic scaling in Attabench to see how does performance actually fare comparing <code>Array.filter</code> and <code>Array.init(unsafe...)</code></p>
+
+<img src="https://trycombine.com/images/performance/atta-filter-light-unsafe-unlog.png" width=550 class="rounded"/>
+
+<p>While there is a clear improvement, I&rsquo;d say it&rsquo;s rather negligable.</p>
+<p>So while maybe that version of the code isn&rsquo;t so much more performant, I still do like that I have the power to update the array storage directly.</p>
+<p>This might prove a powerful perk because I could craft somewhat wilder code than just updating the buffer one element after another like above. Instead I could look into updating the array buffer concurrently while filtering on multiple threads&hellip;</p>
+<p>But that&rsquo;s for me to look into in the next part 4 of the series.</p>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
+<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
+<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">09. March 2022</span></p>
+	</article>
 	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">Announcing: “Modern Concurrency in Swift”</a> </h1>
-
-			<div class="post-content">
-				<p>I&rsquo;m incredibly happy to share that today the new raywenderlich.com book &ldquo;Modern Concurrency in Swift&rdquo;, that I&rsquo;ve been working on, is available at swiftconcurrencybook.com!
-Together with editors Sandra Grauschopf, Felipe Laso-Marsetti, Richard Turton, and Shai Mishali, we&rsquo;ve been working very hard to get a book out as soon as possible on the newly released in 2021 Swift Concurrency:
- The book is written in the classic raywenderlich.com style that mixes key pieces of theory with step-by-step instructions, guiding the readers through working on practical, real-life projects.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">03. November 2021</span></p>
-		</article>
-	
-
-	
-
 
 			</div>
 
