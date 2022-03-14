@@ -82,6 +82,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
       </li>
     
@@ -236,6 +240,18 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/cancellor/">Owning AnyCancellable with Cancellor</a> </h1>
+
+			<div class="post-content">
+				<p>Swift 5.4 officially introduces @resultBuilder, which is a way to create custom DSLs and generally create more semantic APIs (think of the way you write SwiftUI today).
+I wanted to play with it and create something useful for Combine developers so I thought &ldquo;Would it not be handy to batch-add publisher subscriptions to an owned list of cancellables?&rdquo;.
+I remembered back in the day I used an extension on NSObject that adds automatically a dispose bag to all objects in case you need one created by Ash Furrow and I thought I&rsquo;d put together something in the same fashion.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">05. February 2021</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/timelane-nsspain-2020/">5 Stranger Things you can do with Timelane at NSSpain</a> </h1>
 
 			<div class="post-content">
@@ -346,18 +362,6 @@ For example: in RxSwift when dealing with UI I&rsquo;d usually use shareReplayLa
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/debug-logging-combineprintout/">Debug logging with CombinePrintout</a> </h1>
-
-			<div class="post-content">
-				<p>Logging is a really powerful way to debug code, especially if it&rsquo;s asynchronous code that runs in a time sensitive way so stepping through the debugger is a pain.
-In Simple custom Combine operators I wrote about how to create an operator that logs to the system Console app in just few lines.
-After playing with Combine some more I went ahead and created a micro framework called &ldquo;CombinePrintout&rdquo; that adds few convenient methods to Combine allowing you to quickly print information about your subscriptions.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">16. August 2019</span></p>
 		</article>
 	
 

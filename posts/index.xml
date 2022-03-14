@@ -6,7 +6,17 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Optimization in Swift, part 4</title>
+      <link>https://trycombine.com/posts/swift-performance-concurrency-4/</link>
+      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/swift-performance-concurrency-4/</guid>
+      <description>In Part 3 I wrote about trying to optimize my filter code by using an unsafe API from the standard library. This helped a tiny bit but barely improved the performance of my initial fictional use case (all about the test setup you can find out in Part 1).
+Updating the Memory Buffer Concurrently Looking at the results of both code variants so far, I got an idea — I could fuse together using concurrency to do the collection filtering and using a buffer in memory so I can update the array storage directly.</description>
+    </item>
+    
     <item>
       <title>Optimization in Swift, part 3</title>
       <link>https://trycombine.com/posts/swift-performance-concurrency-3/</link>

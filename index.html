@@ -82,6 +82,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
       </li>
     
@@ -236,6 +240,17 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-4/">Optimization in Swift, part 4</a> </h1>
+
+			<div class="post-content">
+				<p>In Part 3 I wrote about trying to optimize my filter code by using an unsafe API from the standard library. This helped a tiny bit but barely improved the performance of my initial fictional use case (all about the test setup you can find out in Part 1).
+Updating the Memory Buffer Concurrently Looking at the results of both code variants so far, I got an idea — I could fuse together using concurrency to do the collection filtering and using a buffer in memory so I can update the array storage directly.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">14. March 2022</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-3/">Optimization in Swift, part 3</a> </h1>
 
 			<div class="post-content">
@@ -338,18 +353,6 @@ In this post I&rsquo;ll code a couple of extensions that show how to easily buil
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">19. January 2022</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/xcode-powerups/">Extending Xcode with power-ups</a> </h1>
-
-			<div class="post-content">
-				<p>In this post I describe the technical setup of a small language experiment I developed to aid myself working on custom Xcode instruments.
-The need for a more flexible coding inside Xcode Last month, I prototyped a Swift IDE and became very interested in enhancing the experience of building with Swift. (Since Apple doesn&rsquo;t hire remotely, I wonder what other companies are working in that area?)
-A little later, I came back to updating my custom Xcode Instrument called Timelane to support debugging new code based on the new Swift modern concurrency APIs:  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">20. December 2021</span></p>
 		</article>
 	
 

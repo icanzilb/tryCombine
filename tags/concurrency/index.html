@@ -81,6 +81,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
       </li>
     
@@ -235,6 +239,17 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-4/">Optimization in Swift, part 4</a> </h1>
+
+			<div class="post-content">
+				<p>In Part 3 I wrote about trying to optimize my filter code by using an unsafe API from the standard library. This helped a tiny bit but barely improved the performance of my initial fictional use case (all about the test setup you can find out in Part 1).
+Updating the Memory Buffer Concurrently Looking at the results of both code variants so far, I got an idea — I could fuse together using concurrency to do the collection filtering and using a buffer in memory so I can update the array storage directly.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">14. March 2022</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/swift-performance-concurrency-3/">Optimization in Swift, part 3</a> </h1>
 
 			<div class="post-content">
@@ -339,18 +354,6 @@ Thread.sleep() vs Task.sleep() Let&rsquo;s just look at the old and new sleep AP
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/combine-async-sequence-2/">Bridge from Combine to AsyncSequence - the code (p. 2)</a> </h1>
-
-			<div class="post-content">
-				<p>Yesterday I wrote about AsyncSequence, AsyncStream and a simple plan how to bridge (or proxy) Combine publishers to the new asynchronous sequences APIs - Bridge from Combine to AsyncSequence - the plan (part 1).
-Today let&rsquo;s put together the code as planned and see if that&rsquo;s going to work out so we can easily use publishers as async sequences.
-CombineAsyncStream setup I&rsquo;ll create a new type called CombineAsyncStream and make it conform to AsyncSequence.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">13. July 2021</span></p>
 		</article>
 	
 

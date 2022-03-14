@@ -78,15 +78,15 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
-      </li>
-    
-      <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 3</a>
-      </li>
-    
-      <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 4</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -274,16 +274,49 @@
   data-size="medium">
 Tweet</a><p>
 
-		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">Part 3</a> I wrote about another iteration of my filter code that used the standard library&rsquo;s <code>Array(unsafeUninitializedCapacity: initializingWith:)</code> to initialize a buffer in memory and then write the filtered collection to that buffer. This helped a tiny bit but still didn&rsquo;t considerably speed up the app for my fictional use case (all about the test setup you can find out in <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Part 1</a>).</p>
-<h2 id="taking-to-the-standard-library">Taking to the Standard Library</h2>
-<p>Since I already know that I&rsquo;m not going to keep digging into an <code>async/await</code> variant of the code, I think it&rsquo;s a good idea to look into the standard library. It often offers a specialized version of more common APIs to better suite a given use case.</p>
-<p>Looking at the performance chart when 1filtering with <code>Array.filter(_:)</code> I&rsquo;m noticing these strange peaks at certain sizes of the collection:</p>
+		<div class="post-content"><p>In <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">Part 3</a> I wrote about trying to optimize my filter code by using an unsafe API from the standard library. This helped a tiny bit but barely improved the performance of my initial fictional use case (all about the test setup you can find out in <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">Part 1</a>).</p>
+<h2 id="updating-the-memory-buffer-concurrently">Updating the Memory Buffer Concurrently</h2>
+<p>Looking at the results of both code variants so far, I got an idea — I could fuse together using concurrency to do the collection filtering and using a buffer in memory so I can update the array storage directly.</p>
+<p>The interesting thing about writing to memory directly (instead of using the array APIs) is that I can concurrently write to different offsets without causing memory corruption.</p>
+<p>In other words — if I know the offset of the array element I want to update, I can update that specific element without preventing other threads to write other elements in the same buffer <strong>at the same time</strong>:</p>
 
-<img src="https://trycombine.com/images/performance/atta-filter-light-single.png" width=550 class="rounded"/>
+<img src="https://trycombine.com/images/performance/memory-buffer-writing.png" width=550 class="rounded"/>
 
-<p>I wonder if these might be related to certain sizes of the array storage in memory? Let&rsquo;s use a standard library API to reserve the array capacity in advance before populating it with data and see if I can see some improvement.</p>
-<p><code>Array.init(unsafeUninitializedCapacity:initializingWith:)</code> allows me to reserve a buffer in memory and then populate it with data.</p>
-<p>I&rsquo;m going to use this API to see if I can avoid performance artifacts related to the array size like so:</p>
+<p>In yet other words — I could filter the source collection concurrently and build the resulting array also concurrently.</p>
+<p>Let&rsquo;s see how would that look in code!</p>
+<p>I&rsquo;ll start, just like in the previous post, by initializing a new array with a buffer the size of the source collection:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#24909d">Array</span>&lt;<span style="color:#24909d">Int</span>&gt;(
+  unsafeUninitializedCapacity: input.count,
+  initializingWith: { buffer, initializedCount <span style="color:#6ab825;font-weight:bold">in</span>
+  
+    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">index</span> = <span style="color:#3677a9">0</span>
+
+    <span style="color:#999;font-style:italic">// how to do async here ??</span>
+
+    initializedCount = index
+  }
+)</code></pre></td></tr></table>
+</div>
+</div>
+<p>There&rsquo;s a problem though — <code>Array.init(unsafeUniti...)</code> takes a synchronous closure so I can&rsquo;t use <code>async/await</code> to concurrently filter the elements&hellip;</p>
+<p>Well, good news — Grand Central Dispatch is still alive and kicking and it has no idea that Swift has now asynchronous context. I&rsquo;ll use <code>DispatchQueue.concurrentPerform(iterations:execute:)</code> to spread the work across  multiple threads from <strong>inside</strong> the synchronous array initializer&rsquo;s closure.</p>
+<p>The plan to update concurrently the buffer is simple — I&rsquo;ll write all passing elements to the result, and for all elements that should be filtered I&rsquo;ll write a <code>nil</code> instead. Finally, I&rsquo;ll compact the resulting array before returning it.</p>
+<p>Here&rsquo;s how the completed code looks like:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -302,41 +335,55 @@ Tweet</a><p>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#24909d">Array</span>&lt;<span style="color:#24909d">Int</span>&gt;(
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#24909d">Array</span>&lt;<span style="color:#24909d">Int</span>?&gt;(
   unsafeUninitializedCapacity: input.count,
   initializingWith: { buffer, initializedCount <span style="color:#6ab825;font-weight:bold">in</span>
-  
-    <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">index</span> = <span style="color:#3677a9">0</span>
-    input
-      .forEach { element <span style="color:#6ab825;font-weight:bold">in</span>
-        <span style="color:#6ab825;font-weight:bold">if</span> filterLight(element) {
-          buffer[index] = element
-          index += <span style="color:#3677a9">1</span>
-        }
-      }
-      
-    initializedCount = index
+
+    DispatchQueue
+      .concurrentPerform(iterations: input.count) { offset <span style="color:#6ab825;font-weight:bold">in</span>
+
+      <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">address</span> = buffer.baseAddress! + offset
+      <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">element</span> = filterFunction(input[offset]) 
+        ? input[offset]
+        : <span style="color:#6ab825;font-weight:bold">nil</span>
+
+      address.initialize(to: element)
+    }
+
+    initializedCount = input.count
   }
-)</code></pre></td></tr></table>
+)
+.compactMap { <span style="color:#40ffff">$0</span> }</code></pre></td></tr></table>
 </div>
 </div>
-<p>I&rsquo;m reserving a buffer in memory with the size of the original collection, then running <code>filterLight(_:)</code> on each item to determine whether to write it to the buffer or not. Finally, updating <code>initializedCount</code> sets the length of the resulting collection (i.e. the result can contain less elements that the buffer you initially reserve).</p>
-<p>This seems pretty straightforward so let&rsquo;s fire up Attabench and see how it fares against the original code and the <code>async/await</code> version.</p>
+<p>There is a lot to unpack in this code but, long story short, essentially each thread performs the filtering of one element at a time and updates the resulting collection offset with either <code>nil</code> or the source element. Finally, a simple <code>compactMap { $0 }</code> removes all <code>nil</code> elements from the result.</p>
+<p>Exciting! Let&rsquo;s see the results in Attabench.</p>
+<p>If you paid attention to the charts in the previous posts you&rsquo;ve already likely guessed that <code>DispatchQueue.concurrentPerform(...)</code> (in green) didn&rsquo;t improve the speed of filtering when using <code>filterLight</code> as the condition:</p>
 
-<img src="https://trycombine.com/images/performance/atta-filter-light-unsafe.png" width=550 class="rounded"/>
+<img src="https://trycombine.com/images/performance/atta-unsafe-conurrent-light.png" width=550 class="rounded"/>
 
-<p>Aha! It seems like the latest code beats all previous versions and it doesn&rsquo;t exhibit the performance degradation at certain collection sizes either.</p>
-<p>I wonder though if this code is <em>considerably</em> more performant? In other words, is it a worthy iteration in the optimization process to keep developing onto?</p>
-<p>Let&rsquo;s disable the logarithmic scaling in Attabench to see how does performance actually fare comparing <code>Array.filter</code> and <code>Array.init(unsafe...)</code></p>
+<p>While performing better than the code variant using <code>async/await</code> (in orange), my latest code iteration is still much slower than <code>Array.filter</code> (red).</p>
+<p>This result re-iterates what I mentioned in the first part of the series — optimize only when and where it makes sense&hellip; For the simple condition <code>num % 6 == 0</code> neither adding concurrency nor using unsafe APIs would improve the duration metric.</p>
+<p>But let&rsquo;s see about the performance when filtering with <code>filterHeavy</code> — the function that does some SHA checksums before deciding which elements should be filtered.</p>
+<p>Plotting the latest code (in green) with <code>filterHeavy</code> against the previous variants looks like this:</p>
 
-<img src="https://trycombine.com/images/performance/atta-filter-light-unsafe-unlog.png" width=550 class="rounded"/>
+<img src="https://trycombine.com/images/performance/atta-unsafe-conurrent-heavy.png" width=550 class="rounded"/>
 
-<p>While there is a clear improvement, I&rsquo;d say it&rsquo;s rather negligable.</p>
-<p>So while maybe that version of the code isn&rsquo;t so much more performant, I still do like that I have the power to update the array storage directly.</p>
-<p>This might prove a powerful perk because I could craft somewhat wilder code than just updating the buffer one element after another like above. Instead I could look into updating the array buffer concurrently while filtering on multiple threads&hellip;</p>
-<p>But that&rsquo;s for me to look into in the next part 4 of the series.</p>
+<p>The concurrent code that also uses an unsafe memory buffer is considerably faster than all earlier iterations!</p>
+<p>That&rsquo;s pretty nice so let&rsquo;s turn off the logarithmic scaling to see if I hit my (somewhat arbitrary) goal of slashing the duration in half:</p>
+
+<img src="https://trycombine.com/images/performance/atta-unsafe-conurrent-heavy-unlog.png" width=550 class="rounded"/>
+
+<p>The results look great — it looks like for larger collections the initial time spend per element is around 3µs and my final code needs around 0.5µs which is much better than my initial goal.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I think I&rsquo;m going to wrap the series at this point. Before doing that, let me reiterate my sentiment from part 1 — every time you&rsquo;ll have different constraints, that&rsquo;s one of the reasons it&rsquo;s so hard to optimize-in-advance.</p>
+<p>The solution above uses a lot of CPU in order to reduce the duration and likely much more RAM than a simple <code>Array.filter</code>. Since my goal was to reduce the duration, all other metrics don&rsquo;t bother me but in your case — always measure and find what works best.</p>
+<p>I hope this mini-series showcased a little bit of my thought process and that was interesting to read about. If you want to discuss this code or have an even faster iteration to share — hit me up on Twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> !</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
 <p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
 <p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
@@ -367,7 +414,7 @@ Tweet</a><p>
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">09. March 2022</span></p>
+		<p class="meta">Posted on <span class="postdate">14. March 2022</span></p>
 	</article>
 	
 
