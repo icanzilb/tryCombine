@@ -2,25 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://trycombine.com/tags/instruments/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/introducing-timeui/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/performance/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/swift/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2022-03-20T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/concurrency/</loc>
     <lastmod>2022-03-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/swift-performance-concurrency-4/</loc>
-    <lastmod>2022-03-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/performance/</loc>
-    <lastmod>2022-03-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2022-03-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/swift/</loc>
-    <lastmod>2022-03-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2022-03-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/</loc>
     <lastmod>2022-03-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/swift-performance-concurrency-3/</loc>
@@ -153,9 +159,6 @@
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/timelane-nsspain-2020/</loc>
-    <lastmod>2020-11-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/instruments/</loc>
     <lastmod>2020-11-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/timelane/</loc>

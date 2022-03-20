@@ -6,20 +6,20 @@
     <description>Recent content in Tags on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>concurrency</title>
-      <link>https://trycombine.com/tags/concurrency/</link>
-      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      <title>Instruments</title>
+      <link>https://trycombine.com/tags/instruments/</link>
+      <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://trycombine.com/tags/concurrency/</guid>
+      <guid>https://trycombine.com/tags/instruments/</guid>
       <description></description>
     </item>
     
     <item>
       <title>performance</title>
       <link>https://trycombine.com/tags/performance/</link>
-      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/performance/</guid>
       <description></description>
@@ -28,9 +28,18 @@
     <item>
       <title>swift</title>
       <link>https://trycombine.com/tags/swift/</link>
-      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/swift/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>concurrency</title>
+      <link>https://trycombine.com/tags/concurrency/</link>
+      <pubDate>Mon, 14 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/concurrency/</guid>
       <description></description>
     </item>
     
@@ -238,15 +247,6 @@
       <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/publisher/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Instruments</title>
-      <link>https://trycombine.com/tags/instruments/</link>
-      <pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/instruments/</guid>
       <description></description>
     </item>
     

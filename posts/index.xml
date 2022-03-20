@@ -6,7 +6,18 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing timeui</title>
+      <link>https://trycombine.com/posts/introducing-timeui/</link>
+      <pubDate>Sun, 20 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/introducing-timeui/</guid>
+      <description>A little while ago I coded a minimal profiling tool for the macOS command line and called it timeui. Last week I pushed the source code online in the hope other people would like it and use it (and eventually contribute some code too).
+In this post I&amp;rsquo;ll introduce you quickly to timeui and what it can currently do for you.
+What is timeui? timeui is a command line tool that profiles an app you provide it and shows duration, apple&amp;rsquo;s universal logging intervals, CPU usage and memory footprint:</description>
+    </item>
+    
     <item>
       <title>Optimization in Swift, part 4</title>
       <link>https://trycombine.com/posts/swift-performance-concurrency-4/</link>
