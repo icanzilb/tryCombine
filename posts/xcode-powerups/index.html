@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -316,55 +320,55 @@ Tweet</a><p>
 <p>Breaking the 1,000s of lines of flat XML into scoped, smaller files of up to a couple of hundred lines made the codebase easy to navigate.</p>
 <p>I chose to use commands wrapped in XML comments to make my custom code valid XML — this way the custom syntax doesn&rsquo;t trigger errors in Xcode&rsquo;s code editor.</p>
 <p>The build phase finds tags looking like this:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>And inserts the target file&rsquo;s contents after the original tag&rsquo;s location like so:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span>
-
-	<span style="color:#999;font-style:italic">&lt;!-- included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
-
-	  <span style="color:#999;font-style:italic">&lt;!-- MARK: - TASKS INSTRUMENT --&gt;</span>
-	  <span style="color:#999;font-style:italic">&lt;!--
-</span><span style="color:#999;font-style:italic">	  	The tasks instrument.
-</span><span style="color:#999;font-style:italic">	  --&gt;</span>
-	  
-	  <span style="color:#6ab825;font-weight:bold">&lt;augmentation&gt;</span>
-	  	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${instrumentID}.byname<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
-	  	<span style="color:#6ab825;font-weight:bold">&lt;title&gt;</span>Show Tasks by Name<span style="color:#6ab825;font-weight:bold">&lt;/title&gt;</span>
-	  	<span style="color:#6ab825;font-weight:bold">&lt;purpose&gt;</span>A view that provides insight into individual tasks on the timeline.<span style="color:#6ab825;font-weight:bold">&lt;/purpose&gt;</span>
-
-    ...
-
-	<span style="color:#999;font-style:italic">&lt;!-- / included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
-	  </code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#999;font-style:italic">&lt;!-- MARK: - TASKS INSTRUMENT --&gt;</span>
+</span></span><span style="display:flex;"><span>	  <span style="color:#999;font-style:italic">&lt;!--
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">	  	The tasks instrument.
+</span></span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">	  --&gt;</span>
+</span></span><span style="display:flex;"><span>	  
+</span></span><span style="display:flex;"><span>	  <span style="color:#6ab825;font-weight:bold">&lt;augmentation&gt;</span>
+</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${instrumentID}.byname<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;title&gt;</span>Show Tasks by Name<span style="color:#6ab825;font-weight:bold">&lt;/title&gt;</span>
+</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;purpose&gt;</span>A view that provides insight into individual tasks on the timeline.<span style="color:#6ab825;font-weight:bold">&lt;/purpose&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- / included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
+</span></span><span style="display:flex;"><span>	  </span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Once I&rsquo;m finished debugging the instrument, the cleanup phase removes the code between the opening and closing &ldquo;included&rdquo; tags. (I&rsquo;m not saying this process is bullet-proof but I have to say it works solidly for my use case.)</p>
@@ -395,60 +399,60 @@ Tweet</a><p>
 <img src="https://trycombine.com/images/timelane/powerups-globals.png" width=500/>
 
 <p>And extended the powerups to support <code>${...}</code> syntax in the templates like so:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#6ab825;font-weight:bold">&lt;subsystem&gt;</span>&#34;${instrumentID}.time&#34;<span style="color:#6ab825;font-weight:bold">&lt;/subsystem&gt;</span>
-<span style="color:#6ab825;font-weight:bold">&lt;category&gt;</span>&#34;DynamicStackTracing&#34;<span style="color:#6ab825;font-weight:bold">&lt;/category&gt;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;subsystem&gt;</span>&#34;${instrumentID}.time&#34;<span style="color:#6ab825;font-weight:bold">&lt;/subsystem&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;category&gt;</span>&#34;DynamicStackTracing&#34;<span style="color:#6ab825;font-weight:bold">&lt;/category&gt;</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This took care of easily fine-tuning data like the instrument identifeir, identifiers of the subsystems and various tables ids, as well as the instrument version, and more.</p>
 <p>More interestingly, I added syntax to the include tags to bind data — that really made them feel like proper components. For example:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#6ab825;font-weight:bold">&lt;os-signpost-point-schema&gt;</span>
-	<span style="color:#999;font-style:italic">&lt;!-- include &#34;schema-metadata.xml&#34; id=&#34;async-taskgroupresults-schema&#34; schemaTitle=&#34;Task Group Results&#34; entity=&#34;taskgroups&#34; --&gt;</span>
-	<span style="color:#999;font-style:italic">&lt;!-- include &#34;value-tracking-partial.xml&#34; entity=&#34;TaskGroup&#34; --&gt;</span>
-<span style="color:#6ab825;font-weight:bold">&lt;/os-signpost-point-schema&gt;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;os-signpost-point-schema&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- include &#34;schema-metadata.xml&#34; id=&#34;async-taskgroupresults-schema&#34; schemaTitle=&#34;Task Group Results&#34; entity=&#34;taskgroups&#34; --&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- include &#34;value-tracking-partial.xml&#34; entity=&#34;TaskGroup&#34; --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;/os-signpost-point-schema&gt;</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>All params that aren&rsquo;t recognized tag properties are bound as data to the template and its children.</p>
 <p>This enabled dynamically building identifiers, names and even comments in the generated code:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#999;font-style:italic">&lt;!-- The data table storing ${entity} data --&gt;</span>
-<span style="color:#6ab825;font-weight:bold">&lt;create-table&gt;</span>
-	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${entity}-table<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
-	<span style="color:#6ab825;font-weight:bold">&lt;schema-ref&gt;</span>async-${entity}-schema<span style="color:#6ab825;font-weight:bold">&lt;/schema-ref&gt;</span>
-<span style="color:#6ab825;font-weight:bold">&lt;/create-table&gt;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- The data table storing ${entity} data --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;create-table&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${entity}-table<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#6ab825;font-weight:bold">&lt;schema-ref&gt;</span>async-${entity}-schema<span style="color:#6ab825;font-weight:bold">&lt;/schema-ref&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;/create-table&gt;</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This made the complete package code very DRY pushing the 2,000+ lines of XML to less than 1,000 split across 20-ish files.</p>
 <h2 id="conditionals">Conditionals</h2>
 <p>Before wrapping up, I noticed that I can reuse even more code but some instruments needed it and some didn&rsquo;t. I had to add conditionals (and by god at this point I considered just switching to XSL but I was having too much fun with this.)</p>
 <p>To implement conditional includes I added a <code>where</code> tag property like this:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-augmentation.xml&#34; where &#34;${entity}==tasks&#34; --&gt;</span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-augmentation.xml&#34; where &#34;${entity}==tasks&#34; --&gt;</span></span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>This would include the template and bind the data, etc. only if the <code>where</code> condition evaluates to true.</p>

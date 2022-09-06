@@ -6,7 +6,18 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing MarkCodable</title>
+      <link>https://trycombine.com/posts/introducing-markcodable/</link>
+      <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/introducing-markcodable/</guid>
+      <description>I had a lot of fun listening to &amp;ldquo;A releational database using Markdown&amp;rdquo; episode with John Sundell and Gui Rambo:
+After taking a moment though, I started realizing that there is a whole plethora of use cases where Markdown could be a great storage for some of my data. Markdown supports tables and they are pretty easy to view, parse and edit by hand.
+On the other hand, JSON isn&amp;rsquo;t very easy to view or edit by hand, which is sometimes more important for me, given I work on a lot of small tooling that automates or performs specific tasks and usually doesn&amp;rsquo;t need a large dataset.</description>
+    </item>
+    
     <item>
       <title>Introducing timeui</title>
       <link>https://trycombine.com/posts/introducing-timeui/</link>
@@ -99,7 +110,7 @@ More than anything else I worked on this to explore and demonstrate how easily I
       
       <guid>https://trycombine.com/posts/swift-read-modify-coroutines/</guid>
       <description>Edit: The post previsouly said yielding accessors were available only in nightly toolchains, but _read and _modify are also available in release Swift builds; they&amp;rsquo;re just _ prefixed to signify they are work-in-progress.
- It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
+It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
 I was reading through a pitch by Joe Groff on some improvements to ARC and ownership the other day when I noticed that he mentions that accessor coroutines are available in Swift trunk.</description>
     </item>
     
@@ -143,7 +154,7 @@ A little later, I came back to updating my custom Xcode Instrument called Timela
       <guid>https://trycombine.com/posts/announcing-modern-swift-concurrency-book/</guid>
       <description>I&amp;rsquo;m incredibly happy to share that today the new raywenderlich.com book &amp;ldquo;Modern Concurrency in Swift&amp;rdquo;, that I&amp;rsquo;ve been working on, is available at swiftconcurrencybook.com!
 Together with editors Sandra Grauschopf, Felipe Laso-Marsetti, Richard Turton, and Shai Mishali, we&amp;rsquo;ve been working very hard to get a book out as soon as possible on the newly released in 2021 Swift Concurrency:
- The book is written in the classic raywenderlich.com style that mixes key pieces of theory with step-by-step instructions, guiding the readers through working on practical, real-life projects.</description>
+The book is written in the classic raywenderlich.com style that mixes key pieces of theory with step-by-step instructions, guiding the readers through working on practical, real-life projects.</description>
     </item>
     
     <item>
@@ -177,7 +188,7 @@ Disclaimer Benchmarking depends heavily on the system, temporary conditions, and
       <description>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
 So here&amp;rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
 Thread.sleep() vs Task.sleep() Let&amp;rsquo;s just look at the old and new sleep APIs:
-  Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&amp;rsquo;t load the CPU, the core just idles.</description>
+Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&amp;rsquo;t load the CPU, the core just idles.</description>
     </item>
     
     <item>
@@ -198,7 +209,7 @@ CombineAsyncStream setup I&amp;rsquo;ll create a new type called CombineAsyncStr
       
       <guid>https://trycombine.com/posts/combine-async-sequence-1/</guid>
       <description>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&amp;rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
- Note: The current version of Xcode 13 is beta 2 and I&amp;rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.</description>
+Note: The current version of Xcode 13 is beta 2 and I&amp;rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.</description>
     </item>
     
     <item>
@@ -219,9 +230,9 @@ When I wrapped up writing part 1, I was looking at my new cache actor and I star
       
       <guid>https://trycombine.com/posts/swift-actors/</guid>
       <description>I&amp;rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
- &amp;ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&amp;rdquo;
- So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support  Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.</description>
+&amp;ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&amp;rdquo;
+So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
+Installing Swift toolchain with actors support Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.</description>
     </item>
     
     <item>
@@ -278,7 +289,7 @@ Creating a real custom instrument, however, is a little more complicated as you 
       <description>It&amp;rsquo;s been two weeks since I released Timelane and I&amp;rsquo;m really humbled by the community&amp;rsquo;s super positive response.
 Since much has happened since the launch, I&amp;rsquo;m writing this to give everyone a detailed update.
 The current versions are as follows:
- TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3  I&amp;rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.
+TimelaneCombine 1.0.4 RxTimelane 1.0.3 TimelaneCore 1.0.3 I&amp;rsquo;ve merged 18 PRs (in the 14 days since launch!) on all Timelane repos and I pushed some changes myself too.
 Here&amp;rsquo;s a summary of what&amp;rsquo;s new.</description>
     </item>
     

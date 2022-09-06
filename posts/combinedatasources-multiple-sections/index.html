@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -282,13 +286,13 @@ Tweet</a><p>
 <p>In my last post <a href="http://trycombine.com/posts/combinedatasources-simple-static-list/">Binding a simple list to a UITableView</a> we had a look at binding a list of data elements to a table view. It&rsquo;s pretty simple to bind a plain table view when you have a coherent list of elements.</p>
 <p>In this post I&rsquo;m gonna show some code on how to bind a list to a table with multiple sections that also needs to use different cell types for the different sections.</p>
 <p>In the previous post I used the <code>rowsSubscriber(...)</code> extension on <code>UITableView</code> like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">bind(subscriber:
-  tableView.rowsSubscriber(
-    cellIdentifier:
-    cellType:
-    cellConfig:
-  )
-)</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>bind(subscriber:
+</span></span><span style="display:flex;"><span>  tableView.rowsSubscriber(
+</span></span><span style="display:flex;"><span>    cellIdentifier:
+</span></span><span style="display:flex;"><span>    cellType:
+</span></span><span style="display:flex;"><span>    cellConfig:
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>)</span></span></code></pre></div>
 <p><code>tableView.rowsSubscriber(...)</code> returns a table specific subscriber which manages the cells in the table view. The subscriber does that by instantiating a <code>TableViewItemsController</code> configured with the given cell type &amp; identifier.</p>
 <p>Given you set a single cell identifier, this approach obviously suits only plain lists with a single type of table rows.</p>
 <p>In this post we are going to go a level deeper into the API and create manually a <code>TableViewItemsController</code> which will allow us to create different types of cells and feed them to the table view.</p>
@@ -298,21 +302,21 @@ Tweet</a><p>
 <p><img src="https://trycombine.com/images/datasources/mail-storyboard.png" alt="Mail app storyboard"></p>
 <p>Each cell is a different type (<code>InboxCell</code> and <code>OutboxCell</code>) and features its own custom UI in the Storyboard.</p>
 <p>I also need a data model for the inbox and outbox messages:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Message</span>: <span style="color:#24909d">Hashable</span> {
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">title</span>: <span style="color:#24909d">String</span>
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">text</span>: <span style="color:#24909d">String</span>
-}
-
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">messages</span>: [[Message]] = [
-  [
-    Message(title: <span style="color:#ed9d13">&#34;Re: Hello again!&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>)
-  ],
-  [
-    Message(title: <span style="color:#ed9d13">&#34;Hello again!&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>),
-    Message(title: <span style="color:#ed9d13">&#34;Please confirm your account&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>),
-    Message(title: <span style="color:#ed9d13">&#34;See you at: Swift Peer Lab&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>)
-  ]
-]</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Message</span>: <span style="color:#24909d">Hashable</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">title</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">text</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">messages</span>: [[Message]] = [
+</span></span><span style="display:flex;"><span>  [
+</span></span><span style="display:flex;"><span>    Message(title: <span style="color:#ed9d13">&#34;Re: Hello again!&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>)
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  [
+</span></span><span style="display:flex;"><span>    Message(title: <span style="color:#ed9d13">&#34;Hello again!&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>),
+</span></span><span style="display:flex;"><span>    Message(title: <span style="color:#ed9d13">&#34;Please confirm your account&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>),
+</span></span><span style="display:flex;"><span>    Message(title: <span style="color:#ed9d13">&#34;See you at: Swift Peer Lab&#34;</span>, text: <span style="color:#ed9d13">&#34;...&#34;</span>)
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>]</span></span></code></pre></div>
 <p><code>Message</code> is a simple struct that includes a title and the message text. <code>messages</code> is a <code>Message</code> collection that I&rsquo;ll bind to my table view: the first array in <code>messages</code> is my outbox message list, the second contains the messages in the inbox.</p>
 <h2 id="binding-multiple-cell-types">Binding multiple cell types</h2>
 <p>I&rsquo;d like to bind my <code>messages</code> list to the two sections of my table - outbox and inbox.</p>
@@ -324,10 +328,10 @@ Tweet</a><p>
 </ul>
 <p>The <code>cellFactory</code> closure is given the table view, the controller, and the data and is expected to dequeue a cell and return it ready for displaying.</p>
 <p>I&rsquo;m gonna do that my view controller&rsquo;s <code>viewDidLoad()</code> method:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">listController</span> = TableViewItemsController&lt;[[Message]]&gt;
-  { (controller, table, indexPath, message) -&gt; UITableViewCell <span style="color:#6ab825;font-weight:bold">in</span>
-
-  }</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">listController</span> = TableViewItemsController&lt;[[Message]]&gt;
+</span></span><span style="display:flex;"><span>  { (controller, table, indexPath, message) -&gt; UITableViewCell <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  }</span></span></code></pre></div>
 <p><code>TableViewItemsController</code> is generic over the list type it binds, which in my case is <code>[[Message]]</code> - one <code>[Message]</code> list for each of the table&rsquo;s sections.</p>
 <p>The closure parameter receives four parameters as follows:</p>
 <ul>
@@ -337,26 +341,26 @@ Tweet</a><p>
 <li>the data element to bind for this row</li>
 </ul>
 <p>Since I have a different cell type per section I will switch over the current row&rsquo;s index path and decide what cell to return. The closure body becomes:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">switch</span> indexPath.section {
-<span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">0</span>:  <span style="color:#999;font-style:italic">// Outbox section</span>
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
-    withIdentifier: OutboxCell.identifier) <span style="color:#6ab825;font-weight:bold">as</span>! OutboxCell
-  cell.title.text = message.title
-  <span style="color:#6ab825;font-weight:bold">return</span> cell
-
-<span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">1</span>: <span style="color:#999;font-style:italic">// Inbox section</span>
-  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
-    withIdentifier: InboxCell.identifier) <span style="color:#6ab825;font-weight:bold">as</span>! InboxCell
-  cell.title.text = message.title
-  <span style="color:#6ab825;font-weight:bold">return</span> cell
-
-<span style="color:#6ab825;font-weight:bold">default</span>: fatalError()
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">switch</span> indexPath.section {
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">0</span>:  <span style="color:#999;font-style:italic">// Outbox section</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
+</span></span><span style="display:flex;"><span>    withIdentifier: OutboxCell.identifier) <span style="color:#6ab825;font-weight:bold">as</span>! OutboxCell
+</span></span><span style="display:flex;"><span>  cell.title.text = message.title
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> cell
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#3677a9">1</span>: <span style="color:#999;font-style:italic">// Inbox section</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">cell</span> = table.dequeueReusableCell(
+</span></span><span style="display:flex;"><span>    withIdentifier: InboxCell.identifier) <span style="color:#6ab825;font-weight:bold">as</span>! InboxCell
+</span></span><span style="display:flex;"><span>  cell.title.text = message.title
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> cell
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">default</span>: fatalError()
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>In each of my cases I&rsquo;m free to configure the cells as I please - above I just set the row&rsquo;s title.</p>
 <p>With an initialized controller in hand, I simply need to bind the message list to a table subscriber. Right after the code from above, I&rsquo;ll add:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Just(messages)
-  .bind(subscriber: tableView.sectionsSubscriber(listController))
-  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Just(messages)
+</span></span><span style="display:flex;"><span>  .bind(subscriber: tableView.sectionsSubscriber(listController))
+</span></span><span style="display:flex;"><span>  .store(<span style="color:#6ab825;font-weight:bold">in</span>: &amp;subscriptions)</span></span></code></pre></div>
 <p><code>tableView.sectionsSubscriber(listController)</code> creates a sections subscriber by using the given <code>listController</code> controller.</p>
 <p>I bind my message list to that subscriber and that&rsquo;s all I need to wrap up this example. (Storing the subscription in a <code>[AnyCancellable]</code> as well.)</p>
 <p>Running the project I get a populated table with the expected rows types in the two sections:</p>

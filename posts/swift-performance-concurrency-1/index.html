@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -295,28 +299,28 @@ Tweet</a><p>
 <p>We won&rsquo;t talk right now about many other constraints you might have — concurrency limitations, asynchrony limitations, etc. We&rsquo;ll keep the post exploratory and mention few of these extra constraints along the way.</p>
 <h2 id="measuring-algorithms">Measuring Algorithms</h2>
 <p>I usually use Instruments to measure time intervals. I&rsquo;d do something along the lines of:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">os</span>
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">log</span> = OSLog(subsystem: <span style="color:#ed9d13">&#34;logs&#34;</span>, category: OSLog.Category.pointsOfInterest)
-
-...
-
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">data</span> = <span style="color:#24909d">Array</span>(repeating: <span style="color:#3677a9">156</span>, count: <span style="color:#3677a9">100_000_000</span>)
-os_signpost(.begin, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)
-<span style="color:#6ab825;font-weight:bold">_</span> = data.filter { <span style="color:#40ffff">$0</span> == <span style="color:#3677a9">34</span> }
-os_signpost(.end, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">os</span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">log</span> = OSLog(subsystem: <span style="color:#ed9d13">&#34;logs&#34;</span>, category: OSLog.Category.pointsOfInterest)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">data</span> = <span style="color:#24909d">Array</span>(repeating: <span style="color:#3677a9">156</span>, count: <span style="color:#3677a9">100_000_000</span>)
+</span></span><span style="display:flex;"><span>os_signpost(.begin, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">_</span> = data.filter { <span style="color:#40ffff">$0</span> == <span style="color:#3677a9">34</span> }
+</span></span><span style="display:flex;"><span>os_signpost(.end, log: log, name: <span style="color:#ed9d13">&#34;array.filter&#34;</span>)</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Then I profile the project with the <strong>os_signpost</strong> instrument (not in combination with other instruments so the durations aren&rsquo;t affected by them):</p>
@@ -325,25 +329,25 @@ os_signpost(.end, log: log, name: <span style="color:#ed9d13">&#34;array.filter&
 
 <p>This works if you have a handful of cases you want to measure. However, for my current task I want to know the effect of my changes across different array sizes. Luckily, as I mentioned in <a href="https://trycombine.com/posts/swift-concurrency-task-group/">The issue with task groups&hellip;</a> <strong>Attabench</strong> is great for performing series of measures across series of data sets and plotting the results.</p>
 <p><a href="https://github.com/attaswift/Attabench">Attabench</a> allows me to create a Swift package and run it interactively to measure the code performance. As a start, I&rsquo;m gonna add a function to use when filtering (I&rsquo;m using an arbitrary filter logic for this test):</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">filterLight</span>(num: <span style="color:#24909d">Int</span>) -&gt; <span style="color:#24909d">Bool</span> {
-  <span style="color:#6ab825;font-weight:bold">return</span> num % <span style="color:#3677a9">6</span> == <span style="color:#3677a9">0</span>
-}</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">filterLight</span>(num: <span style="color:#24909d">Int</span>) -&gt; <span style="color:#24909d">Bool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> num % <span style="color:#3677a9">6</span> == <span style="color:#3677a9">0</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>And the code I&rsquo;m going to measure is below. <code>input</code> is the array provided by Attabench to the benchmark task:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">input.filter(filterLight)</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>input.filter(filterLight)</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Adding a new benchmark task called <strong>Sequence.filter 🎈</strong> I can instantly see the measurements in Attabench:</p>

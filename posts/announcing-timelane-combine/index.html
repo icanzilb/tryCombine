@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -293,15 +297,15 @@ Tweet</a><p>
 <h2 id="usage">Usage</h2>
 <p>This example uses <strong>TimelaneCombine</strong> with Apple&rsquo;s Combine - the steps to use RxTimelane + RxSwift are almost identical.</p>
 <p>Add <code>TimelaneCombine</code> to your project via Swift Package Manager or Xcode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">.package(url: <span style="color:#ed9d13">&#34;https://github.com/icanzilb/TimelaneCombine&#34;</span>, 
-  .from(<span style="color:#ed9d13">&#34;1.0.0&#34;</span>))
-</code></pre></div><p>Import TimelaneCombine in a source file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCombine</span>
-</code></pre></div><p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">downloadImagePublisher(at: url).
-  .lane(<span style="color:#ed9d13">&#34;Download: </span><span style="color:#ed9d13">\(</span>url.path<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.image, on: myImageView)
-</code></pre></div><p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>.package(url: <span style="color:#ed9d13">&#34;https://github.com/icanzilb/TimelaneCombine&#34;</span>, 
+</span></span><span style="display:flex;"><span>  .from(<span style="color:#ed9d13">&#34;1.0.0&#34;</span>))
+</span></span></code></pre></div><p>Import TimelaneCombine in a source file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">TimelaneCombine</span>
+</span></span></code></pre></div><p>Use the <code>lane(_)</code> operator to profile a subscription via the TimelaneInstrument. Insert <code>lane(_)</code> at the precise spot in your code you&rsquo;d like to profile like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>downloadImagePublisher(at: url).
+</span></span><span style="display:flex;"><span>  .lane(<span style="color:#ed9d13">&#34;Download: </span><span style="color:#ed9d13">\(</span>url.path<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.image, on: myImageView)
+</span></span></code></pre></div><p>Then profile your project by clicking Product &gt; Profile in Xcode&rsquo;s main menu, choose the Timelane instrument and run a new recording:</p>
 <p><img src="https://trycombine.com/images/timelane/timelane-recording.gif" alt=""></p>
 <p>For more details go to <a href="http://timelane.tools">http://timelane.tools</a>.</p>
 <h2 id="release-details">Release details</h2>

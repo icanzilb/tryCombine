@@ -25,9 +25,9 @@ When I wrapped up writing part 1, I was looking at my new cache actor and I star
       
       <guid>https://trycombine.com/posts/swift-actors/</guid>
       <description>I&amp;rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
- &amp;ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&amp;rdquo;
- So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support  Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.</description>
+&amp;ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&amp;rdquo;
+So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
+Installing Swift toolchain with actors support Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.</description>
     </item>
     
   </channel>

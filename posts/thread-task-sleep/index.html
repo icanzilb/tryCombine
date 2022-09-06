@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -337,56 +341,56 @@ Tweet</a><p>
 </div>
 <h2 id="the-difference-in-practice">The difference in practice</h2>
 <p>What do these mean in practice? This is how you&rsquo;d concurrenty have <code>100</code> sleeps with <code>DispatchQueue</code>:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
-DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">100</span>) { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
-  Thread.sleep(forTimeInterval: <span style="color:#3677a9">1</span>)
-}
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
-print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+</span></span><span style="display:flex;"><span>DispatchQueue.concurrentPerform(iterations: <span style="color:#3677a9">100</span>) { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>  Thread.sleep(forTimeInterval: <span style="color:#3677a9">1</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
+</span></span><span style="display:flex;"><span>print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>GCD spreads the concurrent work on all cores it can grab and on my machine the code prints:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">9.00</span>s</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Duration: <span style="color:#3677a9">9.00</span>s</span></span></code></pre></div>
 <p>The thing is — you&rsquo;re limited to the amount of threads <code>DispatchQueue</code> will create for you as switching threads is very expensive and the system will try creating as few as possible. In the end the machine is &ldquo;busy&rdquo; running nothing.</p>
 <p>Let&rsquo;s have a look at the same code with the new <code>Task</code> APIs and <code>async/await</code>:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
-await withThrowingTaskGroup(of: <span style="color:#24909d">Void</span>.<span style="color:#6ab825;font-weight:bold">self</span>, body: {
-  <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100</span> {
-    <span style="color:#40ffff">$0</span>.addTask {
-      <span style="color:#6ab825;font-weight:bold">try</span> await Task.sleep(nanoseconds: <span style="color:#3677a9">1_000_000_000</span>)
-    }
-  }
-})
-<span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
-print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">start</span> = Date.timeIntervalSinceReferenceDate
+</span></span><span style="display:flex;"><span>await withThrowingTaskGroup(of: <span style="color:#24909d">Void</span>.<span style="color:#6ab825;font-weight:bold">self</span>, body: {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">for</span> <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#3677a9">0</span> ..&lt; <span style="color:#3677a9">100</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#40ffff">$0</span>.addTask {
+</span></span><span style="display:flex;"><span>      <span style="color:#6ab825;font-weight:bold">try</span> await Task.sleep(nanoseconds: <span style="color:#3677a9">1_000_000_000</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">end</span> = Date.timeIntervalSinceReferenceDate
+</span></span><span style="display:flex;"><span>print(<span style="color:#24909d">String</span>(format: <span style="color:#ed9d13">&#34;Duration: %.2fs&#34;</span>, end-start))</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>Running this code prints:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">Duration: <span style="color:#3677a9">1.05</span>s</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Duration: <span style="color:#3677a9">1.05</span>s</span></span></code></pre></div>
 <p>While suspended, a <code>Task</code> takes no CPU core-seconds so the same core can run all of the hundred sleep tasks at the same time. You can have thousands of them if you want and the duration will still be just over <code>1</code> second.</p>
 <p>In the new model, asynchronous tasks collaborate by suspending when not actively doing work so all of the currently scheduled work can progress forward.</p>
 <p>Thanks for reading and see you next time 👋🏽</p>

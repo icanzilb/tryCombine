@@ -78,6 +78,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
       </li>
     
@@ -289,24 +293,24 @@ Tweet</a><p>
 </ul>
 <p>Let&rsquo;s have a look at the first of these below and in the next section we&rsquo;ll cover number two. 😬</p>
 <p>You&rsquo;re building a view model and you&rsquo;d like to have a property called <code>progress</code> like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Since the value is a completion precentage no values outside the <code>[0, 100]</code> range would make sense. You can &ldquo;wrap&rdquo; the <code>progress</code> property with a custom wrapper to limit the property&rsquo;s potential values.</p>
 <p>Here&rsquo;s how to write that custom wrapper code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
-<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Percentage</span> {
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: <span style="color:#24909d">Int</span>
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: <span style="color:#24909d">Int</span> {
-    <span style="color:#6ab825;font-weight:bold">get</span> { value }
-    <span style="color:#6ab825;font-weight:bold">set</span> { value = max(<span style="color:#3677a9">0</span>, min(<span style="color:#3677a9">100</span>, newValue)) }
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: <span style="color:#24909d">Int</span>) {
-    value = wrappedValue
-  }
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@propertyWrapper
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Percentage</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: <span style="color:#24909d">Int</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: <span style="color:#24909d">Int</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">set</span> { value = max(<span style="color:#3677a9">0</span>, min(<span style="color:#3677a9">100</span>, newValue)) }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue: <span style="color:#24909d">Int</span>) {
+</span></span><span style="display:flex;"><span>    value = wrappedValue
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>I declare a struct called <code>Percentage</code> which features the attribute <code>@propertyWrapper</code> that makes <code>@Percentage</code> part of the Swift syntax (thanks to syntactic sugar). The type&rsquo;s members are as follows:</p>
 <ul>
 <li><code>value</code> is the wrapper data storage,</li>
@@ -315,21 +319,21 @@ Tweet</a><p>
 </ul>
 <p>Now I can prepend <code>@Percentage</code> to any property and make it a perecentage value limited to the range <code>[0, 100]</code>.</p>
 <p>Let&rsquo;s see an example that will demonstrate the above. Let&rsquo;s revise the <code>ViewModel</code> type from earlier and wrap its <code>progress</code> property:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
-  @Percentage <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ViewModel</span> {
+</span></span><span style="display:flex;"><span>  @Percentage <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span> = <span style="color:#3677a9">0</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Now a new instance of <code>Percentage</code> will automatically manage the <code>progress</code> property by proxying it through its <code>wrappedValue</code> like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">model.progress = <span style="color:#3677a9">34</span>
-print(model.progress)
-<span style="color:#999;font-style:italic">// prints &#34;34&#34;</span>
-
-model.progress = -<span style="color:#3677a9">10</span>
-print(model.progress)
-<span style="color:#999;font-style:italic">// prints &#34;0&#34;</span>
-
-model.progress = <span style="color:#3677a9">100000</span>
-print(model.progress)
-<span style="color:#999;font-style:italic">// prints &#34;100&#34;</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>model.progress = <span style="color:#3677a9">34</span>
+</span></span><span style="display:flex;"><span>print(model.progress)
+</span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">// prints &#34;34&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model.progress = -<span style="color:#3677a9">10</span>
+</span></span><span style="display:flex;"><span>print(model.progress)
+</span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">// prints &#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model.progress = <span style="color:#3677a9">100000</span>
+</span></span><span style="display:flex;"><span>print(model.progress)
+</span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">// prints &#34;100&#34;</span></span></span></code></pre></div>
 <p>Property wrappers let you abstract redundant code and make Swift&rsquo;s syntax more semantic. However, they also somewhat obscure code that is being trigger automatically. So, as with any powerful tool  - moderation is key :)</p>
 <p>But let&rsquo;s see how in practice we can leverage the power of property wrappers with some Combine code.</p>
 <h2 id="property-wrappers-and-combine">Property Wrappers and Combine</h2>
@@ -337,116 +341,116 @@ print(model.progress)
 <p>These simple operators allow you to save yourself some typing when you consume some API and need to repeatedly process the stream in the same way. In other words if you always need to map, filter, and then remove duplicates from a stream you are free to group those operators under a &ldquo;new&rdquo; operator whenever that makes sense.</p>
 <p>But how about if you are providing the API and your consumers need to always do the same operations on your output stream?</p>
 <p>Let&rsquo;s look at our view model but this time Combine-ified:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
-  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
-  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
-  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
-  ...
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
+</span></span><span style="display:flex;"><span>  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>The users of your view model would most likely bind the three published properties to some UI controls - labels or other views. This will force them to write code like this to ensure they always update the UI on the main queue 😕:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
-  .receive(on: DispatchQueue.main)
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
-
-viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
-  .receive(on: DispatchQueue.main)
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
-
-viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
-  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
-  .receive(on: DispatchQueue.main)
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
+</span></span><span style="display:flex;"><span>  .receive(on: DispatchQueue.main)
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
+</span></span><span style="display:flex;"><span>  .receive(on: DispatchQueue.main)
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
+</span></span><span style="display:flex;"><span>  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
+</span></span><span style="display:flex;"><span>  .receive(on: DispatchQueue.main)
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</span></span></code></pre></div>
 <p>To avoid this kind of repetition (always having to switch explicitly to the main thread) we can abstract that via a new property wrapper.</p>
 <p>So, let&rsquo;s do it! 🚀</p>
 <p>First we&rsquo;ll add almost exactly the same code as for the <code>@Percentage</code> wrapper and call the new type <code>PublishedOnMain</code> (as opposite to just <code>@Published</code>):</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
-<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
-  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
-    <span style="color:#6ab825;font-weight:bold">get</span> { value }
-    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
-    value = initialValue
-  }
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@propertyWrapper
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+</span></span><span style="display:flex;"><span>    value = initialValue
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>As you see this time there is no custom logic of any sort for wrapping the original property. <code>PublishedOnMain</code> is generic over its storage value <code>Value</code> so it&rsquo;s just a property wrapper that can be added to any type of property.</p>
 <p>First of all let&rsquo;s add a publisher to the storage property, like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value</span></span></code></pre></div>
 <p>This adds a <code>$value</code> to <code>PublishedOnMain</code> which is a publisher emitting each time <code>value</code> is updated.</p>
 <blockquote>
 <p>Note:If you want to learn more about <code>@Published</code> and other ways to create Combine publishers definitely check out <a href="http://combinebook.com">Combine: Asynchronous programming with Swift</a>.</p>
 </blockquote>
 <p>In this example we&rsquo;ll use another property a wrapper might include called a <code>projectedValue</code>. Let&rsquo;s have a look - I&rsquo;ll add <code>projectedValue</code> to the wrapper type:</p>
 <p>Now I&rsquo;ll add the projected value which will subscribe <code>$value</code> and make sure it receives on the main queue:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
-  <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
-    .receive(on: DispatchQueue.main)
-    .eraseToAnyPublisher()
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+</span></span><span style="display:flex;"><span>    .receive(on: DispatchQueue.main)
+</span></span><span style="display:flex;"><span>    .eraseToAnyPublisher()
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Just like explained in <a href="https://trycombine.com/posts/subscribe-on-receive-on/">subscribe(on:) vs receive(on:)</a> I&rsquo;m using <code>receive(on:)</code> to switch the downstream scheduler to the main queue.</p>
 <p>And that&rsquo;s pretty much it - the completed property wrapper code is:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
-<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
-  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
-    <span style="color:#6ab825;font-weight:bold">get</span> { value }
-    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
-    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
-      .receive(on: DispatchQueue.main)
-      .eraseToAnyPublisher()
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
-    value = initialValue
-  }
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@propertyWrapper
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">PublishedOnMain</span>&lt;Value&gt; {
+</span></span><span style="display:flex;"><span>  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+</span></span><span style="display:flex;"><span>      .receive(on: DispatchQueue.main)
+</span></span><span style="display:flex;"><span>      .eraseToAnyPublisher()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+</span></span><span style="display:flex;"><span>    value = initialValue
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>Now I can use <code>@PublishedOnMain</code> on any property to add a &ldquo;mirror&rdquo; property which is a publisher on the main queue other types can subscribe. This effectively removes the need for consumers to always ensure receiving on the main queue for each subscription. 🤯</p>
 <p>Now I can improve my <code>CourseViewModel</code> from earlier like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift"><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
-  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
-  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
-  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">CourseViewModel</span> {
+</span></span><span style="display:flex;"><span>  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">surname</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  @PublishedOnMain <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">progress</span>: <span style="color:#24909d">Int</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>And safely bind the publishers to my UI controls:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
-
-viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
-
-viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
-  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
-  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>name
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: nameLabel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>surname
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: surnameLabel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>viewModel.<span style="color:#a61717;background-color:#e3d2d2">$</span>progress
+</span></span><span style="display:flex;"><span>  .map { <span style="color:#ed9d13">&#34;Course progress: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span><span style="color:#ed9d13">)</span><span style="color:#ed9d13">%&#34;</span> }
+</span></span><span style="display:flex;"><span>  .assign(to: <span style="color:#a61717;background-color:#e3d2d2">\</span>.text, on: progressLabel)</span></span></code></pre></div>
 <p>Isn&rsquo;t that just awesome?</p>
 <h2 id="further-combine-property-wrappers">Further Combine Property Wrappers</h2>
 <p>What else could be a useful abstraction via property wrappers? The sky is the limit as long as the code is clear at the point of usage and the property wrapper names are semantic.</p>
 <p>Let&rsquo;s look at one final example - let&rsquo;s make a property wrapper ensuring a property emits a maxium of one value:</p>
-<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-swift" data-lang="swift">@propertyWrapper
-<span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Single</span>&lt;Value&gt; {
-  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
-    <span style="color:#6ab825;font-weight:bold">get</span> { value }
-    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
-    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
-      .<span style="color:#6ab825;font-weight:bold">prefix</span>(<span style="color:#3677a9">1</span>)
-      .eraseToAnyPublisher()
-  }
-  
-  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
-    value = initialValue
-  }
-}</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>@propertyWrapper
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">class</span> <span style="color:#447fcf;text-decoration:underline">Single</span>&lt;Value&gt; {
+</span></span><span style="display:flex;"><span>  @Published <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">value</span>: Value
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">wrappedValue</span>: Value {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">get</span> { value }
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">set</span> { value = newValue }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">projectedValue</span>: AnyPublisher&lt;Value, Never&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#a61717;background-color:#e3d2d2">$</span>value
+</span></span><span style="display:flex;"><span>      .<span style="color:#6ab825;font-weight:bold">prefix</span>(<span style="color:#3677a9">1</span>)
+</span></span><span style="display:flex;"><span>      .eraseToAnyPublisher()
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">public</span> <span style="color:#6ab825;font-weight:bold">init</span>(wrappedValue initialValue: Value) {
+</span></span><span style="display:flex;"><span>    value = initialValue
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
 <p>The code is largely the same as before - the only difference being that the <code>propejectedValue</code> publisher will emit either zero or one elements thanks to the <code>prefix(1)</code> operator.</p>
 <p>That&rsquo;s all for today - wasn&rsquo;t that fun? 😁</p>
 <h2 id="where-to-go-from-here">Where to go from here?</h2>

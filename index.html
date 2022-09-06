@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<meta name="generator" content="Hugo 0.88.1" />
+	<meta name="generator" content="Hugo 0.100.2" />
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
@@ -80,6 +80,10 @@
 			<div id="sidebar">
 				<div class="sidebar-posts">
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
@@ -244,6 +248,18 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/introducing-markcodable/">Introducing MarkCodable</a> </h1>
+
+			<div class="post-content">
+				<p>I had a lot of fun listening to &ldquo;A releational database using Markdown&rdquo; episode with John Sundell and Gui Rambo:
+After taking a moment though, I started realizing that there is a whole plethora of use cases where Markdown could be a great storage for some of my data. Markdown supports tables and they are pretty easy to view, parse and edit by hand.
+On the other hand, JSON isn&rsquo;t very easy to view or edit by hand, which is sometimes more important for me, given I work on a lot of small tooling that automates or performs specific tasks and usually doesn&rsquo;t need a large dataset.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">06. September 2022</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/introducing-timeui/">Introducing timeui</a> </h1>
 
 			<div class="post-content">
@@ -341,22 +357,11 @@ More than anything else I worked on this to explore and demonstrate how easily I
 
 			<div class="post-content">
 				<p>Edit: The post previsouly said yielding accessors were available only in nightly toolchains, but _read and _modify are also available in release Swift builds; they&rsquo;re just _ prefixed to signify they are work-in-progress.
- It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
+It seems that Swift 5.6 is shaping up to a great iteration of the language and will bring a round improvements to performance-critical Swift code.
 I was reading through a pitch by Joe Groff on some improvements to ARC and ownership the other day when I noticed that he mentions that accessor coroutines are available in Swift trunk.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">25. January 2022</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">Swift Async Sequence extensions (part 2)</a> </h1>
-
-			<div class="post-content">
-				<p>In Swift Async Sequence extensions (part 1) I covered simple ways to create an async sequence using a custom factory method and binding a sequence to a UI control via a custom assign method.
-This covered the &ldquo;beginning&rdquo; and &ldquo;end&rdquo; of the data stream (so to say) but what about processing or converting the data along the way? If you draw a parallel to Combine code — how would you build custom &ldquo;operators&rdquo; for your async sequence?  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">21. January 2022</span></p>
 		</article>
 	
 

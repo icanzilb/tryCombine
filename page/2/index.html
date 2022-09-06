@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<meta name="generator" content="Hugo 0.88.1" />
+	<meta name="generator" content="Hugo 0.100.2" />
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
@@ -80,6 +80,10 @@
 			<div id="sidebar">
 				<div class="sidebar-posts">
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
@@ -244,6 +248,17 @@
 
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">Swift Async Sequence extensions (part 2)</a> </h1>
+
+			<div class="post-content">
+				<p>In Swift Async Sequence extensions (part 1) I covered simple ways to create an async sequence using a custom factory method and binding a sequence to a UI control via a custom assign method.
+This covered the &ldquo;beginning&rdquo; and &ldquo;end&rdquo; of the data stream (so to say) but what about processing or converting the data along the way? If you draw a parallel to Combine code — how would you build custom &ldquo;operators&rdquo; for your async sequence?  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">21. January 2022</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">Swift Async Sequence extensions (part 1)</a> </h1>
 
 			<div class="post-content">
@@ -273,7 +288,7 @@ A little later, I came back to updating my custom Xcode Instrument called Timela
 			<div class="post-content">
 				<p>I&rsquo;m incredibly happy to share that today the new raywenderlich.com book &ldquo;Modern Concurrency in Swift&rdquo;, that I&rsquo;ve been working on, is available at swiftconcurrencybook.com!
 Together with editors Sandra Grauschopf, Felipe Laso-Marsetti, Richard Turton, and Shai Mishali, we&rsquo;ve been working very hard to get a book out as soon as possible on the newly released in 2021 Swift Concurrency:
- The book is written in the classic raywenderlich.com style that mixes key pieces of theory with step-by-step instructions, guiding the readers through working on practical, real-life projects.  … </p>
+The book is written in the classic raywenderlich.com style that mixes key pieces of theory with step-by-step instructions, guiding the readers through working on practical, real-life projects.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">03. November 2021</span></p>
@@ -310,7 +325,7 @@ Disclaimer Benchmarking depends heavily on the system, temporary conditions, and
 				<p>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
 So here&rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
 Thread.sleep() vs Task.sleep() Let&rsquo;s just look at the old and new sleep APIs:
-  Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles.  … </p>
+Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
@@ -333,7 +348,7 @@ CombineAsyncStream setup I&rsquo;ll create a new type called CombineAsyncStream 
 
 			<div class="post-content">
 				<p>Previously, I wrote about actors in Actors part 1 and Actors part 2; this time I&rsquo;m going to cover how to write a Combine operator to proxy a Combine publisher into an async sequence that you can iterate over by using a simple for loop.
- Note: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.  … </p>
+Note: The current version of Xcode 13 is beta 2 and I&rsquo;m going to be using the latest swift.org toolchain nightly snapshot in order to make use of AsyncStream.  … </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">12. July 2021</span></p>
@@ -349,19 +364,6 @@ When I wrapped up writing part 1, I was looking at my new cache actor and I star
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">12. May 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors/">Swift Actors: A practical example, part 1</a> </h1>
-
-			<div class="post-content">
-				<p>I&rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
- &ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&rdquo;
- So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support  Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">10. May 2021</span></p>
 		</article>
 	
 

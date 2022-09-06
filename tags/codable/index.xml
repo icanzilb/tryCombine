@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>codable on try Code</title>
+    <link>https://trycombine.com/tags/codable/</link>
+    <description>Recent content in codable on try Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 06 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/codable/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing MarkCodable</title>
+      <link>https://trycombine.com/posts/introducing-markcodable/</link>
+      <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/introducing-markcodable/</guid>
+      <description>I had a lot of fun listening to &amp;ldquo;A releational database using Markdown&amp;rdquo; episode with John Sundell and Gui Rambo:
+After taking a moment though, I started realizing that there is a whole plethora of use cases where Markdown could be a great storage for some of my data. Markdown supports tables and they are pretty easy to view, parse and edit by hand.
+On the other hand, JSON isn&amp;rsquo;t very easy to view or edit by hand, which is sometimes more important for me, given I work on a lot of small tooling that automates or performs specific tasks and usually doesn&amp;rsquo;t need a large dataset.</description>
+    </item>
+    
+  </channel>
+</rss>
