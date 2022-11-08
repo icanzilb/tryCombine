@@ -6,7 +6,17 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My favorite 12 side projects in 2022</title>
+      <link>https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/</link>
+      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/</guid>
+      <description>Looking back at 2022, I worked on a whole lot of side projects. I do this mostly for learning purposes, solving problems that I personally have in my own workflow.
+This year I did a lot of &amp;ldquo;development live threads&amp;rdquo;. I&amp;rsquo;d make coffee in the morning and pull an idea out of my backlog and see how far can I get it by about lunch time. I post screenshots or comments every 10-20 minutes and a lot of people engage on twitter during the time.</description>
+    </item>
+    
     <item>
       <title>Introducing: Got Jobs?</title>
       <link>https://trycombine.com/posts/introducing-got-jobs/</link>

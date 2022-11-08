@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>My favorite 12 side projects in 2022</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="My favorite 12 side projects in 2022" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="My favorite 12 side projects in 2022">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+				
+			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/concurrency-book.png" style="width:140px; box-shadow: 2px 3px #354465;border-radius:5px;"/>
+				  </a>
+				  <a href="http://swiftconcurrencybook.com">Modern Concurrency<br/> in Swift</a> <span class="new-badge">New</span>
+			</div>
+        </div>
+
+			
+		<h1>My favorite 12 side projects in 2022 </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=My%20favorite%2012%20side%20projects%20in%202022&url=https%3a%2f%2ftrycombine.com%2fposts%2f12-of-my-favorite-side-projects-in-2022%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>Looking back at 2022, I worked on a whole lot of side projects. I do this mostly for learning purposes, solving problems that I personally have in my own workflow.</p>
+<p>This year I did a lot of &ldquo;<em>development live threads</em>&rdquo;. I&rsquo;d make coffee in the morning and pull an idea out of my backlog and see how far can I get it by about lunch time. I post screenshots or comments every 10-20 minutes and a lot of people engage on twitter during the time. It&rsquo;s fun!</p>
+<p>In this post I&rsquo;d like to share an overview of 12 of my favorite side-projects from this year!</p>
+<h2 id="1-data-tile">1. Data Tile</h2>
+<p>Debugging can often be challenging. Many of the tools that I&rsquo;m building are solving micro-problems that I have while developing. The data tile is addressing many of these in a more general way — it lets you print or log useful data and then monitor it seamlessly in an automated way.</p>
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🎉 Here&#39;s last night&#39;s progress — I added tiling so you can observe multiple data points and using different views 🎬 <a href="https://t.co/oDmpZADs4R">pic.twitter.com/oDmpZADs4R</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1585988318642450433?ref_src=twsrc%5Etfw">October 28, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>This is something I&rsquo;m <strong>actively polishing</strong> and aiming to release as a product. I think just about any iOS or macOS developer can get value off using this.</p>
+<h2 id="2-got-jobs">2. Got jobs?</h2>
+<p>Got jobs is a Safari extension I developed to help me quickly check if a company is hiring. Often times the jobs page is hidden in a footer or a sidebar and it can be very frustrating to find it. I&rsquo;m looking at you companies that insist on having crazy on-scroll animations.</p>
+<p>&ldquo;Got jobs?&rdquo; scrapes the current web page and finds the Jobs/Careers link automatically.</p>
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🎉 Announcing &quot;Got Jobs?&quot;<br><br>A Safari extension to ask any company website: Got Jobs?<a href="https://t.co/4h6KAvZ5ff">https://t.co/4h6KAvZ5ff</a><br><br>More info in the 🧵</p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1589604476113256448?ref_src=twsrc%5Etfw">November 7, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h2 id="3-rex-tables">3. Rex Tables</h2>
+<p>In the last years I worked a lot on optimization, performance, automation and code quality. This required that I work most of the time with text logs, JSON files, test logs, and more.</p>
+<p>This year I built a tool that helps me &ldquo;unlock&rdquo; all the structured data automatically instead of scrolling through text files and trying to make sense of the data hidden inside.</p>
+<p>I posted a lot of development updates on Twitter but here&rsquo;s a short walkthrough video:</p>
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🎬 I uploaded a 5 min video to showcase some of the basics of Rex Tables. If you got a little time and been following the development have a look here: <a href="https://t.co/6qXXgnaxp6">https://t.co/6qXXgnaxp6</a> <a href="https://t.co/K5IsCfZlGG">pic.twitter.com/K5IsCfZlGG</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1584881894780727298?ref_src=twsrc%5Etfw">October 25, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="4-swift-light">4. Swift Light</h2>
+<p>My Swift scripting IDE. I use predominantly Swift for scripting on the mac but the experience isn&rsquo;t as streamlined as I wish it to be — that&rsquo;s why I made myself a scripting IDE where I can quickly add features as I please.</p>
+<p>I worked on many of the IDE features posting progress publicly on Twitter. Here are just some of them:</p>
+<h3 id="instrumenting-code">Instrumenting code</h3>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">🎬 Here&#39;s the video showing today&#39;s work - you can select pieces of the source code and time them. If the same code runs multiple times you see each iteration (should probably also show the total of all runs at the bottom too) 👌🏼 <a href="https://t.co/XE8HYyBKIo">pic.twitter.com/XE8HYyBKIo</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1487049835916283905?ref_src=twsrc%5Etfw">January 28, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h3 id="pinning-messages-in-the-editor">Pinning messages in the editor</h3>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">🧵And that&#39;s a wrap. I can now use &quot;📌&quot; to pin prints in the code editor so I don&#39;t have to search for them in the app output. Not sure who works on the Xcode editor but please, please take this and merge it in 😅 <a href="https://t.co/l70DM7TboP">pic.twitter.com/l70DM7TboP</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1537701009367175168?ref_src=twsrc%5Etfw">June 17, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Ultimately, I ran a beta with a closed group and some of the feedback felt so aggressive that after some time I lost motivationg to work on this. The lesson learned here is to more carefully select the group to talk about product ideas, especially early on.</p>
+<h2 id="5-timelane-3">5. Timelane 3</h2>
+<p>Timelane is a custom Xcode instrument helping with debugging RxSwift, Combine and other reactive code. You can download Timelane 2 from here: <a href="https://timelane.tools">https://timelane.tools</a></p>
+<p>This year I worked on Timelane 3 that included special features for debugging async/await:</p>
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">📊 Really committed to having the new Swift Concurrency Xcode Instrument feature complete by end of today. Here&#39;s a preview of logged async tasks showing active/finished/cancelled states, priority and hierarchy information, various filters, and more 👌🏼 <a href="https://t.co/ies8Rgb6wh">pic.twitter.com/ies8Rgb6wh</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1468640521908363268?ref_src=twsrc%5Etfw">December 8, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Xcode came with a pretty good built-in async/await instrument so I felt there was no need to compete with it and canned the Timelane 3 release.</p>
+<h2 id="6-swiftui-bot">6. SwiftUI Bot</h2>
+<p>I&rsquo;m very visual and using SwiftUI constants for font size just doesn&rsquo;t work for me. It&rsquo;s been a while that I wanted to have a little tool that helps me when building SwiftUI user interfaces and I took a day to create it.</p>
+
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">🧵 ... I fiddled a bit more with &quot;pinning&quot; a style so you can more comfortably try out the rendering but I think that&#39;s gonna be all for today. I honestly don&#39;t think this needs more &quot;features&quot; since it&#39;s got to be as non-distracting as possible 😎 (end of thread) <a href="https://t.co/0VDdYPkgkb">pic.twitter.com/0VDdYPkgkb</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1577595970942017538?ref_src=twsrc%5Etfw">October 5, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h2 id="7-markcodable">7. MarkCodable</h2>
+<p>I love markdown and I use it for a whole range of interesting things. It only made sense to also use it as a data storage format.</p>
+<p>I released an open source package that adds <code>Codable</code> support for markdown.</p>
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🎉🧵 Today, I&#39;m releasing MarkCodable — a Codable implementation that uses Markdown as storage: <a href="https://t.co/YCnknNZGYM">https://t.co/YCnknNZGYM</a> <br><br>Read below to learn more about my key motivators for this new Swift Package: <a href="https://t.co/erwpoI1s1v">pic.twitter.com/erwpoI1s1v</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1566757890714746884?ref_src=twsrc%5Etfw">September 5, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>Here&rsquo;s an example of what kind of workflows using MarkCodable enables — I made a walkthrough for Rex Tables in literally no time by combining Pow and MarkCodable.</p>
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🧵 I&#39;ve put this walkthrough quite quickly because it&#39;s a single markdown file, decoded with MarkCodable and fed directly into Pow (cc <a href="https://twitter.com/DLX?ref_src=twsrc%5Etfw">@DLX</a>). It literally took no time so I scraped the old one in favor of this 💝 <a href="https://t.co/iuogFsMbyL">pic.twitter.com/iuogFsMbyL</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1568202211749945345?ref_src=twsrc%5Etfw">September 9, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h2 id="8-timeui">8. timeui</h2>
+<p>Similarly to other of the tools I&rsquo;ve built — this is a tool that helps you on the command line to debug and profile.</p>
+<p>This is a GUI powered command line tool that runs a timer and shows you signpost regions of another process:</p>
+
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">🧵 I love this &amp; needed it for a long time 💝 besides the total time, now I dynamically track the duration of any signpost intervals too ⏱⏱⏱ (here&#39;s a run targeting the source in the prev. tweet) <a href="https://t.co/KyjpzT7P5G">pic.twitter.com/KyjpzT7P5G</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1494648250523353091?ref_src=twsrc%5Etfw">February 18, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>This is open source so you can grab it and use it: <a href="https://trycombine.com/posts/introducing-timeui/">https://trycombine.com/posts/introducing-timeui/</a></p>
+<h2 id="9-donildisturb">9. DoNilDisturb</h2>
+<p>In summer I worked on an Xcode plugin that prevents you from working outside of working hours and on public holidays.</p>
+<p>Once you add the plugin to your project, Xcode will fail to compile your code outside of business hours. As simple as that!</p>
+<p>I love this plugin.</p>
+
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="und" dir="ltr">🧵 <a href="https://t.co/nA7ZpOQ2B9">pic.twitter.com/nA7ZpOQ2B9</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1537163224419905539?ref_src=twsrc%5Etfw">June 15, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">🎉🤭 Released a new version of DoNilDisturb on the weekend — now you can drop an .ics file with public holidays in your project&#39;s folder and Xcode will fail to compile your code on those holidays too: <a href="https://t.co/smjp4tKkgx">https://t.co/smjp4tKkgx</a> <a href="https://t.co/oE0s0akcqN">pic.twitter.com/oE0s0akcqN</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1538786519447740416?ref_src=twsrc%5Etfw">June 20, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h2 id="10-core-game">10. Core Game</h2>
+<p>I worked on this pretty much in private, posting only a few screenshots. It&rsquo;s a story-driven game that happens in Xcode&rsquo;s documentation window.</p>
+<p>The story, as it is in the moment, is following through your career as a software engineer. Here&rsquo;s the game dialogue when you get fired and looking for a new position:</p>
+
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">It&#39;s a day off so I&#39;m playing with a game idea I had for a while. Putting together some simple screens to get a feel for the gameplay 😁 <a href="https://t.co/Nkgy823lvs">pic.twitter.com/Nkgy823lvs</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1533758472021585920?ref_src=twsrc%5Etfw">June 6, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>I still think the idea is really fun. I have the game infra and the layout but I think to build a complete game I need to pair with someone with more experience in this.</p>
+<h2 id="11-powerups">11. Powerups</h2>
+<p>While working on Timelane 3, I also built a markup language for building custom Xcode instruments to avoid having to work with 1000s of lines of XML in a single file.</p>
+
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">ALSO: No wonder the project became unwieldy, this is how I ended up splitting the sections in the huge Instrument file: <a href="https://t.co/ZKLhOJvNpp">https://t.co/ZKLhOJvNpp</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1467774840178450433?ref_src=twsrc%5Etfw">December 6, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>This was a nice excercise to bring forward my understanding about what build tools can do. I posted a blog article about this here: <a href="https://trycombine.com/posts/xcode-powerups/">https://trycombine.com/posts/xcode-powerups/</a></p>
+<h2 id="12-heaviest-running-time-trace">12. Heaviest running-time trace</h2>
+<p>While brainstorming on interesting developer tools, I built a simple prototype that takes your Swift project, injects runtime logging, compiles and then instruments it.</p>
+<p>Ultimately, you can use it to automatically gather insights about command line apps built with Swift (of which I do a lot).</p>
+
+
+<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">I had a little bit of fun today and built this crude profiler that injects logging into a given Swift app and shows a timeline of the heaviest executions. It&#39;s pretty neat because you could expand it to profile apps running on Linux and more 😊 <a href="https://t.co/GVc4JuAijI">pic.twitter.com/GVc4JuAijI</a></p>&mdash; Marin Todorov (@icanzilb) <a href="https://twitter.com/icanzilb/status/1486418185930821633?ref_src=twsrc%5Etfw">January 26, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>I think this is handy tool, but hardly a product so it just stays in a folder somewhere around here.</p>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>I was fairly focused on some niche problems the last years while working with my team at Apple and shipping Swift DocC. 2022 was a year of learning for me and I loved it. Building a whole range of fun side projects felt really good and I feel totally recharged and inspired. I&rsquo;m looking forward to 2023.</p>
+<hr>
+<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
+<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
+<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">07. November 2022</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<script src="https://unpkg.com/@telemetrydeck/sdk/dist/telemetrydeck.min.js" defer></script>
+
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    window.td = window.td || [];
+    td.push(['app', '6DB9CD84-C400-4746-9E87-56EAD0D97492'], ['user', 'anonymous'], ['signal']);
+  } else {
+      console.log('localhost');
+  }
+</script>
+	</body>
+</html>
