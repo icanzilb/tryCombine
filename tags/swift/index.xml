@@ -6,7 +6,18 @@
     <description>Recent content in swift on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swift/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dataTile for Simulator - public beta on TestFlight now!</title>
+      <link>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</link>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</guid>
+      <description>As I wrote recently, in 2022 I worked on a lot of side projects and even made a shippable and usable versions of few of them.
+Many of the ideas I worked on converged in the latest app that I believe is a product a large number of developers could use to improve their daily lives.
+Yesterday, I opened up dataTile for Simulator for public testing on TestFlight. If you want to give it a try or learn more, the website is:</description>
+    </item>
+    
     <item>
       <title>Introducing MarkCodable</title>
       <link>https://trycombine.com/posts/introducing-markcodable/</link>

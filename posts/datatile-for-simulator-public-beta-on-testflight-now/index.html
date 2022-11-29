@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>dataTile for Simulator - public beta on TestFlight now!</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		
+		<meta property="og:title" content="dataTile for Simulator - public beta on TestFlight now!" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/" />
+<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:site_name" content="try Combine" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Combine">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="dataTile for Simulator - public beta on TestFlight now!">
+
+
+<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
+<meta name="twitter:image:width" content="800">
+<meta name="twitter:image:height" content="800">
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li><a href="http://slack.combine.community/"><span>Combine Slack &rsaquo;</span></a></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataTile for Simulator - public beta on TestFlight now!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+				<div id="promo">
+				
+			<div id="combinebook" style="font-size: 0.8em; text-align:center; font-family: sans-serif; font-weight: bold;">
+				<style>
+					#combinebook a:hover { background: transparent!important; }
+				</style>
+				  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+					<img src="https://trycombine.com/images/concurrency-book.png" style="width:140px; box-shadow: 2px 3px #354465;border-radius:5px;"/>
+				  </a>
+				  <a href="http://swiftconcurrencybook.com">Modern Concurrency<br/> in Swift</a> <span class="new-badge">New</span>
+			</div>
+        </div>
+
+			
+		<h1>dataTile for Simulator - public beta on TestFlight now! </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+<p><a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=dataTile%20for%20Simulator%20-%20public%20beta%20on%20TestFlight%20now%21&url=https%3a%2f%2ftrycombine.com%2fposts%2fdatatile-for-simulator-public-beta-on-testflight-now%2f"
+  data-size="medium">
+Tweet</a><p>
+
+		<div class="post-content"><p>As I wrote recently, in 2022 I worked on a <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">lot of side projects</a> and even made a shippable and usable versions of few of them.</p>
+<p>Many of the ideas I worked on converged in the latest app that I believe is a product a <em>large number</em> of developers could use to improve their daily lives.</p>
+<p>Yesterday, I opened up <strong>dataTile for Simulator</strong> for public testing on TestFlight. If you want to give it a try or learn more, the website is:</p>
+<p><a href="https://underplot.com/dataTile">https://underplot.com/dataTile</a></p>
+
+<img class="ios" src="https://underplot.com/dataTile/images/tile/ide-screenshot.png" alt="xcode, simulator and tile windows">
+
+<p>But if you do have few minutes free: I&rsquo;d like to share more about my motivation for developing this app below.</p>
+<h2 id="some-initial-thoughts-on-devtools">Some initial thoughts on devtools</h2>
+<p>Computers, still, do exactly what we tell them to. But in complex codebases sometimes it&rsquo;s difficult to be sure what that is. Also, some things are just difficult to have clear in your head while coding, a great example is &ldquo;How much RAM is this code currently using?&rdquo;</p>
+<p>What I&rsquo;m inching towards is that, simply, we need at least some tools to aid us while writing code. If we circle back to the great example from above, Xcode offers a spot-on, effortless way to keep an eye on your memory usage. No, it&rsquo;s not the Allocations instrument, because you need to recompile your codebase before instrumenting your app.</p>
+<p>It&rsquo;s the debugger view in Xcode in the left-hand sidebar while running your project:</p>
+
+<img class="ios" src="../../images/tile/debug-view-xcode.png" alt="debug view xcode">
+
+<p>Open a large file in your app, then close it. Was all the memory freed or was there a leak? You can just have a look at Xcode because the tool is already running — there&rsquo;s no need to recompile and reproduce in Instruments.</p>
+<p>This view might not be as feature-rich or 100% correct, but &hellip; you&rsquo;re 1000x more likely to use it than the Allocations instrument in your day-to-day routine. And as a result, create better code instead of instrumenting it after the fact.</p>
+<p>I often times wished that this view would be more flexible and even, gasp, open to developers to show their own data.</p>
+<h2 id="so-datatile-for-simulator-is">So, dataTile for Simulator is&hellip;</h2>
+<p>dataTile for Simulator is a <strong>second screen app for Xcode</strong>.</p>
+<p>It&rsquo;s so small and unobtrusive that you can have it always running, while it automatically adjusts its UI to what you&rsquo;re doing in Xcode.</p>
+<p>It picks up any valuable logs out of the system and debugger output and shows them in a clean, beautiful UI:</p>
+
+<img class="ios" width="400" src="../../images/tile/simple-window.png" alt="simple tile window">
+
+<h2 id="core-principals-behind-datatile">Core principals behind dataTile</h2>
+<p>After condensing, cleaning up, and converging many of my thoughts on tooling, I put together a list of core principals I wanted to implement in dataTile. These are, in no particular order, listed below:</p>
+<ul>
+<li><strong>Simplicity</strong>: you log a number or a string &amp; a tile shows it, no questions asked. You can view that data as a chart or potentially apply functions and filters, but in its essense a tile would just show one value in big font on screen.</li>
+<li><strong>Always on</strong>: you leave dataTile for Simulator run in the background or integrate it as pre-run phase in your project. Either way, you don&rsquo;t have to recompile your project to use it, you don&rsquo;t have to reproduce a situation. Any logged data is already available for a quick glance.</li>
+<li><strong>No changes</strong>: if you&rsquo;re using Apple&rsquo;s logging, you <strong>don&rsquo;t need to import</strong> 3rd party libs, you <strong>don&rsquo;t need to change</strong> your code. You <strong>don&rsquo;t need to configure</strong> dataTile either — it reads the Simulator logs in real time and recognizes logged values on its own.</li>
+<li><strong>Fun</strong>: Tooling doesn&rsquo;t need to be visually grim. The UI is, by default, bright, spotting large text and unobtrusive animations.</li>
+</ul>
+<p>Finally, not much of a principal but a curiousity note: dataTile is absolutely and completely SwiftUI-made. Hense, the requirement to run on macOS Ventura which added support for windows and added built-in charts.</p>
+<h2 id="its-an-open-beta">It&rsquo;s an open beta</h2>
+<p>I&rsquo;d like to run an open beta until the end of this year. If you&rsquo;re building iOS apps or otherwise and use Xcode and the Simulator daily, dataTile might be of value in your day-to-day.</p>
+<p>I am sure, there are still some pre 1.0 rough edges I could polish and I&rsquo;m counting on your feedback to do so before launch!</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rtLPefPdiGA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<p>You can sign up for the open beta here: <a href="https://underplot.com/dataTile">https://underplot.com/dataTile</a></p>
+<hr>
+<p>Finally, I have <strong>one ask</strong>:</p>
+<p>If you know bloggers, podcasters, or one of the folks writing at <em>cultofmac</em>, <em>9to5mac</em>, <em>macworld</em>&hellip; who&rsquo;d be interested to cover developer tools, second screen app for Xcode, or indie mac apps — put in me in touch with them, please.</p>
+<p>Thank you!</p>
+<p>My DMs are open at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> and <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a></p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+  </a>
+  <br/>
+  <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+</td>
+
+<td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+  <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+    <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+  </a>
+  <br/>
+  <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+</td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">29. November 2022</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<script src="https://unpkg.com/@telemetrydeck/sdk/dist/telemetrydeck.min.js" defer></script>
+
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    window.td = window.td || [];
+    td.push(['app', '6DB9CD84-C400-4746-9E87-56EAD0D97492'], ['user', 'anonymous'], ['signal']);
+  } else {
+      console.log('localhost');
+  }
+</script>
+	</body>
+</html>

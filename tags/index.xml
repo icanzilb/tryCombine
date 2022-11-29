@@ -6,11 +6,29 @@
     <description>Recent content in Tags on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dataTile</title>
+      <link>https://trycombine.com/tags/datatile/</link>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/datatile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugging</title>
+      <link>https://trycombine.com/tags/debugging/</link>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>indie</title>
       <link>https://trycombine.com/tags/indie/</link>
-      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/indie/</guid>
       <description></description>
@@ -19,9 +37,18 @@
     <item>
       <title>side projects</title>
       <link>https://trycombine.com/tags/side-projects/</link>
-      <pubDate>Mon, 07 Nov 2022 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/side-projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>swift</title>
+      <link>https://trycombine.com/tags/swift/</link>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/swift/</guid>
       <description></description>
     </item>
     
@@ -94,15 +121,6 @@
       <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/markdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>swift</title>
-      <link>https://trycombine.com/tags/swift/</link>
-      <pubDate>Tue, 06 Sep 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/swift/</guid>
       <description></description>
     </item>
     

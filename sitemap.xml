@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://trycombine.com/tags/indie/</loc>
-    <lastmod>2022-11-07T00:00:00+00:00</lastmod>
+    <loc>https://trycombine.com/tags/datatile/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/</loc>
-    <lastmod>2022-11-07T00:00:00+00:00</lastmod>
+    <loc>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/debugging/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/indie/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2022-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/side-projects/</loc>
-    <lastmod>2022-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/swift/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2022-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/</loc>
+    <lastmod>2022-11-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/</loc>
     <lastmod>2022-11-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/year-recap/</loc>
@@ -48,9 +60,6 @@
     <lastmod>2022-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/markdown/</loc>
-    <lastmod>2022-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/swift/</loc>
     <lastmod>2022-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/instruments/</loc>
