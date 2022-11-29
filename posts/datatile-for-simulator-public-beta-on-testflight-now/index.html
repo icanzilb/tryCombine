@@ -319,15 +319,15 @@ Tweet</a><p>
 
 <img class="ios" width="400" src="../../images/tile/simple-window.png" alt="simple tile window">
 
-<h2 id="core-principals-behind-datatile">Core principals behind dataTile</h2>
-<p>After condensing, cleaning up, and converging many of my thoughts on tooling, I put together a list of core principals I wanted to implement in dataTile. These are, in no particular order, listed below:</p>
+<h2 id="core-principles-behind-datatile">Core principles behind dataTile</h2>
+<p>After condensing, cleaning up, and converging many of my thoughts on tooling, I put together a list of core principles I wanted to implement in dataTile. These are, in no particular order, listed below:</p>
 <ul>
 <li><strong>Simplicity</strong>: you log a number or a string &amp; a tile shows it, no questions asked. You can view that data as a chart or potentially apply functions and filters, but in its essense a tile would just show one value in big font on screen.</li>
 <li><strong>Always on</strong>: you leave dataTile for Simulator run in the background or integrate it as pre-run phase in your project. Either way, you don&rsquo;t have to recompile your project to use it, you don&rsquo;t have to reproduce a situation. Any logged data is already available for a quick glance.</li>
 <li><strong>No changes</strong>: if you&rsquo;re using Apple&rsquo;s logging, you <strong>don&rsquo;t need to import</strong> 3rd party libs, you <strong>don&rsquo;t need to change</strong> your code. You <strong>don&rsquo;t need to configure</strong> dataTile either — it reads the Simulator logs in real time and recognizes logged values on its own.</li>
 <li><strong>Fun</strong>: Tooling doesn&rsquo;t need to be visually grim. The UI is, by default, bright, spotting large text and unobtrusive animations.</li>
 </ul>
-<p>Finally, not much of a principal but a curiousity note: dataTile is absolutely and completely SwiftUI-made. Hense, the requirement to run on macOS Ventura which added support for windows and added built-in charts.</p>
+<p>Finally, not much of a principle but a curiousity note: dataTile is absolutely and completely SwiftUI-made. Hense, the requirement to run on macOS Ventura which added support for windows and added built-in charts.</p>
 <h2 id="its-an-open-beta">It&rsquo;s an open beta</h2>
 <p>I&rsquo;d like to run an open beta until the end of this year. If you&rsquo;re building iOS apps or otherwise and use Xcode and the Simulator daily, dataTile might be of value in your day-to-day.</p>
 <p>I am sure, there are still some pre 1.0 rough edges I could polish and I&rsquo;m counting on your feedback to do so before launch!</p>
