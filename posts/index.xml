@@ -6,7 +6,18 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SwiftUI view modifier for paid app features</title>
+      <link>https://trycombine.com/posts/simple-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/simple-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</guid>
+      <description>In my app dataTile for Simulator I&amp;rsquo;ve decided to offer some features for free and others only to users who pay for the app.
+This way, everyone including students and hobbyist can meaningfully use the app, while professional users can support the development.
+I considered few different approaches including compiling two separate versions of the app, but ultimately went for shipping a single binary that relies on RevenueCat and enables/disables some parts of the UI depending on the purchase status.</description>
+    </item>
+    
     <item>
       <title>dataTile for Simulator - public beta on TestFlight now!</title>
       <link>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</link>
