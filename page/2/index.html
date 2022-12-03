@@ -81,10 +81,6 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/simple-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 1/Dec &middot; SwiftUI view modifier for paid app features</a>
-      </li>
-    
-      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataTile for Simulator - public beta on TestFlight now!</a>
       </li>
     
@@ -265,18 +261,6 @@
 	
 	
 		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">TaskGroup as a workflow design tool</a> </h1>
-
-			<div class="post-content">
-				<p>For my talk at iOS Conf SG 2022 I wanted to showcase some Swift concurrency use-cases that don&rsquo;t fall into the common scenarios. Revisiting the slides some weeks later, I think it&rsquo;d be fun to cover my TaskGroup example in more detail.
-In this post I&rsquo;ll show how to use TaskGroup to design a complete (but fictional) user login-sequence.
-What is TaskGroup good for? Most examples floating around show using a TaskGroup to add a number of identical tasks to a group and execute them concurrently.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">21. February 2022</span></p>
-		</article>
-	
-		<article class="post">
 			<h1><a href="https://trycombine.com/posts/swift-concurrency-task-group/">The issue with task groups or how I discovered a solved problem</a> </h1>
 
 			<div class="post-content">
@@ -381,6 +365,19 @@ Disclaimer Benchmarking depends heavily on the system, temporary conditions, and
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">30. September 2021</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://trycombine.com/posts/thread-task-sleep/">The difference between Thread.sleep() and Task.sleep()</a> </h1>
+
+			<div class="post-content">
+				<p>With the work-in-progress backport of the new Swift concurrency model all the way to iOS13, async/await and friends are getting more and more relevant for all Swift developers.
+So here&rsquo;s a quick and simple example that showcases some of the nice features of the new concurrency model without going into much detail.
+Thread.sleep() vs Task.sleep() Let&rsquo;s just look at the old and new sleep APIs:
+Thread.sleep() is the old API that blocks a thread for the given amount of seconds — it doesn&rsquo;t load the CPU, the core just idles.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">13. September 2021</span></p>
 		</article>
 	
 
