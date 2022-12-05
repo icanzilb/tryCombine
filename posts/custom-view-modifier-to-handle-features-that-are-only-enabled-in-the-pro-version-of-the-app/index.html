@@ -77,7 +77,7 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
-          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 4/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
+          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 5/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
       </li>
     
       <li class="sidebar-post" style="margin-top: 12px;">
@@ -305,7 +305,7 @@
 
 <p>I considered few different approaches including compiling two separate versions of the app, but ultimately went for shipping a single binary that relies on <strong>RevenueCat</strong> and enables/disables some parts of the UI depending on the purchase status.</p>
 <h2 id="swiftui-view-modifier-for-paid-only-ui">SwiftUI view modifier for paid-only UI</h2>
-<p>A single modifier, can enable or disable content across the app. Let&rsquo;s have a look.</p>
+<p>I ended up building a single view modifier, that can enable or disable content across the app. Let&rsquo;s have a look.</p>
 <p>Firstly, I added a new custom <code>ViewModifier</code> that would either:</p>
 <ul>
 <li>display its content unchanged, or</li>
@@ -385,7 +385,7 @@
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>Note how if the UI is disabled I put it at <code>70%</code> opacity next to actually disabling the user interactions for a little bit of added drama.</p>
+<p>Note how if the UI is disabled I put it at <code>70%</code> opacity next to actually disabling the user interactions for a little bit of added drama. 🤡</p>
 <p>The final step is to add the modifier method so you can add it directly to SwiftUI views in your view hierarchy:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -486,7 +486,7 @@
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">04. December 2022</span></p>
+		<p class="meta">Posted on <span class="postdate">05. December 2022</span></p>
 	</article>
 	
 
