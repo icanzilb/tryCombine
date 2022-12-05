@@ -4,18 +4,18 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>Extending Xcode with power-ups</title>
+		<title>Custom SwiftUI view modifier for paid app features</title>
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
-		<meta property="og:title" content="Extending Xcode with power-ups" />
+		<meta property="og:title" content="Custom SwiftUI view modifier for paid app features" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/posts/xcode-powerups/" />
+<meta property="og:url" content="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/" />
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
 <meta property="og:site_name" content="try Combine" />
 
@@ -28,7 +28,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="Extending Xcode with power-ups">
+<meta name="twitter:title" content="Custom SwiftUI view modifier for paid app features">
 
 
 <meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
@@ -247,7 +247,7 @@
 	<article class="post">
 		
 			
-		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Extending Xcode with power-ups </h1>
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Custom SwiftUI view modifier for paid app features </h1>
 
 <style>
   .twitter-share-button {
@@ -298,53 +298,49 @@
 	</div>
 	
 
-		<div class="post-content"><p>In this post I describe the technical setup of a small language experiment I developed to aid myself working on custom Xcode instruments.</p>
-<h2 id="the-need-for-a-more-flexible-coding-inside-xcode">The need for a more flexible coding inside Xcode</h2>
-<p>Last month, I prototyped a
+		<div class="post-content"><p>In my app <a href="https://underplot.com/dataTile">dataTile for Simulator</a> I&rsquo;ve decided to offer some features for free and others only to users who pay for the app.</p>
+<p>This way, everyone including students and hobbyist can meaningfully use the app, while professional users can support the development.</p>
 
-<a href="https://twitter.com/icanzilb/status/1460275096552148998" target="_blank">Swift IDE</a>
- and became very interested in enhancing the experience of building with Swift. (Since Apple doesn&rsquo;t hire remotely, I wonder what other companies are working in that area?)</p>
-<p>A little later, I came back to updating my custom Xcode Instrument called Timelane to support debugging new code based on the new Swift modern concurrency APIs:</p>
+<img class="ios" width="450" src="../../images/tile/pro-disabled-ui.png" alt="Some features disabled because only available to pro users">
 
-<img src="https://trycombine.com/images/timelane/powerups-timeline.jpeg" width=600/>
-
-<p>Unlike previous Timelane versions that supported Combine and RxSwift which are based on very minimal protocols, the new instrument needed to support a ton of different APIs like <code>TaskGroup()</code>, <code>TaskGroup.addTask()</code> <code>Task()</code>, <code>Task.detached()</code>, and more.</p>
-<p>Simple custom Xcode instruments are defined in a single XML file, and once I hit the 1,000 line mark developing came to a grinding halt. I tried some creative approaches like including ASCII art in Xcode&rsquo;s jump menu:</p>
-
-<img src="https://trycombine.com/images/timelane/powerups-snoopy.jpeg" width=600/>
-
-<p>But ultimately thousands of lines of flat XML simply aren&rsquo;t manageable during active development. So, I took a deep breath and made a detour to create a simple language extension that plugs right into Xcode&hellip;</p>
-<h2 id="pre-actions-and-post-actions-in-xcode">Pre-actions and post-actions in Xcode</h2>
-<p>I do have some minimal experince with React and Vue.js and I&rsquo;m a fan of the idea of transpiling: designing cool/powerful APIs that &ldquo;unwrap&rdquo; into less elegant/usable code in the target language! It&rsquo;s a win-win.</p>
-<p>So, I looked into possible ways to integrate something quick with Xcode. You can add scripts to automatically run on events like build, run, test, etc. and I found that I needed exactly two things that Xcode offers out of the box:</p>
-<ol>
-<li>A &ldquo;build pre-action&rdquo; — to parse &amp; transpile my custom code into the target Xcode XML format.</li>
-<li>A &ldquo;run post-action&rdquo; — to clean any generated, transpiled code from the source.</li>
-</ol>
-
-<img src="https://trycombine.com/images/timelane/powerups-workflow.png" width=650/>
-
-<p>This way, while editing code, I can work with a clean, minimal version of the code using my own syntax.</p>
-<p>Once a batch of changes are completed, I build and that generates the output XML  putting Xcode to work on validating it and displaying errors and warnings.</p>
-<p>Once the errors are solved, I can run the project to test the custom instrument in Instruments while consulting the full, generated code. When I quit the custom instrument I can work again with the minimal, custom code.</p>
-<p>It&rsquo;s a clean, straigh-forward process that helped me easily work on the instrument that is currently over 2,000 lines of XML when &ldquo;unwrapped&rdquo;.</p>
-<h2 id="xml-includes">XML Includes</h2>
-<p>First of all, I wanted to break the monolith by extracting various pieces into a clean hierarchy of folders and files. I added an include command that includes an XML file during build and then removes the included code during cleanup:</p>
-
-<img src="https://trycombine.com/images/timelane/powerups-include.png" width=600/>
-
-<p>Breaking the 1,000s of lines of flat XML into scoped, smaller files of up to a couple of hundred lines made the codebase easy to navigate.</p>
-<p>I chose to use commands wrapped in XML comments to make my custom code valid XML — this way the custom syntax doesn&rsquo;t trigger errors in Xcode&rsquo;s code editor.</p>
-<p>The build phase finds tags looking like this:</p>
+<p>I considered few different approaches including compiling two separate versions of the app, but ultimately went for shipping a single binary that relies on <strong>RevenueCat</strong> and enables/disables some parts of the UI depending on the purchase status.</p>
+<h2 id="swiftui-view-modifier-for-paid-only-ui">SwiftUI view modifier for paid-only UI</h2>
+<p>A single modifier, can enable or disable content across the app. Let&rsquo;s have a look.</p>
+<p>Firstly, I added a new custom <code>ViewModifier</code> that would either:</p>
+<ul>
+<li>display its content unchanged, or</li>
+<li>disable user interaction for its contents and optionally insert a label on top:</li>
+</ul>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">import</span> <span style="color:#447fcf;text-decoration:underline">SwiftUI</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ProFeatureModifier</span>: ViewModifier {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">revenueModel</span>: RevenueCatModel
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span>: <span style="color:#24909d">String</span>?
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">font</span>: Font?
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">body</span>(content: Content) -&gt; some View {
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>And inserts the target file&rsquo;s contents after the original tag&rsquo;s location like so:</p>
+<p>My <code>ProFeatureModifier</code> takes my model class that exposes the app subscription status received from RevenueCat and optionally two more parameters — a custom <code>message</code> to show on top of the disabled piece of UI and additionally a custom <code>font</code> for that message in case I need that.</p>
+<p>The <code>body</code> of the modifier just checks my model and renders either of the two options above:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
@@ -365,84 +361,73 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-instrument.xml&#34; --&gt;</span>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">if</span> revenueModel.status == .pro {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> AnyView(content)
+</span></span><span style="display:flex;"><span>} <span style="color:#6ab825;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">return</span> AnyView(
+</span></span><span style="display:flex;"><span>    VStack(alignment: .leading) {
+</span></span><span style="display:flex;"><span>      <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span> {
+</span></span><span style="display:flex;"><span>        HStack {
+</span></span><span style="display:flex;"><span>          ProUpgradeButton(billingPeriod: .constant(.monthly))
+</span></span><span style="display:flex;"><span>          Text(message)
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        .font(font)
+</span></span><span style="display:flex;"><span>      }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	  <span style="color:#999;font-style:italic">&lt;!-- MARK: - TASKS INSTRUMENT --&gt;</span>
-</span></span><span style="display:flex;"><span>	  <span style="color:#999;font-style:italic">&lt;!--
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">	  	The tasks instrument.
-</span></span></span><span style="display:flex;"><span><span style="color:#999;font-style:italic">	  --&gt;</span>
-</span></span><span style="display:flex;"><span>	  
-</span></span><span style="display:flex;"><span>	  <span style="color:#6ab825;font-weight:bold">&lt;augmentation&gt;</span>
-</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${instrumentID}.byname<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;title&gt;</span>Show Tasks by Name<span style="color:#6ab825;font-weight:bold">&lt;/title&gt;</span>
-</span></span><span style="display:flex;"><span>	  	<span style="color:#6ab825;font-weight:bold">&lt;purpose&gt;</span>A view that provides insight into individual tasks on the timeline.<span style="color:#6ab825;font-weight:bold">&lt;/purpose&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ...
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- / included &#34;tasks-instrument.xml&#34; &#34;982F43E4-59E0-45A4-A199-18C3DED2730E&#34; --&gt;</span>
-</span></span><span style="display:flex;"><span>	  </span></span></code></pre></td></tr></table>
+</span></span><span style="display:flex;"><span>      content
+</span></span><span style="display:flex;"><span>        .opacity(<span style="color:#3677a9">0.7</span>)
+</span></span><span style="display:flex;"><span>        .allowsHitTesting(<span style="color:#6ab825;font-weight:bold">false</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>Once I&rsquo;m finished debugging the instrument, the cleanup phase removes the code between the opening and closing &ldquo;included&rdquo; tags. (I&rsquo;m not saying this process is bullet-proof but I have to say it works solidly for my use case.)</p>
-<p>When the includes worked to my needs I could design a few levels deep structure that made each component in the package easy to work with and reason about. Below is part of the actual hierarchy:</p>
-<pre tabindex="0"><code>Instrument package
-
-  +- tasks-schema.xml
-    +- schema-metadata.xml
-    +- region-tracking-partial.xml
-    +- [Custom XML]
-    -- region-tracking-open-interval-partial.xml
-
-  +- region-tracking-open-interval-partial.xml
-    ...  
-    
-  +- task-groups-schema.xml
-    +- schema-metadata.xml
-    +- region-tracking-partial.xml
-    -- region-tracking-open-interval-partial.xml
-
-  ...
-</code></pre><p>You might&rsquo;ve already noticed it, but take another look above — both schemas include a) &ldquo;<em>schema-metadata.xml</em>&rdquo;, b) &ldquo;<em>region-tracking-partial.xml</em>&rdquo; and c) &ldquo;<em>region-tracking-open-interval-partial.xml</em>&rdquo;. Some of these includes are reused verbatim and this decreases the total amount of code to take care of drastically.</p>
-<p>Other includes weren&rsquo;t exactly the same but the variation was minimal so (again, inspired by Vue.js) I thought I&rsquo;d add data binding to the components (in my case the components are the includes).</p>
-<h2 id="data-bindings">Data bindings</h2>
-<p>Since the includes work hierarchically, it made sense to also have hierarchical data bindings, e.g. much like the environment in SwiftUI children inherit the definitions of their parents and merge-in their own.</p>
-<p>First, I added a JSON file that contains any global constants that aren&rsquo;t bound to a specific component:</p>
-
-<img src="https://trycombine.com/images/timelane/powerups-globals.png" width=500/>
-
-<p>And extended the powerups to support <code>${...}</code> syntax in the templates like so:</p>
+<p>Note how if the UI is disabled I put it at <code>70%</code> opacity next to actually disabling the user interactions for a little bit of added drama.</p>
+<p>The final step is to add the modifier method so you can add it directly to SwiftUI views in your view hierarchy:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;subsystem&gt;</span>&#34;${instrumentID}.time&#34;<span style="color:#6ab825;font-weight:bold">&lt;/subsystem&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;category&gt;</span>&#34;DynamicStackTracing&#34;<span style="color:#6ab825;font-weight:bold">&lt;/category&gt;</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">View</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">proFeature</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">_</span> model: RevenueCatModel,
+</span></span><span style="display:flex;"><span>    message: <span style="color:#24909d">String</span>? = <span style="color:#ed9d13">&#34;This feature is available in dataTile Pro&#34;</span>,
+</span></span><span style="display:flex;"><span>    font: Font? = <span style="color:#6ab825;font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span>  ) -&gt; some View {
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    modifier(ProFeatureModifier(
+</span></span><span style="display:flex;"><span>      revenueModel: model, 
+</span></span><span style="display:flex;"><span>      message: message, 
+</span></span><span style="display:flex;"><span>      font: font
+</span></span><span style="display:flex;"><span>      )
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>This took care of easily fine-tuning data like the instrument identifeir, identifiers of the subsystems and various tables ids, as well as the instrument version, and more.</p>
-<p>More interestingly, I added syntax to the include tags to bind data — that really made them feel like proper components. For example:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;os-signpost-point-schema&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- include &#34;schema-metadata.xml&#34; id=&#34;async-taskgroupresults-schema&#34; schemaTitle=&#34;Task Group Results&#34; entity=&#34;taskgroups&#34; --&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#999;font-style:italic">&lt;!-- include &#34;value-tracking-partial.xml&#34; entity=&#34;TaskGroup&#34; --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;/os-signpost-point-schema&gt;</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-<p>All params that aren&rsquo;t recognized tag properties are bound as data to the template and its children.</p>
-<p>This enabled dynamically building identifiers, names and even comments in the generated code:</p>
+<h2 id="converting-features-to-paid-model-in-practice">Converting features to paid model in practice</h2>
+<p>Finally, let&rsquo;s have a quick look how this looks in practice. It takes just a minute to convert buttons, menus, and whatever else you have to paid features.</p>
+<p>Let&rsquo;s add the new modifier to the list of auto-capture groups in the app&rsquo;s preferences:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
@@ -450,41 +435,31 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- The data table storing ${entity} data --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;create-table&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#6ab825;font-weight:bold">&lt;id&gt;</span>${entity}-table<span style="color:#6ab825;font-weight:bold">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#6ab825;font-weight:bold">&lt;schema-ref&gt;</span>async-${entity}-schema<span style="color:#6ab825;font-weight:bold">&lt;/schema-ref&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">&lt;/create-table&gt;</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>List(<span style="color:#a61717;background-color:#e3d2d2">$</span>preferences.autoCapture) { <span style="color:#a61717;background-color:#e3d2d2">$</span>group <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>  .. render each group ..
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.border(Color.controlOuterSelection, width: <span style="color:#3677a9">1</span>)
+</span></span><span style="display:flex;"><span>.frame(maxWidth: .infinity)
+</span></span><span style="display:flex;"><span>.proFeature(revenueModel, font: .callout)</span></span></code></pre></td></tr></table>
 </div>
 </div>
-<p>This made the complete package code very DRY pushing the 2,000+ lines of XML to less than 1,000 split across 20-ish files.</p>
-<h2 id="conditionals">Conditionals</h2>
-<p>Before wrapping up, I noticed that I can reuse even more code but some instruments needed it and some didn&rsquo;t. I had to add conditionals (and by god at this point I considered just switching to XSL but I was having too much fun with this.)</p>
-<p>To implement conditional includes I added a <code>where</code> tag property like this:</p>
-<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#999;font-style:italic">&lt;!-- include &#34;tasks-augmentation.xml&#34; where &#34;${entity}==tasks&#34; --&gt;</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-<p>This would include the template and bind the data, etc. only if the <code>where</code> condition evaluates to true.</p>
-<p>The whole powerups experiment took just some hours to complete but it unblocked me to move forward and complete the instrument itself, which otherwise would probably have been impossible.</p>
-<h2 id="conclusion">Conclusion</h2>
-<p>Creating custom instruments is such a niche job that my powerups experiment as-is isn&rsquo;t useful beside my concrete use-case (in all fairness, the XML API should&rsquo;ve been a Swift DSL in first place if developers were supposed to really use it):</p>
+<p><code>proFeature</code> lives alongside all the other modifiers in the SwiftUI code above like <code>border</code> and <code>frame</code>. <code>revenueModel</code> is my already-initialized RevenueCat model object.</p>
+<p>That&rsquo;s all the code changes to convert editing auto-capture groups to a paid feature:</p>
 
-<img src="https://trycombine.com/images/timelane/powerups-demo.gif" width=650/>
+<img class="ios" src="../../images/tile/autogroups-mini.png" alt="dataTile preferences with some of the UI disabled" width="500">
 
-<p>Regardless, I hope that this write-up has been inspiring — your day-to-day workflow in Xcode could be extended in a bunch of ways and writing your own language extensions or a full-blown transpiler is possible even if not very easy to do.</p>
-<p>To be honest, I wish I&rsquo;d looked into building more language extensions in the past instead of spending tons of time on mundain code tasks.</p>
-<p>Till next time!</p>
+<p>When clicked, the &ldquo;Upgrade to PRO&rdquo; button opens the subscription UI from just about anywhere in the app.</p>
+<p>And after purchasing a Pro plan, that preferences tab from above looks like this:</p>
+
+<img class="ios" src="../../images/tile/autogroups-pro.png" alt="dataTile preferences" width="500">
+
 <h2 id="where-to-go-from-here">Where to go from here?</h2>
-<p>If you&rsquo;d like to support me, get my book on Swift Concurrency:</p>
-<p>» <a href="https://swiftconcurrencybook.com">swiftconcurrencybook.com</a> «</p>
-<p>Interested in discussing the new <code>async</code>/<code>await</code> Swift syntax and concurrency? Hit me up on twitter at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a>.</p>
+<p>Obviously, check out <a href="https://underplot.com/dataTile">dataTile for Simulator</a> to super-charge your debugging flow.</p>
+<p>Thank you!</p>
+<p>My DMs are open at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> and <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a></p>
 </div>
     <hr/>
     <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
@@ -511,7 +486,7 @@
       </table>
 				<br/>
 		</div>
-		<p class="meta">Posted on <span class="postdate">20. December 2021</span></p>
+		<p class="meta">Posted on <span class="postdate">04. December 2022</span></p>
 	</article>
 	
 
