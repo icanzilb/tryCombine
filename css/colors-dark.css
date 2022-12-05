@@ -109,8 +109,8 @@ code {
 }
 
 code, code span {
-  font-size: 0.9em!important;
-  line-height: 1.28em!important;
+  font-size: 0.85rem!important;
+  line-height: 1.22rem!important;
 }
 
 blockquote p {

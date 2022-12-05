@@ -492,6 +492,11 @@ div.highlight {
 	margin-bottom: 30px;
 }
 
+div.highlight div {
+	border-radius: 10px;
+	border: 1px solid #444;
+}
+
 code[class*='language-'],
 pre[class*='language-'] {
 	-moz-tab-size: 2;
