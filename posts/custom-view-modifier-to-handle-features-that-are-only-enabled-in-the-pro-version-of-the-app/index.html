@@ -355,33 +355,19 @@
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
 </span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Group {
-</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">if</span> revenueModel.status == .pro {
-</span></span><span style="display:flex;"><span>    content
-</span></span><span style="display:flex;"><span>  } <span style="color:#6ab825;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>    VStack(alignment: .leading) {
-</span></span><span style="display:flex;"><span>      <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span> {
-</span></span><span style="display:flex;"><span>        HStack {
-</span></span><span style="display:flex;"><span>          ProUpgradeButton(billingPeriod: .constant(.monthly))
-</span></span><span style="display:flex;"><span>          Text(message)
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        .font(font)
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      content
-</span></span><span style="display:flex;"><span>        .opacity(<span style="color:#3677a9">0.7</span>)
-</span></span><span style="display:flex;"><span>        .allowsHitTesting(<span style="color:#6ab825;font-weight:bold">false</span>)
-</span></span><span style="display:flex;"><span>     }
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>VStack(alignment: .leading) {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span>, revenueModel.status != .pro {
+</span></span><span style="display:flex;"><span>    HStack {
+</span></span><span style="display:flex;"><span>      ProUpgradeButton(billingPeriod: .constant(.monthly))
+</span></span><span style="display:flex;"><span>      Text(message)
+</span></span><span style="display:flex;"><span>    }.font(font)
 </span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  content
+</span></span><span style="display:flex;"><span>    .opacity(revenueModel.status == .pro ? <span style="color:#3677a9">1.0</span> : <span style="color:#3677a9">0.7</span>)
+</span></span><span style="display:flex;"><span>    .allowsHitTesting(revenueModel.status == .pro)
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
