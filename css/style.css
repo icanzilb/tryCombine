@@ -495,6 +495,7 @@ div.highlight {
 div.highlight div {
 	border-radius: 10px;
 	border: 1px solid #444;
+	overflow: overlay;
 }
 
 code[class*='language-'],
@@ -507,7 +508,6 @@ pre[class*='language-'] {
 	-ms-hyphens: none;
 	hyphens: none;
 	white-space: pre;
-	white-space: pre-wrap;
 	word-break: break-all;
 	word-wrap: break-word;
 	font-family: Menlo, Monaco, 'Courier New', monospace;
@@ -568,6 +568,15 @@ pre[class*='language-']  * {
 	}
 	#header nav ul:nth-of-type(2) {
 		display: none;
+	}
+	#sidebar {
+		height: 200px;
+		overflow: overlay;
+		border-bottom: 1px #666 solid;
+	}
+	.promotion-insert {
+		padding-left: 16px;
+		padding-top: 4px!important;
 	}
 }
 
@@ -748,4 +757,8 @@ pre[class*='language-']  * {
 
 .rounded {
   border-radius: 8px;
+}
+
+.post h1 {
+	font-size: 28px!important;
 }
