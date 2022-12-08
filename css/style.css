@@ -762,3 +762,7 @@ pre[class*='language-']  * {
 .post h1 {
 	font-size: 28px!important;
 }
+
+.language-text {
+	white-space: pre-wrap!important;
+}

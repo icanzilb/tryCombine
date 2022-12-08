@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Automation tooling using MarkCodable for reports</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		<meta property="og:title" content="Automation tooling using MarkCodable for reports" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/using-markcodable-to-generate-reports/" />
+
+
+<meta property="og:image" content="https://trycombine.com/images/rex/rex-tests.png" />
+
+
+<meta property="og:site_name" content="try Code" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Code">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Automation tooling using MarkCodable for reports">
+
+
+ 
+   <meta property="article:tag" content="MarkCodable" /> <meta property="article:tag" content="markdown" /> <meta property="article:tag" content="reports" />
+
+
+
+<meta name="twitter:image" content="https://trycombine.com/images/rex/rex-tests.png">
+
+
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Marin Todorov" />
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/using-markcodable-to-generate-reports/">&raquo; &nbsp; 8/Dec &middot; Automation tooling using MarkCodable for reports</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 5/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataTile for Simulator - public beta on TestFlight now!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		
+			
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Automation tooling using MarkCodable for reports </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+
+
+    <div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
+	  <div style="position:absolute;left:15px;background:purple;font-size:0.75em;font-family:sans-serif;padding-left:5px; padding-right:5px;margin-top:-13px;line-height:1.1em;border-radius:6px;">promotion</div>
+	  <table>
+		<tr>
+		  <td style="padding-top:10px;"><a href="https://underplot.com/dataTile" style="margin:0px;padding:0px;"><img src="https://underplot.com/dataTile/images/tile/hero-window.gif" src1="../../images/tile/Icon_128x128.png" width=164 style="margin-right: 20px;margin-left: 10px;mask-image:url(https://underplot.com/dataTile/images/tile/mask-568.png);mask-size:contain;"/></a></td>
+		  <td style="vertical-align:top;font-family:sans-serif;font-weight: normal; font-size: 0.85em;line-height: 1.4em;padding-top:22px;" class="promotion-insert">
+			<a href="https://underplot.com/dataTile" style="margin:0px;padding:0px;background-color: #073642;border-color: #98e4df;color: #98e4df;">
+			Forget debugging in the console!<br/>
+			Super-charge your debugging flow in Xcode with<br/> no code changes or 3rd party frameworks.
+			</a>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+	
+
+		<div class="post-content"><p>For my apps <a href="https://underplot.com/dataTile">dataTile for Simulator</a> and Rex Tables I have few command line tools that run some end-to-end tests. I use <code>MarkCodable</code> to easily print reports to the console. In this short post I&rsquo;m gonna show how <code>MarkCodable</code> cuts down on some of the turnaround time when I&rsquo;m making tools.</p>
+<h2 id="markcodable">MarkCodable</h2>
+<p>I wrote about MarkCodable previously when I released it: <a href="https://trycombine.com/posts/introducing-markcodable/">Introducing MarkCodable</a> but I wanted to give you some more examples, just for fun.</p>
+<p>MarkCodable is a codec conforming in part to the <code>Codable</code> protocol. Long story short, if you have a codable struct called <code>User</code> you can encode and decode it from markdown text like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>| userID | name |
+</span></span><span style="display:flex;"><span>|--------|------|
+</span></span><span style="display:flex;"><span>|1       | John |
+</span></span><span style="display:flex;"><span>|2       | Gui  |
+</span></span></code></pre></div><p>In this post, I&rsquo;ll give you a use-case for encoding useful data as text to make it easier to use or export to other tools.</p>
+<h2 id="printing-human-friendly-test-results">Printing Human-friendly Test Results</h2>
+<p>Rex Tables makes it really easy to read the <code>swift test</code> command output and be able to sort the test results by duration or filter by test status:</p>
+
+<img class="ios" width="600" src="../../images/rex/rex-tests.png" alt="Some features disabled because only available to pro users">
+
+<p>However, sometimes I want to go even further — for example, compare regressions in test durations across runs, potentially across different periods of time.</p>
+<p>For that, I need a format that I can compare either visually with a diff viewer or ingest it in another app to compare the results.</p>
+<p>So let&rsquo;s use the regex from the screenshot above to parse a Swift test log and then use <code>MarkCodable</code> to export the results to a human-friendly format.</p>
+<h3 id="parsing-the-swift-compiler-output">Parsing the Swift compiler output</h3>
+<p>Let&rsquo;s first parse the output from <code>swift test</code> which looks somewhat like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Test Case &#39;-[MarkCodableTests.MarkCoderEnums testCustomCodingEnums]&#39; started.
+</span></span><span style="display:flex;"><span>Test Case &#39;-[MarkCodableTests.MarkCoderEnums testCustomCodingEnums]&#39; passed (0.000 seconds).
+</span></span><span style="display:flex;"><span>Test Case &#39;-[MarkCodableTests.MarkCoderEnums testPlainEnumsThrowError]&#39; started.
+</span></span><span style="display:flex;"><span>Test Case &#39;-[MarkCodableTests.MarkCoderEnums testPlainEnumsThrowError]&#39; passed (0.001 seconds).
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>First of all, we need a struct to store the interesting data in that input:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">Test</span>: Codable {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">name</span>: <span style="color:#24909d">String</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">passed</span>: <span style="color:#24909d">Bool</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">duration</span>: <span style="color:#24909d">Double</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Then, we grab the name, status and duration with just few lines of Swift, by using the fancy new regex syntax:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">tests</span>(input: <span style="color:#24909d">String</span>) <span style="color:#6ab825;font-weight:bold">throws</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">rex</span> = /-<span style="color:#a61717;background-color:#e3d2d2">\</span>[<span style="color:#a61717;background-color:#e3d2d2">\</span>w+Tests.([<span style="color:#a61717;background-color:#e3d2d2">\</span>w<span style="color:#a61717;background-color:#e3d2d2">\</span>s]+)]<span style="color:#a61717;background-color:#e3d2d2">&#39;</span> (passed|failed) <span style="color:#a61717;background-color:#e3d2d2">\</span>(([<span style="color:#a61717;background-color:#e3d2d2">\</span>d<span style="color:#a61717;background-color:#e3d2d2">\</span>.]+)/
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">tests</span> = input.matches(of: rex)
+</span></span><span style="display:flex;"><span>    .map { match <span style="color:#6ab825;font-weight:bold">in</span> Test(
+</span></span><span style="display:flex;"><span>      name: <span style="color:#24909d">String</span>(match.<span style="color:#3677a9">1</span>),
+</span></span><span style="display:flex;"><span>      passed: match.<span style="color:#3677a9">2</span> == <span style="color:#ed9d13">&#34;passed&#34;</span>,
+</span></span><span style="display:flex;"><span>      duration: <span style="color:#24909d">Double</span>(match.<span style="color:#3677a9">3</span>)!
+</span></span><span style="display:flex;"><span>    )}
+</span></span><span style="display:flex;"><span>  tests.sort(by: { <span style="color:#40ffff">$0</span>.duration &gt; <span style="color:#40ffff">$1</span>.duration })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Once we have the data in the <code>tests</code> array, we can also sort it, filter it, etc. etc. — in the code above I just sort the tests by duration with the slowest first.</p>
+<p>Now comes the <em>interesting</em> part: Make a new <code>MarkEncoder</code> instance, and call <code>encode(_:)</code> to turn the data into markdown:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">encoder</span> = MarkEncoder()
+</span></span><span style="display:flex;"><span>print(
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">try</span> encoder.encode(tests)
+</span></span><span style="display:flex;"><span>)</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Which prints:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|duration|name                                                   |passed|
+</span></span><span style="display:flex;"><span>|--------|-------------------------------------------------------|------|
+</span></span><span style="display:flex;"><span>|0.094   |MarkCoderTests testDeterministicFormatting             |true  |
+</span></span><span style="display:flex;"><span>|0.006   |CombineMarkCodableTests testDecoding                   |true  |
+</span></span><span style="display:flex;"><span>|0.003   |MarkCoderLists testAllTheIntsInLists                   |true  |
+</span></span><span style="display:flex;"><span>|0.002   |MarkCoderEnums testRawValueEnums                       |true  |
+</span></span><span style="display:flex;"><span>|0.002   |MarkCoderErrors testDecodeUnexpectedInput              |true  |
+</span></span><span style="display:flex;"><span>|0.002   |MarkCoderTests testCodingOptionalKeysDefaultTypes      |true  |
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Ta-da!</p>
+<p>This is much more useful for me to see after running the test suite, I can diff it or feed it to another tool that plots graphs over time.</p>
+<h2 id="where-to-go-from-here">Where to go from here?</h2>
+<p>Check out MarkCodable&rsquo;s readme file for few more examples: <a href="https://github.com/MarkCodable/MarkCodable">https://github.com/MarkCodable/MarkCodable</a>. Additionally, the demo app included in the repo will give your some more ideas how to make the most of the package.</p>
+<p>Finally, check out my app <a href="https://underplot.com/dataTile">dataTile for Simulator</a> to super-charge your debugging flow.</p>
+<p>Thank you!</p>
+<p>My DMs are open at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> and <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a></p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+            </a>
+            <br/>
+            <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+          </td>
+          
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+            </a>
+            <br/>
+            <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+          </td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">08. December 2022</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script src="https://www.w3counter.com/tracker.js?id=147849"></script>
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    
+  } else {
+    console.log('localhost');
+  }
+</script>
+	</body>
+</html>

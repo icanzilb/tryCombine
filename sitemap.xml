@@ -2,25 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://trycombine.com/posts/using-markcodable-to-generate-reports/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/markcodable/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/markdown/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/reports/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</loc>
     <lastmod>2022-12-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/paid/</loc>
     <lastmod>2022-12-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2022-12-05T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://trycombine.com/tags/pro/</loc>
     <lastmod>2022-12-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/swiftui/</loc>
-    <lastmod>2022-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2022-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/</loc>
     <lastmod>2022-12-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/view-modifier/</loc>
@@ -72,9 +84,6 @@
     <lastmod>2022-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/introducing-markcodable/</loc>
-    <lastmod>2022-09-06T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/markdown/</loc>
     <lastmod>2022-09-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/instruments/</loc>

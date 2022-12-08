@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MarkCodable on try Code</title>
+    <link>https://trycombine.com/tags/markcodable/</link>
+    <description>Recent content in MarkCodable on try Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/markcodable/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automation tooling using MarkCodable for reports</title>
+      <link>https://trycombine.com/posts/using-markcodable-to-generate-reports/</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/using-markcodable-to-generate-reports/</guid>
+      <description>For my apps dataTile for Simulator and Rex Tables I have few command line tools that run some end-to-end tests. I use MarkCodable to easily print reports to the console. In this short post I&amp;rsquo;m gonna show how MarkCodable cuts down on some of the turnaround time when I&amp;rsquo;m making tools.
+MarkCodable I wrote about MarkCodable previously when I released it: Introducing MarkCodable but I wanted to give you some more examples, just for fun.</description>
+    </item>
+    
+  </channel>
+</rss>
