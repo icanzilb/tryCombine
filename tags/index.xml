@@ -6,7 +6,43 @@
     <description>Recent content in Tags on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 08 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dataTile</title>
+      <link>https://trycombine.com/tags/datatile/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/datatile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugging</title>
+      <link>https://trycombine.com/tags/debugging/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>development</title>
+      <link>https://trycombine.com/tags/development/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Simulator</title>
+      <link>https://trycombine.com/tags/simulator/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/simulator/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>MarkCodable</title>
       <link>https://trycombine.com/tags/markcodable/</link>
@@ -67,24 +103,6 @@
       <pubDate>Mon, 05 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/view-modifier/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dataTile</title>
-      <link>https://trycombine.com/tags/datatile/</link>
-      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/datatile/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>debugging</title>
-      <link>https://trycombine.com/tags/debugging/</link>
-      <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/debugging/</guid>
       <description></description>
     </item>
     

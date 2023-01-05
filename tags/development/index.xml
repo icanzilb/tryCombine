@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>development on try Code</title>
+    <link>https://trycombine.com/tags/development/</link>
+    <description>Recent content in development on try Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/development/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dataTile for Simulator launches today! 🚀</title>
+      <link>https://trycombine.com/posts/datatile-for-simulator-is-on-the-appstore-now/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/datatile-for-simulator-is-on-the-appstore-now/</guid>
+      <description>I&amp;rsquo;m glad to share that dataTile for Simulator is launching today on ProductHunt and the AppStore!
+dataTile for Simulator is an Xcode companion app to see your debugging data in a beautiful and bold UI. Log your debug data as usual using Apple&amp;rsquo;s logging framework, and dataTile for Simulator will automatically select and display your logs!
+It&amp;rsquo;s a powerful native developer tool that is focused on making developers more productive while developing with Xcode and the Simulator.</description>
+    </item>
+    
+  </channel>
+</rss>
