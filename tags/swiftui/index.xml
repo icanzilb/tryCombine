@@ -6,7 +6,18 @@
     <description>Recent content in SwiftUI on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swiftui/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swiftui/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automate debugging SwiftUI and UIKit with dataTile</title>
+      <link>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</link>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</guid>
+      <description>The ability to log values and visualize them in dataTile is quite powerful, but the core concept of the app really shines when a developer automates logs that drive metrics over time.
+Such metrics could be any value that changes over time, such as the size of the app cache, the amount of RAM consumed, or the number of instances created of a given class.
+This article will look at two quite different approaches to tracking automation, one with SwiftUI and another with UIKit.</description>
+    </item>
+    
     <item>
       <title>Custom SwiftUI view modifier for paid app features</title>
       <link>https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</link>

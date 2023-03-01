@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Automate debugging SwiftUI and UIKit with dataTile</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		<meta property="og:title" content="Automate debugging SwiftUI and UIKit with dataTile" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/" />
+
+
+<meta property="og:image" content="https://trycombine.com/images/tile/ide-screenshot.png" />
+
+
+<meta property="og:site_name" content="try Code" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Code">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Automate debugging SwiftUI and UIKit with dataTile">
+
+
+ 
+   <meta property="article:tag" content="debugging" /> <meta property="article:tag" content="dataTile" /> <meta property="article:tag" content="Simulator" /> <meta property="article:tag" content="development" /> <meta property="article:tag" content="SwiftUI" /> <meta property="article:tag" content="UIKit" />
+
+
+
+<meta name="twitter:image" content="https://trycombine.com/images/tile/ide-screenshot.png">
+
+
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Marin Todorov" />
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/">&raquo; &nbsp; 3/Jan &middot; Automate debugging SwiftUI and UIKit with dataTile</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datatile-for-simulator-is-on-the-appstore-now/">&raquo; &nbsp; 3/Jan &middot; dataTile for Simulator launches today! 🚀</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/using-markcodable-to-generate-reports/">&raquo; &nbsp; 8/Dec &middot; Automation tooling using MarkCodable for reports</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 5/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataTile for Simulator - public beta on TestFlight now!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		
+			
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Automate debugging SwiftUI and UIKit with dataTile </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+
+
+    <div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
+	  <div style="position:absolute;left:15px;background:purple;font-size:0.75em;font-family:sans-serif;padding-left:5px; padding-right:5px;margin-top:-13px;line-height:1.1em;border-radius:6px;">promotion</div>
+	  <table>
+		<tr>
+		  <td style="padding-top:10px;"><a href="https://underplot.com/dataTile" style="margin:0px;padding:0px;"><img src="https://underplot.com/dataTile/images/tile/hero-window.gif" src1="../../images/tile/Icon_128x128.png" width=164 style="margin-right: 20px;margin-left: 10px;mask-image:url(https://underplot.com/dataTile/images/tile/mask-568.png);mask-size:contain;"/></a></td>
+		  <td style="vertical-align:top;font-family:sans-serif;font-weight: normal; font-size: 0.85em;line-height: 1.4em;padding-top:22px;" class="promotion-insert">
+			<a href="https://underplot.com/dataTile" style="margin:0px;padding:0px;background-color: #073642;border-color: #98e4df;color: #98e4df;">
+			Forget debugging in the console!<br/>
+			Super-charge your debugging flow in Xcode with<br/> no code changes or 3rd party frameworks.
+			</a>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+	
+
+		<div class="post-content"><p>The ability to log values and visualize them in <a href="https://underplot.com/dataTile/">dataTile</a> is quite powerful, but the core concept of the app really shines when a developer <em>automates</em> logs that drive metrics over time.</p>
+<p>Such metrics could be any value that changes over time, such as the size of the app cache, the amount of RAM consumed, or the number of instances created of a given class.</p>
+<p>This article will look at two quite different approaches to tracking automation, one with SwiftUI and another with UIKit. Let&rsquo;s start with SwiftUI first.</p>
+<h2 id="swiftui-modifier-to-track-view-rendering">SwiftUI modifier to track view rendering</h2>
+<p>In this article we&rsquo;ll look at logging the number of times a SwiftUI view is re-created. This is useful when you&rsquo;re trying to track down <strong>unexpected state changes</strong> that cause your SwiftUI views to be recreated.</p>
+<p>In its essence the view modifier will be a counter that will increment any time SwiftUI calls it during creating the view.</p>
+<p>Let&rsquo;s start by creating a serial queue called <code>debugRenderQueue</code> to do the logging and a dictionary to keep all the counters:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">debugRenderQueue</span> = DispatchQueue(
+</span></span><span style="display:flex;"><span>  label: <span style="color:#ed9d13">&#34;debugRenderQueue&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">private</span> <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">debugRenderCounts</span> = [<span style="color:#24909d">String</span>: <span style="color:#24909d">Int</span>]()</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Next, let&rsquo;s add a new method on <code>View</code> called <code>debugRender(...)</code>:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">extension</span> <span style="color:#447fcf;text-decoration:underline">View</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">debugRender</span>(named id: <span style="color:#24909d">String</span>) -&gt; some View {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    debugRenderQueue.async {
+</span></span><span style="display:flex;"><span>      debugRenderCounts[id, <span style="color:#6ab825;font-weight:bold">default</span>: <span style="color:#3677a9">0</span>] += <span style="color:#3677a9">1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#999;font-style:italic">// Log the current count to the unified log</span>
+</span></span><span style="display:flex;"><span>      os_log(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>id<span style="color:#ed9d13">)</span><span style="color:#ed9d13">: </span><span style="color:#ed9d13">\(</span>debugRenderCounts[id]!<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">return</span> <span style="color:#6ab825;font-weight:bold">self</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>You can add this modifier to any view in code and it&rsquo;ll keep count of redraws.</p>
+<p>Let&rsquo;s give that a try! Let&rsquo;s look at a <code>Timer</code>-driven clock view in SwiftUI:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">struct</span> <span style="color:#447fcf;text-decoration:underline">ContentView</span>: View {
+</span></span><span style="display:flex;"><span>  @State <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">timer</span> = Timer.publish(every: <span style="color:#3677a9">0.1</span>, on: .main, <span style="color:#6ab825;font-weight:bold">in</span>: .<span style="color:#6ab825;font-weight:bold">default</span>)
+</span></span><span style="display:flex;"><span>    .autoconnect()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  @State <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">time</span> = <span style="color:#ed9d13">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">var</span> <span style="color:#40ffff">body</span>: some View {
+</span></span><span style="display:flex;"><span>    VStack {
+</span></span><span style="display:flex;"><span>      Text(<span style="color:#ed9d13">&#34;Current time:&#34;</span>)
+</span></span><span style="display:flex;"><span>      Text(time).bold()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    .onReceive(timer) { d <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>      time = d.formatted(date: .omitted, time: .standard)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The timer updates the <code>time</code> state property with the current time <code>10</code> times per second (the <code>0.1</code> cadence of the timer in the code above), and the view picks up the new state and displays the time:</p>
+
+<img class="ios" width="226" src="../../images/tile/automation/clock.gif" alt="Ticking clock" style="border-radius:8px;">
+
+<p>When it comes to improving your app&rsquo;s performance, you might like to check whether the view is redrawn <code>10</code> times per second (as often as you update the <code>time</code> property) or just once when the <code>time</code> value <em>actually</em> changes.</p>
+<p>This is where using the new modifier from above comes handy. If you add the <code>debugRender()</code> modifier you&rsquo;ll see the updates in dataTile right away:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Text(time).bold()
+</span></span><span style="display:flex;"><span>  .debugRender(named: <span style="color:#ed9d13">&#34;Timer&#34;</span>)</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+<img class="ios" width="537" src="../../images/tile/automation/clock-updates-dataTile.gif" alt="Ticking clock" style="border-radius:8px;">
+
+<p>And to make the data even easier to read — click the tile menu and select &ldquo;View as chart&rdquo; and then click on the tile subtitle to see how many logs per second it displays:</p>
+
+<img class="ios" width="537" src="../../images/tile/automation/clock-chart.png" alt="Ticking clock" style="border-radius:8px;">
+
+<p>And now you have your answer — the tile updates once per second, therefore SwiftUI only recreates the view when the state actually changes.</p>
+<h2 id="automatically-track-view-controllers-state-in-uikit">Automatically track view controllers&rsquo; state in UIKit</h2>
+<p>Now let&rsquo;s switch gears and look at UIKit. UIKit classes are Objective-C types inheriting <code>NSObject</code> so logging automation is even easier thanks to the almost unlimited possibilities for swizzling.</p>
+<p>Long story short, in a UIKit app you don&rsquo;t <em>need</em> to add a modifier or a function call anywhere — you can, for example, automatically track the state of <strong>all view controllers</strong>.</p>
+<p>You can write your own swizzling code but for this article I&rsquo;ll use <a href="https://twitter.com/steipete">@steipete</a>&rsquo;s <a href="https://github.com/steipete/InterposeKit">InterposeKit</a>.</p>
+<p>In the app&rsquo;s <code>AppDelegate.init()</code> let&rsquo;s add an IntreposeKit call to swizzle <code>UIViewController.viewDidAppear(_)</code> and <code>UIViewController.viewDidDisappear(_)</code>. The code is a bit verbose but the two important lines are the ones getting the current controller&rsquo;s name and logging <code>true</code> when presented and <code>false</code> when dismissed:</p>
+<div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">32
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">_</span> = <span style="color:#6ab825;font-weight:bold">try</span>! Interpose(UIViewController.<span style="color:#6ab825;font-weight:bold">self</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#999;font-style:italic">// Swizzle viewDidAppear</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">try</span> <span style="color:#40ffff">$0</span>.prepareHook(
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">#selector</span>(UIViewController.viewDidAppear(<span style="color:#6ab825;font-weight:bold">_</span>:)),
+</span></span><span style="display:flex;"><span>    methodSignature: (@convention(c) (<span style="color:#24909d">AnyObject</span>, <span style="color:#24909d">Selector</span>) -&gt; <span style="color:#24909d">Void</span>).<span style="color:#6ab825;font-weight:bold">self</span>,
+</span></span><span style="display:flex;"><span>    hookSignature: (@convention(block) (<span style="color:#24909d">AnyObject</span>) -&gt; <span style="color:#24909d">Void</span>).<span style="color:#6ab825;font-weight:bold">self</span>) {
+</span></span><span style="display:flex;"><span>      store <span style="color:#6ab825;font-weight:bold">in</span> { `<span style="color:#6ab825;font-weight:bold">self</span>` <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#999;font-style:italic">// Here we write to the log</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">name</span> = NSStringFromClass(<span style="color:#6ab825;font-weight:bold">self</span>.classForCoder)
+</span></span><span style="display:flex;"><span>          .components(separatedBy: <span style="color:#ed9d13">&#34;.&#34;</span>).last!
+</span></span><span style="display:flex;"><span>        os_log(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>name<span style="color:#ed9d13">)</span><span style="color:#ed9d13">: true&#34;</span>)
+</span></span><span style="display:flex;"><span>        store.original(`<span style="color:#6ab825;font-weight:bold">self</span>`, store.selector)
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#999;font-style:italic">// Swizzle viewDidDisappear</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6ab825;font-weight:bold">try</span> <span style="color:#40ffff">$0</span>.prepareHook(
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">#selector</span>(UIViewController.viewDidDisappear(<span style="color:#6ab825;font-weight:bold">_</span>:)),
+</span></span><span style="display:flex;"><span>    methodSignature: (@convention(c) (<span style="color:#24909d">AnyObject</span>, <span style="color:#24909d">Selector</span>) -&gt; <span style="color:#24909d">Void</span>).<span style="color:#6ab825;font-weight:bold">self</span>,
+</span></span><span style="display:flex;"><span>    hookSignature: (@convention(block) (<span style="color:#24909d">AnyObject</span>) -&gt; <span style="color:#24909d">Void</span>).<span style="color:#6ab825;font-weight:bold">self</span>) {
+</span></span><span style="display:flex;"><span>      store <span style="color:#6ab825;font-weight:bold">in</span> { `<span style="color:#6ab825;font-weight:bold">self</span>` <span style="color:#6ab825;font-weight:bold">in</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>        <span style="color:#999;font-style:italic">// Here we write to the log</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">name</span> = NSStringFromClass(<span style="color:#6ab825;font-weight:bold">self</span>.classForCoder)
+</span></span><span style="display:flex;"><span>          .components(separatedBy: <span style="color:#ed9d13">&#34;.&#34;</span>).last!
+</span></span><span style="display:flex;"><span>        os_log(<span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>name<span style="color:#ed9d13">)</span><span style="color:#ed9d13">: false&#34;</span>)
+</span></span><span style="display:flex;"><span>        store.original(`<span style="color:#6ab825;font-weight:bold">self</span>`, store.selector)
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>The code injects couple of new lines into <code>UIViewController.viewDidAppear(...)</code> and <code>UIViewController.viewDidDisappear(...)</code> that get the current class name and write to the log something like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>MainViewController: true
+</span></span><span style="display:flex;"><span>MainViewController: false
+</span></span><span style="display:flex;"><span>DetailsViewController: true
+</span></span><span style="display:flex;"><span>DetailsViewController: false
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Let&rsquo;s give this code a try with a test app that presents two different view controllers — one for &ldquo;details&rdquo; and one for &ldquo;more information&rdquo;.</p>
+<p>There&rsquo;s no need to add any more code than the block above which, as said, tracks the presentation state of any of your view controllers:</p>
+
+<img class="ios" width="791" src="../../images/tile/automation/view-controllers.gif" alt="Ticking clock" style="border-radius:8px;">
+
+<p>You can track as many view controllers as you&rsquo;d like this way — you&rsquo;re only limited by how many tiles fit on your screen.</p>
+<p>This kind of automation can be very useful for example to verify that all instances of an object have been released from memory. Or when tracking the state of a whole class of objects like with the view controllers above.</p>
+<p>What other SwiftUI view modifiers or UIKit extensions that talk to dataTile would you like to use? Get in touch at <a href="https://twitter.com/icanzilb">https://twitter.com/icanzilb</a> or <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+            </a>
+            <br/>
+            <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+          </td>
+          
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+            </a>
+            <br/>
+            <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+          </td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">03. January 2023</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script src="https://www.w3counter.com/tracker.js?id=147849"></script>
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    
+  } else {
+    console.log('localhost');
+  }
+</script>
+	</body>
+</html>
