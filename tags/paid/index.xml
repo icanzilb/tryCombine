@@ -13,7 +13,7 @@
       <pubDate>Mon, 05 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</guid>
-      <description>In my app dataTile for Simulator I&amp;rsquo;ve decided to offer some features for free and others only to users who pay for the app.
+      <description>In my app dataFude for Simulator I&amp;rsquo;ve decided to offer some features for free and others only to users who pay for the app.
 This way, everyone including students and hobbyist can meaningfully use the app, while professional users can support the development.
 I considered few different approaches including compiling two separate versions of the app, but ultimately went for shipping a single binary that relies on RevenueCat and enables/disables some parts of the UI depending on the purchase status.</description>
     </item>

@@ -8,12 +8,12 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/swiftui/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Automate debugging SwiftUI and UIKit with dataTile</title>
+      <title>Automate debugging SwiftUI and UIKit with dataFude</title>
       <link>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</link>
       <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</guid>
-      <description>The ability to log values and visualize them in dataTile is quite powerful, but the core concept of the app really shines when a developer automates logs that drive metrics over time.
+      <description>The ability to log values and visualize them in dataFude is quite powerful, but the core concept of the app really shines when a developer automates logs that drive metrics over time.
 Such metrics could be any value that changes over time, such as the size of the app cache, the amount of RAM consumed, or the number of instances created of a given class.
 This article will look at two quite different approaches to tracking automation, one with SwiftUI and another with UIKit.</description>
     </item>
@@ -24,7 +24,7 @@ This article will look at two quite different approaches to tracking automation,
       <pubDate>Mon, 05 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/</guid>
-      <description>In my app dataTile for Simulator I&amp;rsquo;ve decided to offer some features for free and others only to users who pay for the app.
+      <description>In my app dataFude for Simulator I&amp;rsquo;ve decided to offer some features for free and others only to users who pay for the app.
 This way, everyone including students and hobbyist can meaningfully use the app, while professional users can support the development.
 I considered few different approaches including compiling two separate versions of the app, but ultimately went for shipping a single binary that relies on RevenueCat and enables/disables some parts of the UI depending on the purchase status.</description>
     </item>

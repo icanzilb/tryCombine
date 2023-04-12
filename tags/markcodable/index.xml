@@ -13,7 +13,7 @@
       <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/using-markcodable-to-generate-reports/</guid>
-      <description>For my apps dataTile for Simulator and Rex Tables I have few command line tools that run some end-to-end tests. I use MarkCodable to easily print reports to the console. In this short post I&amp;rsquo;m gonna show how MarkCodable cuts down on some of the turnaround time when I&amp;rsquo;m making tools.
+      <description>For my apps dataFude for Simulator and Rex Tables I have few command line tools that run some end-to-end tests. I use MarkCodable to easily print reports to the console. In this short post I&amp;rsquo;m gonna show how MarkCodable cuts down on some of the turnaround time when I&amp;rsquo;m making tools.
 MarkCodable I wrote about MarkCodable previously when I released it: Introducing MarkCodable but I wanted to give you some more examples, just for fun.</description>
     </item>
     

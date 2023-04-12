@@ -8,36 +8,36 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Automate debugging SwiftUI and UIKit with dataTile</title>
+      <title>Automate debugging SwiftUI and UIKit with dataFude</title>
       <link>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</link>
       <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</guid>
-      <description>The ability to log values and visualize them in dataTile is quite powerful, but the core concept of the app really shines when a developer automates logs that drive metrics over time.
+      <description>The ability to log values and visualize them in dataFude is quite powerful, but the core concept of the app really shines when a developer automates logs that drive metrics over time.
 Such metrics could be any value that changes over time, such as the size of the app cache, the amount of RAM consumed, or the number of instances created of a given class.
 This article will look at two quite different approaches to tracking automation, one with SwiftUI and another with UIKit.</description>
     </item>
     
     <item>
-      <title>dataTile for Simulator launches today! 🚀</title>
-      <link>https://trycombine.com/posts/datatile-for-simulator-is-on-the-appstore-now/</link>
+      <title>dataFude for Simulator launches today! 🚀</title>
+      <link>https://trycombine.com/posts/datafude-for-simulator-is-on-the-appstore-now/</link>
       <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://trycombine.com/posts/datatile-for-simulator-is-on-the-appstore-now/</guid>
-      <description>I&amp;rsquo;m glad to share that dataTile for Simulator is launching today on ProductHunt and the AppStore!
-dataTile for Simulator is an Xcode companion app to see your debugging data in a beautiful and bold UI. Log your debug data as usual using Apple&amp;rsquo;s logging framework, and dataTile for Simulator will automatically select and display your logs!
+      <guid>https://trycombine.com/posts/datafude-for-simulator-is-on-the-appstore-now/</guid>
+      <description>I&amp;rsquo;m glad to share that dataFude for Simulator is launching today on ProductHunt and the AppStore!
+dataFude for Simulator is an Xcode companion app to see your debugging data in a beautiful and bold UI. Log your debug data as usual using Apple&amp;rsquo;s logging framework, and dataFude for Simulator will automatically select and display your logs!
 It&amp;rsquo;s a powerful native developer tool that is focused on making developers more productive while developing with Xcode and the Simulator.</description>
     </item>
     
     <item>
-      <title>dataTile for Simulator - public beta on TestFlight now!</title>
-      <link>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</link>
+      <title>dataFude for Simulator - public beta on TestFlight now!</title>
+      <link>https://trycombine.com/posts/datafude-for-simulator-public-beta-on-testflight-now/</link>
       <pubDate>Tue, 29 Nov 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://trycombine.com/posts/datatile-for-simulator-public-beta-on-testflight-now/</guid>
+      <guid>https://trycombine.com/posts/datafude-for-simulator-public-beta-on-testflight-now/</guid>
       <description>As I wrote recently, in 2022 I worked on a lot of side projects and even made a shippable and usable versions of few of them.
 Many of the ideas I worked on converged in the latest app that I believe is a product a large number of developers could use to improve their daily lives.
-Yesterday, I opened up dataTile for Simulator for public testing on TestFlight. If you want to give it a try or learn more, the website is:</description>
+Yesterday, I opened up dataFude for Simulator for public testing on TestFlight. If you want to give it a try or learn more, the website is:</description>
     </item>
     
   </channel>
