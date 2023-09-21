@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>DocC: Project documentation structure</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		<meta property="og:title" content="DocC: Project documentation structure" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/an-example-docc-documentation-for-an-ios-app/" />
+
+
+<meta property="og:image" content="https://trycombine.com/images/tile/ide-screenshot.png" />
+
+
+<meta property="og:site_name" content="try Code" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Code">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="DocC: Project documentation structure">
+
+
+ 
+   <meta property="article:tag" content="DocC" /> <meta property="article:tag" content="Swift" /> <meta property="article:tag" content="documentation" />
+
+
+
+<meta name="twitter:image" content="https://trycombine.com/images/tile/ide-screenshot.png">
+
+
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Marin Todorov" />
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/an-example-docc-documentation-for-an-ios-app/">&raquo; &nbsp; 20/Sep &middot; DocC: Project documentation structure</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/">&raquo; &nbsp; 3/Jan &middot; Automate debugging SwiftUI and UIKit with dataFude</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datafude-for-simulator-is-on-the-appstore-now/">&raquo; &nbsp; 3/Jan &middot; dataFude for Simulator launches today! 🚀</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/using-markcodable-to-generate-reports/">&raquo; &nbsp; 8/Dec &middot; Automation tooling using MarkCodable for reports</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 5/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datafude-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataFude for Simulator - public beta on TestFlight now!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		
+			
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">DocC: Project documentation structure </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+
+
+    <div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
+	  <div style="position:absolute;left:15px;background:purple;font-size:0.75em;font-family:sans-serif;padding-left:5px; padding-right:5px;margin-top:-13px;line-height:1.1em;border-radius:6px;">promotion</div>
+	  <table>
+		<tr>
+		  <td style="padding-top:10px;"><a href="https://underplot.com/dataFude" style="margin:0px;padding:0px;"><img src="https://underplot.com/dataFude/images/tile/hero-window.gif" src1="../../images/tile/Icon_128x128.png" width=164 style="margin-right: 20px;margin-left: 10px;mask-image:url(https://underplot.com/dataFude/images/tile/mask-568.png);mask-size:contain;"/></a></td>
+		  <td style="vertical-align:top;font-family:sans-serif;font-weight: normal; font-size: 0.85em;line-height: 1.4em;padding-top:22px;" class="promotion-insert">
+			<a href="https://underplot.com/dataFude" style="margin:0px;padding:0px;background-color: #073642;border-color: #98e4df;color: #98e4df;">
+			Powerful debugging in Xcode,<br/> no code changes or 3rd party frameworks required.
+			</a>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+	
+
+		<div class="post-content"><p>This post is about structuring the documentation for a project with Swift DocC. (<a href="https://developer.apple.com/documentation/xcode/documenting-apps-frameworks-and-packages">Apple&rsquo;s intro to Swift DocC</a>)</p>
+<p>Swift DocC in Xcode automatically builds project documentation following the structure of the app&rsquo;s code hierarchy. Additionally, DocC allows you to create custom curation and hierarchy to improve the discoverability and the user experience of said documentation.</p>
+<p>Bellow I&rsquo;ll suggest a simple documentation hierarchy for apps or packages, especially in the context of a larger team or organization.</p>
+<blockquote>
+<p>Note: The code in this article produces a warning when compiled, I&rsquo;ve filed <strong>FB13194701</strong> to ask that the warning be removed. Please duplicate.</p>
+</blockquote>
+<h2 id="documentation-basics">Documentation Basics</h2>
+<p>Let&rsquo;s create a new SwiftUI app in Xcode:</p>
+
+<img class="ios" width="300" src="../../images/docc/project-files.png" alt="New project files" style="border-radius:8px;">
+
+<p>Choose <strong>Build Documentation</strong> from Xcode&rsquo;s menu to see the project&rsquo;s documentation in Xcode&rsquo;s Documentation Viewer window (I have Cmd+Shift+B set up for that, really handy):</p>
+
+<img class="ios" width="600" src="../../images/docc/empty-docs.png" alt="New project documentation" style="border-radius:8px;">
+
+<p>You can see that, by default, Xcode has already done plenty:</p>
+<ul>
+<li>Added the project in the Documentation Navigator pane. Created a Documentation Root and curated under it a module called MyAwesomeApp (designated by the 3 squircle pancakes icon).</li>
+<li>Curated all the project&rsquo;s available programming types under that root node — <code>ContentView</code>, <code>ContentView_Previews</code> and <code>MyAwesomeAppApp</code>.</li>
+</ul>
+<p>This is quite neat when developing a Swift package for example — DocC curates all <strong>public</strong> types automatically under the root. Or in other words, types that you want to expose to external consumers and want to definitely document.</p>
+<p>In an iOS app all your <strong>internal or public</strong> types are automatically curated under the root. Many of your internal types could be undocumentable, unimportant and simply can add way too much noise to your documentation landing page so that automatic curation might become a nuisance.</p>
+<h2 id="documentation-vs-reference">Documentation vs. Reference</h2>
+<p>Last but not least, while a Swift package often wouldn&rsquo;t need a broader context in its documentation, an app or a larger project might include plenty of non-technical documentation.</p>
+<p>A good example of the kind of non-technical documentation that a project could include is the Swift repo. Let&rsquo;s have a look at some of the files found in the repo:</p>
+<ul>
+<li>In the benchmark folder there&rsquo;s a document about a naming convention that needs to be followed: <a href="https://github.com/apple/swift/blob/main/benchmark/Naming.md">Naming.md</a></li>
+<li>A guide how to set up LSP + Emacs: <a href="https://github.com/apple/swift/blob/main/docs/HowToGuides/SettingUpLSPEmacs.md">SettingUpLSPEmacs.md</a></li>
+<li>Conceptual/design document on generic signatures: <a href="https://github.com/apple/swift/blob/main/docs/ABI/GenericSignature.md">GenericSignature.md</a></li>
+<li>and so on.</li>
+</ul>
+<p>Since Swift doesn&rsquo;t have DocC documentation, these are just files laying around that you discover by chance.</p>
+<p>Next, let&rsquo;s see how to create a documentation structure that is more useful than just documenting the code.</p>
+<h2 id="docc-catalogue">DocC catalogue</h2>
+<p>Choose New File&hellip; from Xcode&rsquo;s menu and scroll down in the file template picker until you reach the Documentation section:</p>
+
+<img class="ios" width="600" src="../../images/docc/file-picker.png" alt="Available documentation file templates" style="border-radius:8px;">
+
+<p>Pick <strong>Documentation Catalogue</strong> — that creates a new project folder with a .docc extension in your project. Inside you can add resources or free-form text articles in markdown — below I already added few files that I&rsquo;m gonna use:</p>
+
+<img class="ios" width="300" src="../../images/docc/docc-cat.png" alt="Available documentation file templates" style="border-radius:8px;">
+
+<p>Let&rsquo;s start with defining a new Documentation Root (in other words a new landing page for the documentation besides <code>MyAwesomeApp</code> module).</p>
+<p>My additional documentation root is the file <strong>Root.md</strong> and contains:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#fff;font-weight:bold"># MyAwesomeApp Project
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;font-weight:bold"></span>Code reference and useful project details
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@Metadata {
+</span></span><span style="display:flex;"><span>   @TechnologyRoot
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">## Overview
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span>Text...
+</span></span></code></pre></div><p>It&rsquo;s a plain markdown file, containing an extra directive to tell Swift DocC that the file is a documentation root page (<a href="https://www.swift.org/documentation/docc/technologyroot">@TechnologyRoot</a>). This adds a new node directly under the project in the Documentation Navigator:</p>
+
+<img class="ios" width="300" src="../../images/docc/new-root.png" alt="A second root appears in the documentation navigator" style="border-radius:8px;">
+
+<p>You can already see how we could split code reference from conceptual documentation pretty neatly in the Documentation Viewer by having two or more root pages.</p>
+<p>However, I have a couple of small nitpicks:</p>
+<ol>
+<li>I&rsquo;d like for the documentation to have <strong>one entry point</strong> so people can navigate the docs in a guided manner.</li>
+<li>Decoupling the documentation into multiple roots only allows you to export the compiled documentation of <strong>one of them</strong> at a time:</li>
+</ol>
+
+<img class="ios" width="300" src="../../images/docc/multiple-roots-export.png" alt="Only one of the roots at a time has the export menu" style="border-radius:8px;">
+
+<p>Let&rsquo;s see what could a nice documentation structure be.</p>
+<h2 id="documentation-structure">Documentation structure</h2>
+<h3 id="organizational">Organizational</h3>
+<p>Let&rsquo;s add an &ldquo;Organizational&rdquo; section to the root page — you know, things you need when you first clone the project. Here&rsquo;s an example task group I&rsquo;m adding to Root.md:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">## Topics
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">### Organizational
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">-</span> &lt;<span style="color:#6ab825;font-weight:bold">doc:Team</span>&gt;
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">-</span> &lt;<span style="color:#6ab825;font-weight:bold">doc:Internal</span>&gt;
+</span></span></code></pre></div><p>The new Organizational section features two links — <strong>Team.md</strong> contains the primary points of contact for the project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#fff;font-weight:bold"># Team
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;font-weight:bold"></span>
+</span></span><span style="display:flex;"><span>Viable points of contact 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">## Team Members
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span>The current important points of contact for this project are:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#6ab825;font-weight:bold">-</span> [<span style="color:#6ab825;font-weight:bold">Lead Designer 👩🏽‍🎨 Anna B.</span>](<span style="color:#bbb">https://underplot.com</span>)
+</span></span><span style="display:flex;"><span> <span style="color:#6ab825;font-weight:bold">-</span> [<span style="color:#6ab825;font-weight:bold">Project Manager 💼 Sonya A. G.</span>](<span style="color:#bbb">https://underplot.com</span>)
+</span></span><span style="display:flex;"><span> <span style="color:#6ab825;font-weight:bold">-</span> [<span style="color:#6ab825;font-weight:bold">QA 💥 Peter M.</span>](<span style="color:#bbb">https://underplot.com</span>)
+</span></span><span style="display:flex;"><span> <span style="color:#6ab825;font-weight:bold">-</span> [<span style="color:#6ab825;font-weight:bold">Team Therapist 🎋 Maria v. M.</span>](<span style="color:#bbb">https://underplot.com</span>)
+</span></span></code></pre></div><p>And a second file called <strong>Internal.md</strong> with links to Confluence, GitHub, automation scripts, and further internal resources.</p>
+<p>As any documentation this information is also fragile and could become outdated. But for an open source project, I&rsquo;d argue that is much better to bundle all this kind of data alongside the code even if it sometimes would be out of sync.</p>
+<p>Now the new root is a neat starting point for new or old users to get things done and figure out who to contact and where to find resources. Here&rsquo;s the Internal Documentation page which contains links to resources providing more context about the project:</p>
+
+<img class="ios" width="600" src="../../images/docc/org-section.png" alt="" style="border-radius:8px;">
+
+<blockquote>
+<p>Note: You can render these as a table, list or other by using the new <a href="https://developer.apple.com/documentation/docc/links">@Links</a> directive.</p>
+</blockquote>
+<h3 id="non-technical">Non-technical</h3>
+<p>Next, I&rsquo;ll add a section for style guides, conceptual guidelines around concurrent code, all the UIKit vs. SwiftUI team holy-war artifacts, etc:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">### Non-technical
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">-</span> &lt;<span style="color:#6ab825;font-weight:bold">doc:CodeStyle</span>&gt;
+</span></span></code></pre></div><p>Here&rsquo;s where developers should come when they have a doubt about an architectural decision or need context why something is implemented one way or another. Naturally, as there are more pages to curate here you&rsquo;d group them to keep the root easy to navigate.</p>
+
+<img class="ios" width="300" src="../../images/docc/non-tech-section.png" alt="" style="border-radius:8px;">
+
+<h3 id="code-reference">Code Reference</h3>
+<p>Last but not least, you definitely do need the code reference in here too. Creating a meaningful documentation hierarchy that helps exploring the APIs instead of just following the code hierarchy is a real challenge.</p>
+<p>You&rsquo;d probably ask &ldquo;Why curate the code reference in the last section? Wouldn&rsquo;t the user need to read API docs much more often than doing any of these other tasks?&rdquo;</p>
+<p>No.</p>
+<p>How often do you start from the main page of CoreData or UIKit and you navigate to the property you want to use? Users most often read contextual docs in the editor by clicking a symbol or search in the Documentation Viewer:</p>
+
+<img class="ios" width="400" src="../../images/docc/quick-docs.png" alt="A quick docs window in Xcode" style="border-radius:8px;">
+
+<p>Once the user is on a given documentation page your curation will help them to navigate related topics but they would rarely start from the module root and find what they need.</p>
+<p>So let&rsquo;s curate the app itself plus some important, highly-visible types in the last section of the root page:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline">### Code Reference
+</span></span></span><span style="display:flex;"><span><span style="color:#fff;text-decoration:underline"></span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">-</span> ``MyAwesomeApp``
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">-</span> ``MyAwesomeApp/AppManager``
+</span></span></code></pre></div><p>That allows developers to drill down into code reference docs from the root by clicking on <code>MyAwesomeApp</code> or quickly see <code>AppManager</code>&rsquo;s docs.</p>
+
+<img class="ios" width="600" src="../../images/docc/completed-structure.png" alt="The completed documentation structure with 3 sub-sections" style="border-radius:8px;">
+
+<p>Now the Documentation Navigator shows the code docs hierarchy as the last section in the <strong>MyAwesomeApp Project</strong> root node. Notice that manually curating the app module also removes it as a root node and we have only <strong>one entry point</strong>!</p>
+<p>The complete documentation is now easy to navigate, export, and distribute. The only annoyance is that you get a build warning:</p>
+
+<img class="ios" width="300" src="../../images/docc/warning.png" alt="A build warning about linking to a module" style="border-radius:8px;">
+
+<blockquote>
+<p>Again, If you have a minute to ask that this warning be removed, the FB number to duplicate is FB13194701.</p>
+</blockquote>
+<p>Now that you have both technical and conceptual documentation in a single bundle you should add a documentation build phase in your CI and make the built documentation available inside your org.</p>
+<p>For Swift packages, the <a href="https://swiftpackageindex.com">Swift Package Index</a> will automatically build your documentation — make sure to add your package there!</p>
+<p>Any thoughts on designing great project documentation? What other sections might be useful?</p>
+<p>Get in touch at <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://swiftconcurrencybook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+            </a>
+            <br/>
+            <a href="http://swiftconcurrencybook.com">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+          </td>
+          
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="http://combinebook.com" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+            </a>
+            <br/>
+            <a href="https://combinebook.com">Combine: Asynchronous<br/> programming with Swift</a>
+          </td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">20. September 2023</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script src="https://www.w3counter.com/tracker.js?id=147849"></script>
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    
+  } else {
+    console.log('localhost');
+  }
+</script>
+	</body>
+</html>
