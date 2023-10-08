@@ -328,7 +328,7 @@
 <p>Swift DocC in Xcode automatically builds project documentation following the structure of the app&rsquo;s code hierarchy. Additionally, DocC allows you to create custom curation and hierarchy to improve the discoverability and the user experience of said documentation.</p>
 <p>Bellow I&rsquo;ll suggest a simple documentation hierarchy for apps or packages, especially in the context of a larger team or organization.</p>
 <blockquote>
-<p>Note: The code in this article produces a warning when compiled, I&rsquo;ve filed <strong>FB13194701</strong> to ask that the warning be removed. Please duplicate.</p>
+<p>Note: The code in this article produces a warning when compiled. There is an open issue at the DocC repo <a href="https://github.com/apple/swift-docc/issues/735">here</a> — chime in the comments there if you want to contribute to the conversation.</p>
 </blockquote>
 <h2 id="documentation-basics">Documentation Basics</h2>
 <p>Let&rsquo;s create a new SwiftUI app in Xcode:</p>
@@ -456,7 +456,7 @@
 <img class="ios" width="300" src="../../images/docc/warning.png" alt="A build warning about linking to a module" style="border-radius:8px;">
 
 <blockquote>
-<p>Again, If you have a minute to ask that this warning be removed, the FB number to duplicate is FB13194701.</p>
+<p>Again, If you have a minute to comment on the <a href="https://github.com/apple/swift-docc/issues/735">DocC repo issue</a> that&rsquo;d be helpful.</p>
 </blockquote>
 <p>Now that you have both technical and conceptual documentation in a single bundle you should add a documentation build phase in your CI and make the built documentation available inside your org.</p>
 <p>For Swift packages, the <a href="https://swiftpackageindex.com">Swift Package Index</a> will automatically build your documentation — make sure to add your package there!</p>
