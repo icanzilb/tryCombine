@@ -4,21 +4,21 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>actors</title>
+		<title>types</title>
 		<meta name="viewport" content="width=device-width">
 		
-			<link href="https://trycombine.com/tags/actors/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
-			<link href="https://trycombine.com/tags/actors/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
+			<link href="https://trycombine.com/tags/types/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
+			<link href="https://trycombine.com/tags/types/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
-		<meta property="og:title" content="actors" />
+		<meta property="og:title" content="types" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="article" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/tags/actors/" />
+<meta property="og:url" content="https://trycombine.com/tags/types/" />
 
 
 <meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
@@ -35,7 +35,7 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="actors">
+<meta name="twitter:title" content="types">
 
 
  
@@ -295,28 +295,15 @@
 	
 	
 		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors-combine/">Swift Actors: A practical example, part 2</a> </h1>
+			<h1><a href="https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/">Injecting code in result builders</a> </h1>
 
 			<div class="post-content">
-				<p>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
-If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
-When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &ldquo;What about Combine?  … </p>
+				<p>This is a rather quick post about running some arbitrary code inside result builders.
+Result builders are great and often make the code much more readable — think SwiftUI vs UIKit&hellip; but builder blocks are quite strict about the types they expect to find so using arbitrary prints or calling other functions isn&rsquo;t always easy, per sè.
+I am often times a fan of inserting a print or two in the code, especially when I&rsquo;m exploring new code.  … </p>
 			</div>
 
-			<p class="meta">Posted on <span class="postdate">12. May 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors/">Swift Actors: A practical example, part 1</a> </h1>
-
-			<div class="post-content">
-				<p>I&rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
-&ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&rdquo;
-So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">10. May 2021</span></p>
+			<p class="meta">Posted on <span class="postdate">30. November 2023</span></p>
 		</article>
 	
 

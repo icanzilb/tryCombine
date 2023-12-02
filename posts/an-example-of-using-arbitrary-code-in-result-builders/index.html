@@ -4,24 +4,21 @@
 		<link href="http://gmpg.org/xfn/11" rel="profile">
 
 		<meta charset="utf-8">
-		<title>actors</title>
+		<title>Injecting code in result builders</title>
 		<meta name="viewport" content="width=device-width">
-		
-			<link href="https://trycombine.com/tags/actors/index.xml" rel="alternate" type="application/rss+xml" title="try Code" />
-			<link href="https://trycombine.com/tags/actors/index.xml" rel="feed" type="application/rss+xml" title="try Code" />
 		
 		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
 		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
-		<meta property="og:title" content="actors" />
+		<meta property="og:title" content="Injecting code in result builders" />
 <meta property="og:type" content="website" />
 <meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta property="og:type" content="article" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:url" content="https://trycombine.com/tags/actors/" />
+<meta property="og:url" content="https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/" />
 
 
-<meta property="og:image" content="https://trycombine.com/images/trycombine.png" />
+<meta property="og:image" content="https://trycombine.com/images/tile/ide-screenshot.png" />
 
 
 <meta property="og:site_name" content="try Code" />
@@ -35,16 +32,15 @@
 <meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
 <meta name="twitter:creator" content="@icanzilb" />
 
-<meta name="twitter:title" content="actors">
+<meta name="twitter:title" content="Injecting code in result builders">
 
 
  
+   <meta property="article:tag" content="Swift" /> <meta property="article:tag" content="types" />
 
 
 
-<meta name="twitter:image:src" content="https://trycombine.com/images/trycombine.png">
-<meta name="twitter:image:width" content="800">
-<meta name="twitter:image:height" content="800">
+<meta name="twitter:image" content="https://trycombine.com/images/tile/ide-screenshot.png">
 
 
 <meta name="twitter:label1" content="Written by" />
@@ -279,7 +275,45 @@
 
 			<div id="content">
 				
-	<div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
+	<article class="post">
+		
+			
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Injecting code in result builders </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+
+
+    <div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
 	  <div style="position:absolute;left:15px;background:purple;font-size:0.75em;font-family:sans-serif;padding-left:5px; padding-right:5px;margin-top:-13px;line-height:1.1em;border-radius:6px;">promotion</div>
 	  <table>
 		<tr>
@@ -293,35 +327,83 @@
 	  </table>
 	</div>
 	
+
+		<div class="post-content"><p>This is a rather quick post about running some arbitrary code inside result builders.</p>
+<p>Result builders are great and often make the code much more readable — think SwiftUI vs UIKit&hellip; but builder blocks are quite strict about the types they expect to find so using arbitrary prints or calling other functions isn&rsquo;t always easy, per sè.</p>
+<p>I am often times a fan of inserting a print or two in the code, especially when I&rsquo;m exploring new code. Sometimes stepping through all function calls is tedious and I&rsquo;m really interested in just the sequence of execution of few interesting key code points&hellip;</p>
+<p>I thought I&rsquo;d share a function I&rsquo;m using sometimes that makes &ldquo;print debugging&rdquo; with result builders easier:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6ab825;font-weight:bold">func</span> <span style="color:#447fcf">printThrough</span>&lt;T&gt;(
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">_</span> t: T, 
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">_</span> message: <span style="color:#24909d">String</span>? = <span style="color:#6ab825;font-weight:bold">nil</span>, 
+</span></span><span style="display:flex;"><span>    map: ((T) -&gt; <span style="color:#24909d">String</span>)? = <span style="color:#6ab825;font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span>) -&gt; T {
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">description</span> = <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">map</span> {
+</span></span><span style="display:flex;"><span>        map(t)
+</span></span><span style="display:flex;"><span>    } <span style="color:#6ab825;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#24909d">String</span>(describing: t)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span> = <span style="color:#6ab825;font-weight:bold">if</span> <span style="color:#6ab825;font-weight:bold">let</span> <span style="color:#40ffff">message</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ed9d13">&#34;</span><span style="color:#ed9d13">\(</span>message<span style="color:#ed9d13">)</span><span style="color:#ed9d13">: &#39;</span><span style="color:#ed9d13">\(</span>description<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#39;&#34;</span>
+</span></span><span style="display:flex;"><span>    } <span style="color:#6ab825;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>        description
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(message)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6ab825;font-weight:bold">return</span> t
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can wrap a view in some SwiftUI code to print it like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>HStack(alignment: .top) {
+</span></span><span style="display:flex;"><span>    printThrough(
+</span></span><span style="display:flex;"><span>        Text(<span style="color:#ed9d13">&#34;Start&#34;</span>)
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Or print an arbitrary message in some custom result builder like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>Heading(level: <span style="color:#3677a9">1</span>) {
+</span></span><span style="display:flex;"><span>  Paragraph {
+</span></span><span style="display:flex;"><span>    printThrough(
+</span></span><span style="display:flex;"><span>      Div { }, map: { <span style="color:#6ab825;font-weight:bold">_</span> <span style="color:#6ab825;font-weight:bold">in</span> <span style="color:#ed9d13">&#34;Custom message&#34;</span> }
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Or even quickly inspect some of the wrapped type&rsquo;s properties:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>printThrough(
+</span></span><span style="display:flex;"><span>  BuyButton(), map: { <span style="color:#ed9d13">&#34;Message: </span><span style="color:#ed9d13">\(</span><span style="color:#40ffff">$0</span>.title<span style="color:#ed9d13">)</span><span style="color:#ed9d13">&#34;</span> }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>It&rsquo;s not a big thing and most builders will allow you to insert <code>_ = print(...)</code> but I still find it nice to wrap elements and do more than a simple print would.</p>
+<p>Any thoughts on result builders and debugging?</p>
+<p>Get in touch at <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="https://www.kodeco.com/books/modern-concurrency-in-swift" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+            </a>
+            <br/>
+            <a href="https://www.kodeco.com/books/modern-concurrency-in-swift">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+          </td>
+          
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="https://www.kodeco.com/books/combine-asynchronous-programming-with-swift" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+            </a>
+            <br/>
+            <a href="https://www.kodeco.com/books/combine-asynchronous-programming-with-swift">Combine: Asynchronous<br/> programming with Swift</a>
+          </td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">30. November 2023</span></p>
+	</article>
 	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors-combine/">Swift Actors: A practical example, part 2</a> </h1>
-
-			<div class="post-content">
-				<p>In my previous post Swift Actors: A practical example, part 1 I covered how I got a Swift.org toolchain from trunk, enabled support for the currently experimental support for structured concurrency, and created a thread-safe cache in few lines of Swift code.
-If you missed part 1, definitely do read it first as this post builds upon the code I already covered there. »
-When I wrapped up writing part 1, I was looking at my new cache actor and I started wondering &ldquo;What about Combine?  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">12. May 2021</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/swift-actors/">Swift Actors: A practical example, part 1</a> </h1>
-
-			<div class="post-content">
-				<p>I&rsquo;ve been re-reading the Swift structured concurrency roadmap and the Swift actors proposal and noticed a note on the latter saying:
-&ldquo;Partially available in recent main snapshots behind the flag -Xfrontend -enable-experimental-concurrency&rdquo;
-So, naturally 🤓, I downloaded the latest snapshot from Swift.org and took it for a spin to try out some actor code!
-Installing Swift toolchain with actors support Huge disclaimer: this is all experimental experience using a trunk code not cut into a release.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">10. May 2021</span></p>
-		</article>
-	
-
-	
-
 
 			</div>
 

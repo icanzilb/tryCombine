@@ -92,6 +92,10 @@
     <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
     
       <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/">&raquo; &nbsp; 30/Nov &middot; Injecting code in result builders</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
           <a href="https://trycombine.com/posts/an-example-docc-documentation-for-an-ios-app/">&raquo; &nbsp; 20/Sep &middot; DocC: Project documentation structure</a>
       </li>
     
@@ -291,6 +295,19 @@
 	
 	
 		<article class="post">
+			<h1><a href="https://trycombine.com/posts/self-weak-unowned/">Using self, weak, and unowned in Combine</a> </h1>
+
+			<div class="post-content">
+				<p>Updated with more examples on Mar 6th, 2021.
+One of the most often asked questions in the Combine and RxSwift slack channels is something along the lines of:
+Should I use self, weak, or unowned with my reactive code?
+Given that most operators take closures, it&rsquo;s a fair question. In this post I&rsquo;ll go over common scenarios for using weak, unowned or simply self and include links with more information at the bottom.  … </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">03. March 2021</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://trycombine.com/posts/cancellor/">Owning AnyCancellable with Cancellor</a> </h1>
 
 			<div class="post-content">
@@ -402,17 +419,6 @@ CombineDataSources Introduction RxSwiftCommunity&rsquo;s excellent RxDataSources
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">03. September 2019</span></p>
-		</article>
-	
-		<article class="post">
-			<h1><a href="https://trycombine.com/posts/assert-max-subscriptions/">An assert operator: assertMaxSubscriptions()</a> </h1>
-
-			<div class="post-content">
-				<p>While I keep working on CombineDataSources I&rsquo;ve faced some of the differences between RxSwift and Combine and those are slowing me down a bit.
-For example: in RxSwift when dealing with UI I&rsquo;d usually use shareReplayLatestWhileConnected() - this operator shares an observable and emits the latest value to all subscribers downstream. In Combine there is currently a share() operator which does a similar thing but does not &ldquo;replay&rdquo; the latest value.  … </p>
-			</div>
-
-			<p class="meta">Posted on <span class="postdate">29. August 2019</span></p>
 		</article>
 	
 

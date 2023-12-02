@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/posts/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/swift/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://trycombine.com/tags/types/</loc>
+    <lastmod>2023-11-30T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://trycombine.com/tags/docc/</loc>
     <lastmod>2023-09-20T00:00:00+00:00</lastmod>
   </url><url>
@@ -9,18 +27,6 @@
     <lastmod>2023-09-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/tags/documentation/</loc>
-    <lastmod>2023-09-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/posts/</loc>
-    <lastmod>2023-09-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/swift/</loc>
-    <lastmod>2023-09-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/tags/</loc>
-    <lastmod>2023-09-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://trycombine.com/</loc>
     <lastmod>2023-09-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/</loc>
