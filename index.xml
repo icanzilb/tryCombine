@@ -6,7 +6,18 @@
     <description>Recent content on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 30 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Easy app walkthroughs with MarkWalkthrough</title>
+      <link>https://trycombine.com/posts/a-fun-swiftui-package-for-creating-walkthroughs/</link>
+      <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/a-fun-swiftui-package-for-creating-walkthroughs/</guid>
+      <description>Some time ago, while I was working on my app Rex Tables, I wrote some quick code that reads a Markdown file with some &amp;ldquo;slide&amp;rdquo; data and automatically displays an app walkthrough.
+It wasn&amp;rsquo;t really meant for other people to use since it made use of a paid Swift package for the transition effects in the walkthrough. But that package, namely Pow, just become open sourced last week!
+So I pulled the code out of Rex Tables and did a quick pass to tighten up a couple of things and pushed it to GitHub.</description>
+    </item>
+    
     <item>
       <title>Injecting code in result builders</title>
       <link>https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/</link>
