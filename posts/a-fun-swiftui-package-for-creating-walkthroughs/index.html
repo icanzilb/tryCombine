@@ -362,21 +362,29 @@
 </code></pre><p>The <code>image</code> and <code>sticker</code> columns contain image names that are loaded from your app&rsquo;s bundle. <code>stickerOffset</code> and <code>stickerScale</code> allow you to position a sticker over the main image background.</p>
 <p><code>transition</code> is one of the available Pow transitions like skid, wipe, glare, vanish and more.</p>
 <p>Finally, <code>text</code> is an optional description of the slide that is displayed at the bottom.</p>
-<p><code>MarkWalkthroughModel</code> reads the markdown data and creates an observable model.</p>
+<p>I really like using markdown tables for simple lists like this, especially when visually editing the data with <a href="https://apps.apple.com/de/app/tableflip/id1462643128?l=en-GB&amp;mt=12">TableFlip</a>:</p>
+
+<img src="https://trycombine.com/images/markslides/table-flip.png" width=600/>
+
 <h3 id="displaying-the-walkthrough-window">Displaying the walkthrough window</h3>
-<p>Once you have the model, displaying the walkthrough is as easy as:</p>
+<p><code>MarkWalkthroughModel</code> reads the markdown data and creates an observable model.
+Once you have that, displaying the walkthrough is as easy as inserting <code>MarkWalkthroughWindow</code> in your view hierarchy:</p>
 <div class="highlight"><div style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#686868">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>MarkWalkthroughWindow(viewModel: viewModel, closeAction: {
-</span></span><span style="display:flex;"><span>   <span style="color:#999;font-style:italic">// What to do when the user closes the window.</span>
-</span></span><span style="display:flex;"><span>})
-</span></span><span style="display:flex;"><span>.background(.vanilla)</span></span></code></pre></td></tr></table>
+<pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-swift" data-lang="swift"><span style="display:flex;"><span>WindowGroup {
+</span></span><span style="display:flex;"><span>  MarkWalkthroughWindow(viewModel: viewModel, closeAction: {
+</span></span><span style="display:flex;"><span>    <span style="color:#999;font-style:italic">// What to do when the user closes the window.</span>
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>  .background(.vanilla)
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
 </div>
 </div>
 <p>That code displays an interactive scene via SwiftUI that users can navigate back and forth:</p>
