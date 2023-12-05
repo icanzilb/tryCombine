@@ -6,7 +6,18 @@
     <description>Recent content on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 05 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Marin&#39;s Side Projects 2023</title>
+      <link>https://trycombine.com/posts/marin-side-projects-2023/</link>
+      <pubDate>Tue, 05 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/marin-side-projects-2023/</guid>
+      <description>For one reason or another I didn&amp;rsquo;t do much publicly in 2023 but in the last couple months I had some free time and picked some ideas from the backlog to work on.
+So here&amp;rsquo;s a short summary of few interesting things I worked on in 2023 (some with source code, yay):
+Breadcrumbs I&amp;rsquo;ve had this idea for a very long time and I believe that it could be a great app if anyone could come up with a business model to sustain its development.</description>
+    </item>
+    
     <item>
       <title>Easy app walkthroughs with MarkWalkthrough</title>
       <link>https://trycombine.com/posts/a-fun-swiftui-package-for-creating-walkthroughs/</link>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+
+		<meta charset="utf-8">
+		<title>Marin&#39;s Side Projects 2023</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://trycombine.com/css/hybrid.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/style.css">
+		<link rel="stylesheet" href="https://trycombine.com/css/colors-dark.css">
+		<meta property="og:title" content="Marin&#39;s Side Projects 2023" />
+<meta property="og:type" content="website" />
+<meta property="og:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://trycombine.com/posts/marin-side-projects-2023/" />
+
+
+<meta property="og:image" content="https://trycombine.com/images/tile/ide-screenshot.png" />
+
+
+<meta property="og:site_name" content="try Code" />
+
+<meta name="description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more.">
+<meta name="author" content="Marin Todorov">
+
+<link href rel="alternate" type="application/rss+xml" title="try Code">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="Swift development related blog-posts. Combine, modern concurrency model, Instruments, and more." />
+<meta name="twitter:creator" content="@icanzilb" />
+
+<meta name="twitter:title" content="Marin&#39;s Side Projects 2023">
+
+
+ 
+   <meta property="article:tag" content="Swift" /> <meta property="article:tag" content="projects" />
+
+
+
+<meta name="twitter:image" content="https://trycombine.com/images/tile/ide-screenshot.png">
+
+
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Marin Todorov" />
+
+<link rel="stylesheet" href="https://trycombine.com/css/bootstrap-table.css">
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://trycombine.com/">try Code</a></h1>
+			<p>by Marin Todorov</p>
+			<nav style="border-top: 1px solid #555; height: 36px; border-bottom: 1px solid #555;"> 
+	<div id="menu">
+		<ul id="combineslack" style="float: right;">
+			<li></li>
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="http://www.underplot.com"><span>Contact</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://github.com/icanzilb"><span>Github</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="https://twitter.com/icanzilb"><span>Twitter</span></a></li>
+			
+		</ul>
+	
+	</div>
+</nav>
+
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<div class="sidebar-posts">
+    <div class="sidebar-title"><a href="https://trycombine.com/index.xml" class="rss-button"><img src="https://trycombine.com/images/ic_rss_feed_48px.png"></a> Latest posts:</div>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/marin-side-projects-2023/">&raquo; &nbsp; 5/Dec &middot; Marin&#39;s Side Projects 2023</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/a-fun-swiftui-package-for-creating-walkthroughs/">&raquo; &nbsp; 4/Dec &middot; Easy app walkthroughs with MarkWalkthrough</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/an-example-of-using-arbitrary-code-in-result-builders/">&raquo; &nbsp; 30/Nov &middot; Injecting code in result builders</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/an-example-docc-documentation-for-an-ios-app/">&raquo; &nbsp; 20/Sep &middot; DocC: Project documentation structure</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/code-samples-on-how-to-approach-debugging-swift-and-uikit-apps/">&raquo; &nbsp; 3/Jan &middot; Automate debugging SwiftUI and UIKit with dataFude</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datafude-for-simulator-is-on-the-appstore-now/">&raquo; &nbsp; 3/Jan &middot; dataFude for Simulator launches today! 🚀</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/using-markcodable-to-generate-reports/">&raquo; &nbsp; 8/Dec &middot; Automation tooling using MarkCodable for reports</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/custom-view-modifier-to-handle-features-that-are-only-enabled-in-the-pro-version-of-the-app/">&raquo; &nbsp; 5/Dec &middot; Custom SwiftUI view modifier for paid app features</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/datafude-for-simulator-public-beta-on-testflight-now/">&raquo; &nbsp; 29/Nov &middot; dataFude for Simulator - public beta on TestFlight now!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/12-of-my-favorite-side-projects-in-2022/">&raquo; &nbsp; 7/Nov &middot; My favorite 12 side projects in 2022</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-got-jobs/">&raquo; &nbsp; 6/Nov &middot; Introducing: Got Jobs?</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-markcodable/">&raquo; &nbsp; 6/Sep &middot; Introducing MarkCodable</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/introducing-timeui/">&raquo; &nbsp; 20/Mar &middot; Introducing timeui</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-4/">&raquo; &nbsp; 14/Mar &middot; Optimization in Swift, part 4</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-3/">&raquo; &nbsp; 10/Mar &middot; Optimization in Swift, part 3</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-2/">&raquo; &nbsp; 9/Mar &middot; Optimization in Swift, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-performance-concurrency-1/">&raquo; &nbsp; 3/Mar &middot; Optimization in Swift, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group-workflow/">&raquo; &nbsp; 21/Feb &middot; TaskGroup as a workflow design tool</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-concurrency-task-group/">&raquo; &nbsp; 16/Feb &middot; The issue with task groups or how I discovered a solved problem</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-light-ide-update-jan/">&raquo; &nbsp; 31/Jan &middot; Swift Light IDE update, Jan 31st</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-read-modify-coroutines/">&raquo; &nbsp; 25/Jan &middot; Yielding accessors in Swift</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-2/">&raquo; &nbsp; 21/Jan &middot; Swift Async Sequence extensions (part 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-async-sequence-extensions-1/">&raquo; &nbsp; 19/Jan &middot; Swift Async Sequence extensions (part 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/xcode-powerups/">&raquo; &nbsp; 20/Dec &middot; Extending Xcode with power-ups</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-modern-swift-concurrency-book/">&raquo; &nbsp; 3/Nov &middot; Announcing: “Modern Concurrency in Swift”</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actor-dispatch-queues-concurrency/">&raquo; &nbsp; 6/Oct &middot; Actors, the cooperative pool and concurrency</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/performance-actor-queue-lock-benchmark/">&raquo; &nbsp; 30/Sep &middot; Performance: Actor vs queue vs lock</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/thread-task-sleep/">&raquo; &nbsp; 13/Sep &middot; The difference between Thread.sleep() and Task.sleep()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-2/">&raquo; &nbsp; 13/Jul &middot; Bridge from Combine to AsyncSequence - the code (p. 2)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-async-sequence-1/">&raquo; &nbsp; 12/Jul &middot; Bridge from Combine to AsyncSequence - the plan (p. 1)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors-combine/">&raquo; &nbsp; 12/May &middot; Swift Actors: A practical example, part 2</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/swift-actors/">&raquo; &nbsp; 10/May &middot; Swift Actors: A practical example, part 1</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/self-weak-unowned/">&raquo; &nbsp; 3/Mar &middot; Using self, weak, and unowned in Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/cancellor/">&raquo; &nbsp; 5/Feb &middot; Owning AnyCancellable with Cancellor</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-nsspain-2020/">&raquo; &nbsp; 20/Nov &middot; 5 Stranger Things you can do with Timelane at NSSpain</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/how-to-create-custom-instrument/">&raquo; &nbsp; 19/Apr &middot; How to create a custom instrument on top of Timelane!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/timelane-combine-update/">&raquo; &nbsp; 13/Mar &middot; Timelane - the first two weeks!</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/announcing-timelane-combine/">&raquo; &nbsp; 28/Feb &middot; Announcing: Timelane</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combine-property-wrappers/">&raquo; &nbsp; 11/Sep &middot; Property Wrappers with Combine</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/subscribe-on-receive-on/">&raquo; &nbsp; 9/Sep &middot; subscribe(on:) vs receive(on:)</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-multiple-sections/">&raquo; &nbsp; 7/Sep &middot; Binding a list with multiple sections and different cells</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/combinedatasources-simple-static-list/">&raquo; &nbsp; 3/Sep &middot; Binding a simple list to a UITableView</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/assert-max-subscriptions/">&raquo; &nbsp; 29/Aug &middot; An assert operator: assertMaxSubscriptions()</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/debug-logging-combineprintout/">&raquo; &nbsp; 16/Aug &middot; Debug logging with CombinePrintout</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/more-simple-custom-combine-operators-with-sample/">&raquo; &nbsp; 6/Aug &middot; Building a custom `sample` operator</a>
+      </li>
+    
+      <li class="sidebar-post" style="margin-top: 12px;">
+          <a href="https://trycombine.com/posts/simple-custom-combine-operators/">&raquo; &nbsp; 2/Aug &middot; Simple custom Combine operators</a>
+      </li>
+    
+  </div>
+
+<style>
+	  .sidebar-post { font-size:0.75em; margin-top:12px; line-height: 14px;}
+    .sidebar-post a { text-decoration: none; }
+    .sidebar-post a:hover { text-decoration: underline; }
+</style>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		
+			
+		<h1 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 0px solid orange;">Marin&#39;s Side Projects 2023 </h1>
+
+<style>
+  .twitter-share-button {
+  	font-family: 'Helvetica Neue',Arial,sans-serif;
+  	background: #4793DA;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  	border-radius: 4px;
+  	font-size: 0.85em;
+  	line-height: 3em;
+  }
+
+  .twitter-share-button:hover {
+  	background: #3C769F;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+  .twitter-share-button:active {
+  	background: #284F6A;
+  	color: white;
+  	padding-left: 16px;
+  	padding-right: 16px;
+  	margin-top: 2px;
+  }
+
+</style>
+
+
+
+    <div style="border: 2px solid purple; border-radius: 10px; padding: 5px; margin-bottom:10px;margin-top:20px;">
+	  <div style="position:absolute;left:15px;background:purple;font-size:0.75em;font-family:sans-serif;padding-left:5px; padding-right:5px;margin-top:-13px;line-height:1.1em;border-radius:6px;">promotion</div>
+	  <table>
+		<tr>
+		  <td style="padding-top:10px;"><a href="https://underplot.com/dataFude" style="margin:0px;padding:0px;"><img src="https://underplot.com/dataFude/images/tile/hero-window.gif" src1="../../images/tile/Icon_128x128.png" width=164 style="margin-right: 20px;margin-left: 10px;mask-image:url(https://underplot.com/dataFude/images/tile/mask-568.png);mask-size:contain;"/></a></td>
+		  <td style="vertical-align:top;font-family:sans-serif;font-weight: normal; font-size: 0.85em;line-height: 1.4em;padding-top:22px;" class="promotion-insert">
+			<a href="https://underplot.com/dataFude" style="margin:0px;padding:0px;background-color: #073642;border-color: #98e4df;color: #98e4df;">
+			Powerful debugging in Xcode,<br/> no code changes or 3rd party frameworks required.
+			</a>
+		  </td>
+		</tr>
+	  </table>
+	</div>
+	
+
+		<div class="post-content"><p>For one reason or another I didn&rsquo;t do much publicly in 2023 but in the last couple months I had some free time and picked some ideas from the backlog to work on.</p>
+<p>So here&rsquo;s a short summary of few interesting things I worked on in 2023 (some with source code, yay):</p>
+<h2 id="breadcrumbs">Breadcrumbs</h2>
+<p>I&rsquo;ve had this idea for a very long time and I believe that it could be a great app if anyone could come up with a business model to sustain its development.</p>
+<p><strong>Breadcrumbs</strong> is an issue tracker that works off your project&rsquo;s source files in real time. It picks up any <code>TODO:</code> and <code>FIXME:</code> comments and gives you a classic bug tracking UI with some extras like parsing any tags and issue priority from the comment text:</p>
+
+<img src="https://trycombine.com/images/projects-2023/breadcrumbs.png" width=600/>
+
+<p>Conveniently you can click on tags to filter the list in the sidebar and even click on &ldquo;Open in Xcode&rdquo; to open the file at the precise location directly in Xcode!</p>
+<p>Here&rsquo;s a simple video walkthrough that shows some of the user experience:</p>
+
+<video width="628" height="372" controls>
+  <source src="https://trycombine.com/images/projects-2023/breadcrumbs.mp4" type="video/mp4">
+</video>
+
+<p>Finally, after I played with this for couple days I pushed the source here if you want to peak inside: <a href="https://github.com/icanzilb/Breadcrumbs">https://github.com/icanzilb/Breadcrumbs</a>.</p>
+<h2 id="packageview">PackageView</h2>
+<p>This another idea from the backlog that I needed in the past on one occasion or another — <strong>PackageView</strong> displays a <code>Package.swift</code> visually so you can browse targets, dependencies and more — easily.</p>
+<p>I think it makes a lot of sense, especially for large packages (like SwiftPM in the video below) to navigate visually instead of reading through the source in a text editor:</p>
+
+<video width="551" height="329" controls>
+  <source src="https://trycombine.com/images/projects-2023/packageview.mp4" type="video/mp4">
+</video>
+
+<p>Again, I pushed the source to GitHub in case anyone would like to explore the idea further: <a href="https://github.com/icanzilb/PackageView">https://github.com/icanzilb/PackageView</a>.</p>
+<h2 id="unxippity">Unxippity</h2>
+<p>Who doesn&rsquo;t know the frustration of waiting for Xcode to unxip? :)))</p>
+<p>Well, no more — <a href="https://github.com/saagarjha">Saagar</a> has written a library that does concurrent unxipping in pure Swift (I mean, omg, how did he even do this, omg) which is also a great showcase of Swift concurrency.</p>
+<p>I used his package and slapped some nice SwiftUI on top to make the tool more appealing for users who don&rsquo;t want to unxip on the command line:</p>
+
+<video width="585" height="329" controls>
+  <source src="https://trycombine.com/images/projects-2023/unxippity.mp4" type="video/mp4">
+</video>
+
+<p>The cool spin of Unxippity over the command line version is that when you start downloading Xcode in Safari, Unxippity detects the ongoing download automatically (like in the video) and will unxip it automatically and let you know when it&rsquo;s finished — all hands-free!</p>
+<h2 id="markwalkthrough">MarkWalkthrough</h2>
+<p>I had a quick markdown-based app walkthrough hacked for my app Rex Tables and since one of its dependencies, Pow, became open source I thought it&rsquo;d be nice to extract the code and put it out there.</p>
+<p>MarkWalkthrough reads a list of slide configuration from a markdown file and uses SwiftUI and Pow to build interactive slideshow automatically. It basically turns a table:</p>
+<pre tabindex="0"><code>| image      | sticker  | stickerOffset | stickerScale | transition    | text            |
+| ---------- | -------- | ------------- | ------------ | ------------- | --------------- |
+| window-1   |          |               |              | skid,         | This is the ... |
+| window-2   | bubble-1 | 100,-75       | 0.75         | ,wipe         | First of ...    |
+| window-3   | bubble-2 | 80,-165       | 0.75         | glare,vanish  | Then ...        |
+</code></pre><p>Into interactive &amp; animated slides:</p>
+
+<img src="https://trycombine.com/images/markslides/structure.png" width=500/>
+
+<p>A wrote a short blog post about it here: <a href="https://trycombine.com/posts/a-fun-swiftui-package-for-creating-walkthroughs/">Easy app walkthroughs with MarkWalkthrough</a>.</p>
+<p>And the source is on GitHub here: <a href="https://github.com/icanzilb/MarkWalkthrough">https://github.com/icanzilb/MarkWalkthrough</a>.</p>
+<h2 id="markplayground">MarkPlayground</h2>
+<p>Speaking of Markdown (one of my favorite topics), I explored shortly another fun app idea — a fusion of half markdown editor and half developer console.</p>
+<p>The idea being that a powerful markdown editor can make a lot of automation possible if it exposes the Markdown via a DOM like structure and allows the user to run arbitrary code against it.</p>
+
+<img src="https://trycombine.com/images/projects-2023/markplay.png" width=500/>
+
+<p>I can imagine all kind of fun stuff being possible — for example changing all of H1 headings to H2s, adding formatting to given keywords, counting how many citations a paper references, or even looping over all images in the text and verifying if the URLs are still valid!</p>
+<p>Anyhow, I didn&rsquo;t spend too long on that idea but I got a split editor working where you could run JavaScript against a faux Markdown DOM:</p>
+
+<video width="621" height="513" controls>
+  <source src="https://trycombine.com/images/projects-2023/markplay.mp4" type="video/mp4">
+</video>
+
+<h2 id="pdfdoc">PDFDoc</h2>
+<p>This is another app I wish someone would find a way to monetize because I&rsquo;d definitely pay for this — documents as markdown files. Plain text can easily contain meta information that can help the document being useful to either print or be interpreted as an interactive document.</p>
+<p>For example, looking at this plain text you could already tell how should it be filled our right?</p>
+<pre tabindex="0"><code>Customer data
+----------------------
+
+Name: [ __________ ]
+Family: [ __________ ]
+
+Date: [today:       ]
+
+----------------------
+</code></pre><p>This could be really useful for sharing forms over email or in GitHub, sending surveys and more. Here&rsquo;s a demo of the same markdown file in a plain text editor and rendered by PDFDoc:</p>
+
+<video width="621" height="513" controls>
+  <source src="https://trycombine.com/images/projects-2023/pdfdoc.mp4" type="video/mp4">
+</video>
+
+<h2 id="logrider">LogRider</h2>
+<p>I wanted to rip some of the core code off DataFude and publish a smaller in scope app on GitHub. I called it <strong>LogRider</strong> and have a somewhat working version of it but I&rsquo;ll seemingly not have a usable repo before the holidays&hellip;</p>
+<p>In any case, I think it looks pretty neat — it reads your Mac&rsquo;s console and automatically tracks useful logs (it&rsquo;s basically DataFude minus the custom UI):</p>
+
+<img src="https://trycombine.com/images/projects-2023/lr-app-window.png" width=600/>
+
+<p>Much like with DataFude you can feed logs from the system log or a log file on the file system and it&rsquo;ll automatically track similar prints like &ldquo;Progress: 10%&rdquo;, &ldquo;Progress: 22%&rdquo;, &ldquo;Progress: 25%&rdquo;, etc. and visualize them:</p>
+
+<video width="653" height="391" controls>
+  <source src="https://trycombine.com/images/projects-2023/LogRider-video.mp4" type="video/mp4">
+</video>
+
+<p>I really love this one — it&rsquo;s like a powerful fusion between the watch variables pane in Xcode and the output log console.</p>
+<p>It&rsquo;d be so great to have something like that ship in Xcode.</p>
+<h2 id="datafude-is-now-free">DataFude is now free!</h2>
+
+<img src="https://trycombine.com/images/tile/Icon_128x128.png" width=128 style="float:left;clear:both;display:block;"/>
+<div style="height:128px;"></div><br/>
+
+<p>Finally, I recently converted DataFude to a free app — you can download it from the <a href="https://apps.apple.com/app/data-fude/id6444231603?l=en-GB&amp;mt=12">Mac App Store</a>.</p>
+<hr>
+<p>Any thoughts on any of these app ideas? Let me know!</p>
+<p>Get in touch at <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a>.</p>
+</div>
+    <hr/>
+    <div><i>If you like these free blog posts, check out some of the books I worked on!</i></div>
+
+    <div id="combinebook">
+      <table width="100%">
+        <tr>
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="https://www.kodeco.com/books/modern-concurrency-in-swift" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/concurrency-book.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:5px;">
+            </a>
+            <br/>
+            <a href="https://www.kodeco.com/books/modern-concurrency-in-swift">Modern Concurrency in Swift</a><span class="new-badge">New</span>
+          </td>
+          
+          <td style="font-size: 0.9em; font-family: sans-serif; font-weight: bold; text-align:center;">
+            <a href="https://www.kodeco.com/books/combine-asynchronous-programming-with-swift" target="_blank" style="text-decoration:none;">
+              <img src="https://trycombine.com/images/combine.png" style="width:150px; box-shadow: 4px 6px #354465;border-radius:10px;">
+            </a>
+            <br/>
+            <a href="https://www.kodeco.com/books/combine-asynchronous-programming-with-swift">Combine: Asynchronous<br/> programming with Swift</a>
+          </td>
+        </tr>
+      </table>
+				<br/>
+		</div>
+		<p class="meta">Posted on <span class="postdate">05. December 2023</span></p>
+	</article>
+	
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						Powered by <a href="https://gohugo.io/">Hugo</a> and the
+						<a href="https://github.com/bake/solar-theme-hugo">Solar</a>-theme.
+					
+				</p>
+			</footer>
+		</div>
+
+		<script src="https://www.w3counter.com/tracker.js?id=147849"></script>
+<script>
+  if (window.location.href.indexOf("localhost") < 0) {
+    
+  } else {
+    console.log('localhost');
+  }
+</script>
+	</body>
+</html>
