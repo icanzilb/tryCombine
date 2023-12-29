@@ -6,7 +6,19 @@
     <description>Recent content in Posts on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Unxippity - fast Xcode unxipping, is open source</title>
+      <link>https://trycombine.com/posts/an-app-experiment-about-unxipping-xcode-goes-to-github/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/an-app-experiment-about-unxipping-xcode-goes-to-github/</guid>
+      <description>Few weeks ago I had few free hours and hacked together a quick SwiftUI app that uses saagar&amp;rsquo;s unxip package to quickly unxip Xcode downloads.
+You can use saagar&amp;rsquo;s command line utility but I&amp;rsquo;m one for neat UIs so I wanted to have something to click around. Today I wrapped few loose ends and pushed the code to GitHub here: icanzilb/Unxippity.
+Here&amp;rsquo;s a very quick walkthrough the app.
+Note: This is a very quickly put together app experiment, use caution when using it.</description>
+    </item>
+    
     <item>
       <title>Marin&#39;s Side Projects 2023</title>
       <link>https://trycombine.com/posts/marin-side-projects-2023/</link>

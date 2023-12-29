@@ -6,7 +6,43 @@
     <description>Recent content in Tags on try Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>swift</title>
+      <link>https://trycombine.com/tags/swift/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/swift/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SwiftUI</title>
+      <link>https://trycombine.com/tags/swiftui/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/swiftui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>xcode</title>
+      <link>https://trycombine.com/tags/xcode/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/xcode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>xip</title>
+      <link>https://trycombine.com/tags/xip/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/tags/xip/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>projects</title>
       <link>https://trycombine.com/tags/projects/</link>
@@ -17,29 +53,11 @@
     </item>
     
     <item>
-      <title>swift</title>
-      <link>https://trycombine.com/tags/swift/</link>
-      <pubDate>Tue, 05 Dec 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/swift/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>markdown</title>
       <link>https://trycombine.com/tags/markdown/</link>
       <pubDate>Mon, 04 Dec 2023 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/markdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>SwiftUI</title>
-      <link>https://trycombine.com/tags/swiftui/</link>
-      <pubDate>Mon, 04 Dec 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/swiftui/</guid>
       <description></description>
     </item>
     
@@ -355,15 +373,6 @@
       <pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate>
       
       <guid>https://trycombine.com/tags/await/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>xcode</title>
-      <link>https://trycombine.com/tags/xcode/</link>
-      <pubDate>Mon, 20 Dec 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://trycombine.com/tags/xcode/</guid>
       <description></description>
     </item>
     

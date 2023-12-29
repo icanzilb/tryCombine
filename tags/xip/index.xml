@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>xip on try Code</title>
+    <link>https://trycombine.com/tags/xip/</link>
+    <description>Recent content in xip on try Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://trycombine.com/tags/xip/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Unxippity - fast Xcode unxipping, is open source</title>
+      <link>https://trycombine.com/posts/an-app-experiment-about-unxipping-xcode-goes-to-github/</link>
+      <pubDate>Fri, 29 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://trycombine.com/posts/an-app-experiment-about-unxipping-xcode-goes-to-github/</guid>
+      <description>Few weeks ago I had few free hours and hacked together a quick SwiftUI app that uses saagar&amp;rsquo;s unxip package to quickly unxip Xcode downloads.
+You can use saagar&amp;rsquo;s command line utility but I&amp;rsquo;m one for neat UIs so I wanted to have something to click around. Today I wrapped few loose ends and pushed the code to GitHub here: icanzilb/Unxippity.
+Here&amp;rsquo;s a very quick walkthrough the app.
+Note: This is a very quickly put together app experiment, use caution when using it.</description>
+    </item>
+    
+  </channel>
+</rss>
