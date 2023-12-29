@@ -360,7 +360,7 @@
 
 <img src="https://trycombine.com/images/unxippity/app-2.png" width=600 style="border-radius:8px;"/>
 
-<p>Here you have the chance to configure the actions you want performed once the download finishes. You can choose the download destination (is all I ever wanted really) and additionally choose from a pool of extra options like deleting the archive, playing a sound, etc.</p>
+<p>Here you have the chance to configure the actions you want performed once the download finishes. You can choose the download destination (it&rsquo;s all I ever wanted really) and additionally choose from a pool of extra options like deleting the archive, playing a sound, etc.</p>
 <p>Once the download completes, the app will begin unxipping the file to the target destination:</p>
 
 <img src="https://trycombine.com/images/unxippity/app-3.png" width=600/>
@@ -374,7 +374,10 @@
 
 <img src="https://trycombine.com/images/unxippity/verifying.png" width=500 style="border-radius:8px;"/>
 
-<p>I&rsquo;m sure there are some rough edges but it works sufficiently much to make my own life a little easier, check it out at: <a href="https://github.com/icanzilb/Unxippity">https://github.com/icanzilb/Unxippity</a>.</p>
+<p>I&rsquo;m sure there are some rough edges but it works sufficiently well to make my own life a little easier, check it out at: <a href="https://github.com/icanzilb/Unxippity">https://github.com/icanzilb/Unxippity</a>.</p>
+<h1 id="debugging-code">Debugging code</h1>
+<p>If you&rsquo;re playing around with the app, open <strong>Config.xcconfig</strong> in the Xcode project and uncomment the <code>OTHER_SWIFT_FLAGS = -D UITESTING</code> line. When you start the project the app will simulate the complete flow for you, in case you&rsquo;re fixing UI bugs or adjusting stuff.</p>
+<p>That&rsquo;s all for today!</p>
 <p>Get in touch at <a href="https://mastodon.social/@icanzilb">https://mastodon.social/@icanzilb</a>.</p>
 </div>
     <hr/>
